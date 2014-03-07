@@ -45,7 +45,7 @@
                     "sPaginationType": "full_numbers",
                     "bSearchable": true,
                     "aTargets": [0],
-                    "iDisplayLength": 25,
+                    "iDisplayLength": 10,
                     "aoColumns": [
                         {"sName": "ID", "sWidth": "10%", "bVisible": false},
                         {"sName": "Stream", "sWidth": "10%"},
