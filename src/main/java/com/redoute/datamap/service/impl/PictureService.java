@@ -38,8 +38,8 @@ public class PictureService implements IPictureService {
     }
 
     @Override
-    public List<Picture> findPictureListByCriteria(int start, int amount, String column, String dir, String searchTerm, String individualSearch) {
-        return pictureDao.findPictureListByCriteria(start, amount, column, dir, searchTerm, individualSearch);
+    public List<Picture> findPictureListByCriteria(String individualSearch) {
+        return pictureDao.findPictureListByCriteria(individualSearch);
     }
 
     @Override

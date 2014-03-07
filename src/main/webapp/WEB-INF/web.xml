@@ -43,6 +43,10 @@
         <servlet-name>UpdatePicture</servlet-name>
         <servlet-class>com.redoute.datamap.servlet.picture.UpdatePicture</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetDistinctValueFromTableColumn</servlet-name>
+        <servlet-class>com.redoute.datamap.servlet.GetDistinctValueFromTableColumn</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CreateDatamap</servlet-name>
         <url-pattern>/CreateDatamap</url-pattern>
@@ -78,6 +82,10 @@
     <servlet-mapping>
         <servlet-name>UpdatePicture</servlet-name>
         <url-pattern>/UpdatePicture</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetDistinctValueFromTableColumn</servlet-name>
+        <url-pattern>/GetDistinctValueFromTableColumn</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

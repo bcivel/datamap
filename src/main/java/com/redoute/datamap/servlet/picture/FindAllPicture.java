@@ -48,38 +48,16 @@ public class FindAllPicture extends HttpServlet {
         PolicyFactory policy = Sanitizers.FORMATTING.and(Sanitizers.LINKS);
         
         try {
-            String echo = policy.sanitize(request.getParameter("sEcho"));
-            String sStart = policy.sanitize(request.getParameter("iDisplayStart"));
-            String sAmount = policy.sanitize(request.getParameter("iDisplayLength"));
-            String sCol = policy.sanitize(request.getParameter("iSortCol_0"));
-            String sdir = policy.sanitize(request.getParameter("sSortDir_0"));
-            String dir = "asc";
-            String[] cols = { "Id", "page", "Picture","base64"};
-
-            JSONObject result = new JSONObject();
-            JSONArray array = new JSONArray();
-            int amount = 10;
-            int start = 0;
-            int col = 0;
-
-            String id = "";
-            String base64 = "";
             String page[] = null;
-            String picture = "";
+            String picture[] = null;
 
-            id = policy.sanitize(request.getParameter("sSearch_0"));
-            picture = policy.sanitize(request.getParameter("sSearch_2"));
-            base64 = policy.sanitize(request.getParameter("sSearch_3"));
             if (request.getParameterValues("page") != null) {
             page = request.getParameterValues("page");
             }
-            
-            List<String> sArray = new ArrayList<String>();
-            if (!id.equals("")) {
-                String sId = " `Id` like '%" + id + "%'";
-                sArray.add(sId);
+            if (request.getParameterValues("picture") != null) {
+            picture = request.getParameterValues("picture");
             }
-            
+            List<String> sArray = new ArrayList<String>();
             if (page != null) {
             String spage = " (";
             for (int a = 0; a < page.length - 1; a++) {
@@ -88,15 +66,15 @@ public class FindAllPicture extends HttpServlet {
             spage += " page like '%" + page[page.length - 1] + "%') ";
             sArray.add(spage);
         }
-            if (!picture.equals("")) {
-                String sPicture = " `picture` like '%" + picture + "%'";
-                sArray.add(sPicture);
+            if (picture != null) {
+            String spicture = " (";
+            for (int a = 0; a < picture.length - 1; a++) {
+                spicture += " picture like '%" + picture[a] + "%' or";
             }
-            if (!base64.equals("")) {
-                String sBase64 = " `base64` like '%" + base64 + "%'";
-                sArray.add(sBase64);
-            }
-
+            spicture += " picture like '%" + picture[picture.length - 1] + "%') ";
+            sArray.add(spicture);
+        }
+            
             StringBuilder individualSearch = new StringBuilder();
             if (sArray.size() == 1) {
                 individualSearch.append(sArray.get(0));
@@ -108,37 +86,6 @@ public class FindAllPicture extends HttpServlet {
                 individualSearch.append(sArray.get(sArray.size() - 1));
             }
 
-            if (sStart != null) {
-                start = Integer.parseInt(sStart);
-                if (start < 0) {
-                    start = 0;
-                }
-            }
-            if (sAmount != null) {
-                amount = Integer.parseInt(sAmount);
-                if (amount < 10 || amount > 100) {
-                    amount = 10;
-                }
-            }
-
-            if (sCol != null) {
-                col = Integer.parseInt(sCol);
-                if (col < 0 || col > 5) {
-                    col = 0;
-                }
-            }
-            if (sdir != null) {
-                if (!sdir.equals("asc")) {
-                    dir = "desc";
-                }
-            }
-            String colName = cols[col];
-
-            String searchTerm = "";
-            if (!request.getParameter("sSearch").equals("")) {
-                searchTerm = request.getParameter("sSearch");
-            }
-
             String inds = String.valueOf(individualSearch);
 
             JSONArray data = new JSONArray(); //data that will be shown in the table
@@ -146,7 +93,7 @@ public class FindAllPicture extends HttpServlet {
             ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
             IPictureService pictureService = appContext.getBean(IPictureService.class);
 
-            List<Picture> datamapList = pictureService.findPictureListByCriteria(start, amount, colName, dir, searchTerm, inds);
+            List<Picture> datamapList = pictureService.findPictureListByCriteria(inds);
 
             JSONObject jsonResponse = new JSONObject();
 
@@ -160,15 +107,8 @@ public class FindAllPicture extends HttpServlet {
                 data.put(row);
             }
             
-            Integer numberOfTotalRows = pictureService.getNumberOfPicturePerCrtiteria(searchTerm, inds);
-            
             jsonResponse.put("aaData", data);
-            jsonResponse.put("sEcho", echo);
-            jsonResponse.put("iTotalRecords", numberOfTotalRows);
-            jsonResponse.put("iDisplayLength", data.length());
-            jsonResponse.put("iTotalDisplayRecords", numberOfTotalRows);
             
-
             response.setContentType("application/json");
             response.getWriter().print(jsonResponse.toString());
         } catch (JSONException ex) {

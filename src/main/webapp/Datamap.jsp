@@ -1,3 +1,4 @@
+<%@page import="org.json.JSONArray"%>
 <%@page import="java.util.List"%>
 <%@page import="com.redoute.datamap.entity.Picture"%>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils"%>
@@ -37,7 +38,7 @@
                 var oTable = $('#datamapList').dataTable({
                     "aaSorting": [[0, "desc"]],
                     "bServerSide": true,
-                    "sAjaxSource": "FindAllDatamap"+test,
+                    "sAjaxSource": "FindAllDatamap" + test,
                     "bJQueryUI": true,
                     "bProcessing": true,
                     "bPaginate": true,
@@ -116,14 +117,14 @@
 
 
         </script>
-<script>
-function getValue()
-  {
-  var x = document.getElementById("testtest").value;
-  return x;
-  }
-</script>
-<script type="text/javascript">
+        <script>
+            function getValue()
+            {
+                var x = document.getElementById("testtest").value;
+                return x;
+            }
+        </script>
+        <script type="text/javascript">
             function updatePicture(value, columnName, id) {
                 var sValue = value.value;
                 var sColumnName = columnName;
@@ -132,12 +133,12 @@ function getValue()
                 xhttp.open("GET", "UpdatePicture?value=" + sValue + "&id=" + id + "&columnName=" + columnName, true);
                 xhttp.send();
                 var xmlDoc = xhttp.responseText;
-                
+
             }
         </script>
         <link rel="Stylesheet" type="text/css" href="./js/wPaint/demo/demo.css" />
     </head>
-    <body  id="wrapper" onLoad="LoadMyJs(null,null)">
+    <body  id="wrapper" onLoad="LoadMyJs(null, null)">
         <%
             String uri = "?";
 
@@ -148,7 +149,7 @@ function getValue()
                     uri += "&page=" + pageName[a];
                 }
             };
-            
+
             if (request.getParameterValues("stream") != null && !request.getParameter("stream").equals("All")) {
                 String[] stream = request.getParameterValues("stream");
                 for (int a = 0; a < stream.length; a++) {
@@ -156,12 +157,19 @@ function getValue()
                 }
             };
 
+            if (request.getParameterValues("picture") != null && !request.getParameter("picture").equals("All")) {
+                String[] picture = request.getParameterValues("picture");
+                for (int a = 0; a < picture.length; a++) {
+                    uri += "&picture=" + picture[a];
+                }
+            };
+
             ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
             IPictureService pictureService = appContext.getBean(IPictureService.class);
             List<Picture> pictureList = pictureService.findPicturePerPages(pageName);
-//            String img = ("<img src=\"");
-//            img = img + pict.getBase64();
-//            img = img + ("\">");%>
+
+
+        %>
         <input id="testtest" value="<%=uri%>" style="display:none">    
         <div class="ncdescriptionfirstpart" style="vertical-align: central; clear:both">
             <p style="text-align:left">Data-Cerberus Implementation</p>
@@ -169,14 +177,14 @@ function getValue()
                 <div style="width: 230px;float:left">
                     <!--<p style="float:left">creator</p>-->
                     <select style="width: 200px;float:left" multiple="multiple"  id="stream" name="stream">
-                        <option id="1">MDB004</option>
-                        <option id="2">MDB004b</option>
                     </select>
                 </div>
                 <div style="width: 230px;float:left">
                     <select style="width: 200px;float:left" multiple="multiple"  id="page" name="page">
-                        <option id="1">Account</option>
-                        <option id="2">Login</option>
+                    </select>
+                </div>
+                <div style="width: 230px;float:left">
+                    <select style="width: 200px;float:left" multiple="multiple"  id="picture" name="picture">
                     </select>
                 </div>
                 <div><input style="float:left" type="button" value="Apply Filter" onClick="document.ExecFilters.submit()"></div>
@@ -184,7 +192,7 @@ function getValue()
         </div>
         <br>
         <div style="clear:both"><div style="float:left; width:550px"><p>data-cerberus forms</p></div>
-            </div>
+        </div>
         <div style="float:left; width: 1200px;  font: 90% sans-serif">
             <table id="datamapList" class="display">
                 <thead>
@@ -205,36 +213,28 @@ function getValue()
         <div style="clear:both; height:30px"><p>Pictures</p></div>
         <div id="picturesList" style="float:left; width: 400px;background-color:#E2E4FF">
             <div class="ncdescriptionheader" style="height:30px" >List of Pictures</div>
-            <div>
-            <%
-                int a = 0;
-                for (Picture pict : pictureList) {
-                    a++;
-                    %><a style="cursor: pointer" onclick="$('#wPaint').fadeOut('slow');LoadMyJs('<%=pict.getId()%>', '<%=pict.getBase64()%>')"><%=pict.getPicture()%></a><br><%
-                }
-            %>
+            <div id="pictureList" name="pictureList"></div>
         </div>
-        </div>
-         
-    <div id="pictures" style="float:left; width: 650px;background-color:#E2E4FF">    
+
+        <div id="pictures" style="float:left; width: 650px;background-color:#E2E4FF">    
             <div class="ncdescriptionheader" style="height:30px" >
-                <p style="float:left;">Page:</p><input style="float:left;" value="" onChange="javascript: updatePicture(this, 'page' , 'id')">
-                <p style="float:left;">Picture:</p><input style="float:left;" value="" onChange="javascript: updatePicture(this, 'picture' , 'id')">
+                <p style="float:left;">Page:</p><input style="float:left;" value="" onChange="javascript: updatePicture(this, 'page', 'id')">
+                <p style="float:left;">Picture:</p><input style="float:left;" value="" onChange="javascript: updatePicture(this, 'picture', 'id')">
                 <button id="deletePicture" style="float:right" onClick="javacript: deletePicture('')">Delete Picture</button>
                 <button id="addPicture" style="float:right" onClick="javacript: popup('AddPicture.jsp')">Add Picture</button>
             </div>
-        <div id="contentParent">
-           <!--<div id="contentDiv" class="content-box" style="background-color:#E2E4FF">-->
-           <%@ include file="PictureDiv.jsp" %>
-<!--           <div id="wPaint" style="position:relative; width:600px; height:400px; background-color:#7a7a7a; margin:70px auto 20px auto;"></div>
-            <center id="wPaint-img"></center>
-            </div>-->
-        </div>
+            <div id="contentParent">
+                <!--<div id="contentDiv" class="content-box" style="background-color:#E2E4FF">-->
+                <%@ include file="PictureDiv.jsp" %>
+                <!--           <div id="wPaint" style="position:relative; width:600px; height:400px; background-color:#7a7a7a; margin:70px auto 20px auto;"></div>
+                            <center id="wPaint-img"></center>
+                            </div>-->
+            </div>
             <div class="nctablefooter" style="height:6px"></div>
             <br>
-            
-        
-    </div>
+
+
+        </div>
 
         <br>
 
@@ -281,38 +281,68 @@ function getValue()
                 <button id="btnAddNewRowCancel">Cancel</button>
             </form>
         </div>
+        
 
         <script type="text/javascript">
-            //        (document).ready($.get('GetDistinctValueFromNonconformities?parameter=detection', function(data) {
-            //            for (var i = 0; i < data.length; i++) {
-            //                $("#creator").append($("<option></option>")
-            //                        .attr("value", data[i])
-            //                        .text(data[i]))
-            //            }
-            $("#stream").multiselect({
-                header: "Stream",
-                noneSelectedText: "Select Stream",
-                selectedText: "# of # stream selected"
-            });
+            (document).ready($.get('GetDistinctValueFromTableColumn?table=Datamap&colName=Stream', function(data) {
+                for (var i = 0; i < data.length; i++) {
+                    $("#stream").append($("<option></option>")
+                            .attr("value", data[i])
+                            .text(data[i]))
+                }
+                $("#stream").multiselect({
+                    header: "Stream",
+                    noneSelectedText: "Select Stream",
+                    selectedText: "# of # stream selected"
+                });
 
-            //    }
-            //        ));
+            }
+            ));
         </script>
         <script type="text/javascript">
-            //        (document).ready($.get('GetDistinctValueFromNonconformities?parameter=detection', function(data) {
-            //            for (var i = 0; i < data.length; i++) {
-            //                $("#creator").append($("<option></option>")
-            //                        .attr("value", data[i])
-            //                        .text(data[i]))
-            //            }
-            $("#page").multiselect({
-                header: "Page",
-                noneSelectedText: "Select Page",
-                selectedText: "# of # page selected"
-            });
+            (document).ready($.get('GetDistinctValueFromTableColumn?table=Datamap&colName=Page', function(data) {
+                for (var i = 0; i < data.length; i++) {
+                    $("#page").append($("<option></option>")
+                            .attr("value", data[i])
+                            .text(data[i]))
+                }
+                $("#page").multiselect({
+                    header: "Page",
+                    noneSelectedText: "Select Page",
+                    selectedText: "# of # page selected"
+                });
 
-            //    }
-            //        ));
+            }
+            ));
+        </script>
+        <script type="text/javascript">
+            (document).ready($.get('GetDistinctValueFromTableColumn?table=Datamap&colName=Picture', function(data) {
+                for (var i = 0; i < data.length; i++) {
+                    $("#picture").append($("<option></option>")
+                            .attr("value", data[i])
+                            .text(data[i]))
+                }
+                $("#picture").multiselect({
+                    header: "Picture",
+                    noneSelectedText: "Select Picture",
+                    selectedText: "# of # Picture selected"
+                });
+
+            }
+            ));
+        </script>
+        <script type="text/javascript">
+            var test = document.getElementById("testtest").value;
+            (document).ready($.get('FindAllPicture'+test, function(data) {
+                    for (var i = 0; i < data.aaData.length; i++) {
+                        $("#pictureList").append($("<a></a>")
+                                .attr("style", "cursor: pointer")
+                                .attr("onclick", "$('#wPaint').fadeOut('slow');LoadMyJs('" + data.aaData[i][0] + "','" + data.aaData[i][3] + "')")
+                                .text(data.aaData[i][2]));
+                        $("#pictureList").append("</br>");
+                    }
+                })
+            );
         </script>
         <script>
             function deletePicture(id) {
@@ -348,26 +378,26 @@ function getValue()
         <script type="text/javascript" src="./js/wPaint/plugins/shapes/wPaint.menu.main.shapes.min.js"></script>
         <script type="text/javascript" src="./js/wPaint/plugins/file/wPaint.menu.main.file.min.js"></script>
         <script>
-            function LoadMyJs(id, picture) { 
+            function LoadMyJs(id, picture) {
 
-                <%if(pictureList != null && pictureList.size() > 0) {%>
+            <%if (pictureList != null && pictureList.size() > 0) {%>
 
                 var sId = null;
-                if (id === null){
+                if (id === null) {
                     sId = '<%=pictureList.get(0).getId()%>';
 
-                }else{
+                } else {
                     sId = id;
                 }
                 var sPicture = null;
-                if (picture === null){
+                if (picture === null) {
                     sPicture = '<%=pictureList.get(0).getBase64()%>';
 
-                }else{
+                } else {
                     sPicture = picture;
                 }
 
-                var images = ['./js/wPaint/test/uploads/redoute.jpg' ];
+                var images = ['./js/wPaint/test/uploads/redoute.jpg'];
 
 
 
@@ -376,7 +406,7 @@ function getValue()
 
                     $.ajax({
                         type: 'POST',
-                        url: './UploadPicture?id='+sId,
+                        url: './UploadPicture?id=' + sId,
                         data: {image: image},
                         success: function(resp) {
 
@@ -430,7 +460,7 @@ function getValue()
                     loadImgBg: loadImgBg,
                     loadImgFg: loadImgFg
                 }).fadeIn("slow");
-                <%}%>
+            <%}%>
             }
         </script>
 

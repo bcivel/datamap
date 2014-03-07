@@ -67,7 +67,7 @@ public class FindAllDatamap extends HttpServlet {
             String[] page = null;
             String datacerberus = "";
             String implemented = "";
-            String picture = "";
+            String[] picture = null;
             String xpath = "";
 
             if (request.getParameterValues("page") != null) {
@@ -76,10 +76,12 @@ public class FindAllDatamap extends HttpServlet {
             if (request.getParameterValues("stream") != null) {
             stream = request.getParameterValues("stream");
             }
+            if (request.getParameterValues("picture") != null) {
+            picture = request.getParameterValues("picture");
+            }
             
             id = policy.sanitize(request.getParameter("sSearch_0"));
             datacerberus = policy.sanitize(request.getParameter("sSearch_3"));
-            picture = policy.sanitize(request.getParameter("sSearch_4"));
             xpath = policy.sanitize(request.getParameter("sSearch_5"));
             implemented = policy.sanitize(request.getParameter("sSearch_6"));
 
@@ -104,6 +106,14 @@ public class FindAllDatamap extends HttpServlet {
             sstream += " stream like '%" + stream[stream.length - 1] + "%') ";
             sArray.add(sstream);
         }
+            if (picture != null) {
+            String spicture = " (";
+            for (int a = 0; a < picture.length - 1; a++) {
+                spicture += " picture like '%" + picture[a] + "%' or";
+            }
+            spicture += " picture like '%" + picture[picture.length - 1] + "%') ";
+            sArray.add(spicture);
+        }
             if (!datacerberus.equals("")) {
                 String sDatacerberus = " `datacerberus` like '%" + datacerberus + "%'";
                 sArray.add(sDatacerberus);
@@ -112,11 +122,7 @@ public class FindAllDatamap extends HttpServlet {
                 String sImplemented = " `implemented` like '%" + implemented + "%'";
                 sArray.add(sImplemented);
             }
-            if (!picture.equals("")) {
-                String spicture = " `picture` like '%" + picture + "%'";
-                sArray.add(spicture);
-            }
-            if (!xpath.equals("")) {
+          if (!xpath.equals("")) {
                 String sxpath = " `xpath` like '%" + xpath + "%'";
                 sArray.add(sxpath);
             }

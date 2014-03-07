@@ -185,7 +185,7 @@ public class PictureDAO implements IPictureDAO {
     }
 
     @Override
-    public List<Picture> findPictureListByCriteria(int start, int amount, String column, String dir, String searchTerm, String individualSearch) {
+    public List<Picture> findPictureListByCriteria(String individualSearch) {
         List<Picture> pictureList = new ArrayList<Picture>();
         StringBuilder gSearch = new StringBuilder();
         StringBuilder searchSQL = new StringBuilder();
@@ -193,41 +193,14 @@ public class PictureDAO implements IPictureDAO {
         StringBuilder query = new StringBuilder();
         query.append("SELECT * FROM picture ");
 
-        gSearch.append(" where (`id` like '%");
-        gSearch.append(searchTerm);
-        gSearch.append("%'");
-        gSearch.append(" or `page` like '%");
-        gSearch.append(searchTerm);
-        gSearch.append("%'");
-        gSearch.append(" or `picture` like '%");
-        gSearch.append(searchTerm);
-        gSearch.append("%'");
-        gSearch.append(" or `base64` like '%");
-        gSearch.append(searchTerm);
-        gSearch.append("%')");
-
-        if (!searchTerm.equals("") && !individualSearch.equals("")) {
-            searchSQL.append(gSearch.toString());
-            searchSQL.append(" and ");
-            searchSQL.append(individualSearch);
-        } else if (!individualSearch.equals("")) {
+        if (!individualSearch.equals("")) {
             searchSQL.append(" where `");
             searchSQL.append(individualSearch);
             searchSQL.append("`");
-        } else if (!searchTerm.equals("")) {
-            searchSQL.append(gSearch.toString());
-        }
+        } 
 
         query.append(searchSQL);
-        query.append("order by `");
-        query.append(column);
-        query.append("` ");
-        query.append(dir);
-        query.append(" limit ");
-        query.append(start);
-        query.append(" , ");
-        query.append(amount);
-
+        
         Picture pict;
 
         Connection connection = this.databaseSpring.connect();
