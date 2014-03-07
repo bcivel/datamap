@@ -211,11 +211,11 @@ function getValue()
                 int a = 0;
                 for (Picture pict : pictureList) {
                     a++;
-                    %><p><%=pict.getPicture()%></p><%
+                    %><a style="cursor: pointer" onclick="LoadMyJs('<%=pict.getId()%>', '<%=pict.getBase64()%>')"><%=pict.getPicture()%></a><br><%
                 }
                 if(a > 0) {
             %>
-                    <input type="button" name="reloadjs" value="Reload JavaScript" onClick="removeDiv('<%=pictureList.get(a-1).getId()%>', '<%=pictureList.get(a-1).getBase64()%>')">
+                    <input type="button" name="reloadjs" value="Reload JavaScript" onClick="LoadMyJs('<%=pictureList.get(a-1).getId()%>', '<%=pictureList.get(a-1).getBase64()%>')">
             <%
                 }
             %>
@@ -335,119 +335,107 @@ function getValue()
                         'width=600,height=500,scrollbars=yes,menubar=false,location=false');
             }
         </script>
-          <!-- jQuery UI -->
-                <script type="text/javascript" src="./js/wPaint/lib/jquery.ui.core.1.10.3.min.js"></script>
-                <script type="text/javascript" src="./js/wPaint/lib/jquery.ui.widget.1.10.3.min.js"></script>
-                <script type="text/javascript" src="./js/wPaint/lib/jquery.ui.mouse.1.10.3.min.js"></script>
-                <script type="text/javascript" src="./js/wPaint/lib/jquery.ui.draggable.1.10.3.min.js"></script>
+        <!-- jQuery UI -->
+        <script type="text/javascript" src="./js/wPaint/lib/jquery.ui.core.1.10.3.min.js"></script>
+        <script type="text/javascript" src="./js/wPaint/lib/jquery.ui.widget.1.10.3.min.js"></script>
+        <script type="text/javascript" src="./js/wPaint/lib/jquery.ui.mouse.1.10.3.min.js"></script>
+        <script type="text/javascript" src="./js/wPaint/lib/jquery.ui.draggable.1.10.3.min.js"></script>
 
-                <!-- wColorPicker -->
-                <link rel="Stylesheet" type="text/css" href="./js/wPaint/lib/wColorPicker.min.css" >
-                <script type="text/javascript" src="./js/wPaint/lib/wColorPicker.min.js"></script>
+        <!-- wColorPicker -->
+        <link rel="Stylesheet" type="text/css" href="./js/wPaint/lib/wColorPicker.min.css" >
+        <script type="text/javascript" src="./js/wPaint/lib/wColorPicker.min.js"></script>
 
-                <!-- wPaint -->
-                <link rel="Stylesheet" type="text/css" href="./js/wPaint/wPaint.min.css" >
-                <script type="text/javascript" src="./js/wPaint/wPaint.min.js"></script>
-                <script type="text/javascript" src="./js/wPaint/plugins/main/wPaint.menu.main.min.js"></script>
-                <script type="text/javascript" src="./js/wPaint/plugins/text/wPaint.menu.text.min.js"></script>
-                <script type="text/javascript" src="./js/wPaint/plugins/shapes/wPaint.menu.main.shapes.min.js"></script>
-                <script type="text/javascript" src="./js/wPaint/plugins/file/wPaint.menu.main.file.min.js"></script>
-                <script>
-    function LoadMyJs(id, picture) { 
-   
-    var sId = null;
-    if (id === null){
-        sId = '<%=pictureList.get(0).getId()%>';
-        
-    }else{
-        sId = id;
-    }
-    var sPicture = null;
-    if (picture === null){
-        sPicture = '<%=pictureList.get(0).getBase64()%>';
-        
-    }else{
-        sPicture = picture;
-    }
-                 
-    var images = ['./js/wPaint/test/uploads/redoute.jpg' ];
+        <!-- wPaint -->
+        <link rel="Stylesheet" type="text/css" href="./js/wPaint/wPaint.min.css" >
+        <script type="text/javascript" src="./js/wPaint/src/wPaint.js"></script>
+        <script type="text/javascript" src="./js/wPaint/src/wPaint.utils.js"></script>
+        <script type="text/javascript" src="./js/wPaint/plugins/main/wPaint.menu.main.min.js"></script>
+        <script type="text/javascript" src="./js/wPaint/plugins/text/wPaint.menu.text.min.js"></script>
+        <script type="text/javascript" src="./js/wPaint/plugins/shapes/wPaint.menu.main.shapes.min.js"></script>
+        <script type="text/javascript" src="./js/wPaint/plugins/file/wPaint.menu.main.file.min.js"></script>
+        <script>
+            function LoadMyJs(id, picture) { 
 
+                var sId = null;
+                if (id === null){
+                    sId = '<%=pictureList.get(0).getId()%>';
 
+                }else{
+                    sId = id;
+                }
+                var sPicture = null;
+                if (picture === null){
+                    sPicture = '<%=pictureList.get(0).getBase64()%>';
 
-                    function saveImg(image) {
-                        var _this = this;
+                }else{
+                    sPicture = picture;
+                }
 
-                        $.ajax({
-                            type: 'POST',
-                            url: './UploadPicture?id='+sId,
-                            data: {image: image},
-                            success: function(resp) {
-
-                                // internal function for displaying status messages in the canvas
-                                _this._displayStatus('Image saved successfully');
-
-                                // doesn't have to be json, can be anything
-                                // returned from server after upload as long
-                                // as it contains the path to the image url
-                                // or a base64 encoded png, either will work
-                                resp = $.parseJSON(resp);
-
-                                // update images array / object or whatever
-                                // is being used to keep track of the images
-                                // can store path or base64 here (but path is better since it's much smaller)
-                                images.push(resp.img);
-
-                                // do something with the image
-                                $('#wPaint-img').attr('src', image);
-                            }
-                        });
-                    }
-
-                    function loadImgBg() {
-
-                        // internal function for displaying background images modal
-                        // where images is an array of images (base64 or url path)
-                        // NOTE: that if you can't see the bg image changing it's probably
-                        // becasue the foregroud image is not transparent.
-                        this._showFileModal('bg', images);
-                    }
-
-                    function loadImgFg() {
-
-                        // internal function for displaying foreground images modal
-                        // where images is an array of images (base64 or url path)
-                        this._showFileModal('fg', images);
-                    }
+                var images = ['./js/wPaint/test/uploads/redoute.jpg' ];
 
 
 
- 
-    
-                  // alert($.data($('#wPaint'), 'wPaint'));                                
-                   $('#wPaint').wPaint = null;
-                   $('#wPaint').fadeOut("slow").wPaint({
-                        path: './js/wPaint/',
-                        image: sPicture,
-                        bg: '#E2E4FF',
-                        menuOffsetLeft: 0,
-                        menuOffsetTop: -50,
-                        saveImg: saveImg,
-                        loadImgBg: loadImgBg,
-                        loadImgFg: loadImgFg
-                    }).fadeIn("slow");
-                   
-                    
-                  
-            
-}
-                </script>
-                <script>
-            function removeDiv(id, picture){
-                 var element = this.document.getElementById("contentDiv");
-                    element.parentNode.removeChild(element);
-                    $("contentParent").load('PictureDiv.jsp');
-                    LoadMyJs(id, picture);
+                function saveImg(image) {
+                    var _this = this;
+
+                    $.ajax({
+                        type: 'POST',
+                        url: './UploadPicture?id='+sId,
+                        data: {image: image},
+                        success: function(resp) {
+
+                            // internal function for displaying status messages in the canvas
+                            _this._displayStatus('Image saved successfully');
+
+                            // doesn't have to be json, can be anything
+                            // returned from server after upload as long
+                            // as it contains the path to the image url
+                            // or a base64 encoded png, either will work
+                            resp = $.parseJSON(resp);
+
+                            // update images array / object or whatever
+                            // is being used to keep track of the images
+                            // can store path or base64 here (but path is better since it's much smaller)
+                            images.push(resp.img);
+
+                            // do something with the image
+                            $('#wPaint-img').attr('src', image);
+                        }
+                    });
+                }
+
+                function loadImgBg() {
+
+                    // internal function for displaying background images modal
+                    // where images is an array of images (base64 or url path)
+                    // NOTE: that if you can't see the bg image changing it's probably
+                    // becasue the foregroud image is not transparent.
+                    this._showFileModal('bg', images);
+                }
+
+                function loadImgFg() {
+
+                    // internal function for displaying foreground images modal
+                    // where images is an array of images (base64 or url path)
+                    this._showFileModal('fg', images);
+                }
+
+                // remove data of the current wPaint element
+                $.removeData(wPaint);
+
+                // Create new one wPaint
+                $('#wPaint').fadeOut("slow").wPaint({
+                    path: './js/wPaint/',
+                    image: sPicture,
+                    bg: '#E2E4FF',
+                    menuOffsetLeft: 0,
+                    menuOffsetTop: -50,
+                    saveImg: saveImg,
+                    loadImgBg: loadImgBg,
+                    loadImgFg: loadImgFg
+                }).fadeIn("slow");
             }
-                </script>
+        </script>
+
     </body>
 </html>
