@@ -61,30 +61,27 @@ public class FindAllPicture extends HttpServlet {
             if (page != null) {
             String spage = " (";
             for (int a = 0; a < page.length - 1; a++) {
-                spage += " page like '%" + page[a] + "%' or";
+                spage += " `page` like '%" + page[a] + "%' or";
             }
-            spage += " page like '%" + page[page.length - 1] + "%') ";
+            spage += " `page` like '%" + page[page.length - 1] + "%') ";
             sArray.add(spage);
         }
             if (picture != null) {
             String spicture = " (";
             for (int a = 0; a < picture.length - 1; a++) {
-                spicture += " picture like '%" + picture[a] + "%' or";
+                spicture += " `picture` like '%" + picture[a] + "%' or";
             }
-            spicture += " picture like '%" + picture[picture.length - 1] + "%') ";
+            spicture += " `picture` like '%" + picture[picture.length - 1] + "%') ";
             sArray.add(spicture);
         }
             
             StringBuilder individualSearch = new StringBuilder();
-            if (sArray.size() == 1) {
-                individualSearch.append(sArray.get(0));
-            } else if (sArray.size() > 1) {
-                for (int i = 0; i < sArray.size() - 1; i++) {
-                    individualSearch.append(sArray.get(i));
+            if (sArray.size() >= 1) {
+                for (int i = 0; i < sArray.size(); i++) {
                     individualSearch.append(" and ");
+                    individualSearch.append(sArray.get(i));
                 }
-                individualSearch.append(sArray.get(sArray.size() - 1));
-            }
+               }
 
             String inds = String.valueOf(individualSearch);
 

@@ -447,7 +447,6 @@ public class DatamapDAO implements IDatamapDAO {
         } finally {
             try {
                 if (connection != null) {
-                    Logger.log(DatamapDAO.class.getName(), Level.INFO, "Disconnecting to jdbc/qualityfollowup from findDistinctValuesfromParameter");
                     connection.close();
                 }
             } catch (SQLException e) {

@@ -150,15 +150,17 @@
                 }
             };
 
+            String[] stream = null;
             if (request.getParameterValues("stream") != null && !request.getParameter("stream").equals("All")) {
-                String[] stream = request.getParameterValues("stream");
+                stream = request.getParameterValues("stream");
                 for (int a = 0; a < stream.length; a++) {
                     uri += "&stream=" + stream[a];
                 }
             };
 
+            String[] picture = null;
             if (request.getParameterValues("picture") != null && !request.getParameter("picture").equals("All")) {
-                String[] picture = request.getParameterValues("picture");
+                picture = request.getParameterValues("picture");
                 for (int a = 0; a < picture.length; a++) {
                     uri += "&picture=" + picture[a];
                 }
@@ -166,8 +168,7 @@
 
             ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
             IPictureService pictureService = appContext.getBean(IPictureService.class);
-            List<Picture> pictureList = pictureService.findPicturePerPages(pageName);
-
+            
 
         %>
         <input id="testtest" value="<%=uri%>" style="display:none">    
@@ -380,21 +381,11 @@
         <script>
             function LoadMyJs(id, picture) {
 
-            <%if (pictureList != null && pictureList.size() > 0) {%>
-
-                var sId = null;
-                if (id === null) {
-                    sId = '<%=pictureList.get(0).getId()%>';
-
-                } else {
+            var sId = null;
+            var sPicture = null;
+            if (id !== null && picture !== null) {
                     sId = id;
-                }
-                var sPicture = null;
-                if (picture === null) {
-                    sPicture = '<%=pictureList.get(0).getBase64()%>';
-
-                } else {
-                    sPicture = picture;
+                   sPicture = picture;
                 }
 
                 var images = ['./js/wPaint/test/uploads/redoute.jpg'];
@@ -460,7 +451,7 @@
                     loadImgBg: loadImgBg,
                     loadImgFg: loadImgFg
                 }).fadeIn("slow");
-            <%}%>
+            
             }
         </script>
 

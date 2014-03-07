@@ -191,18 +191,15 @@ public class PictureDAO implements IPictureDAO {
         StringBuilder searchSQL = new StringBuilder();
 
         StringBuilder query = new StringBuilder();
-        query.append("SELECT * FROM picture ");
+        query.append("SELECT * FROM picture where 1=1 ");
 
         if (!individualSearch.equals("")) {
-            searchSQL.append(" where `");
             searchSQL.append(individualSearch);
-            searchSQL.append("`");
-        } 
+            } 
 
         query.append(searchSQL);
         
-        Picture pict;
-
+        Logger.log("test", Level.FATAL, query.toString());
         Connection connection = this.databaseSpring.connect();
         try {
             PreparedStatement preStat = connection.prepareStatement(query.toString());
