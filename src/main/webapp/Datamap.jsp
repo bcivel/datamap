@@ -356,6 +356,8 @@ function getValue()
         <script>
             function LoadMyJs(id, picture) { 
 
+                $('#wPaint').fadeOut("slow");
+
                 var sId = null;
                 if (id === null){
                     sId = '<%=pictureList.get(0).getId()%>';
@@ -424,7 +426,7 @@ function getValue()
                 $.removeData(wPaint);
 
                 // Create new one wPaint
-                $('#wPaint').fadeOut("slow").wPaint({
+                $('#wPaint').wPaint({
                     path: './js/wPaint/',
                     image: sPicture,
                     bg: '#E2E4FF',
