@@ -151,7 +151,7 @@ public class DatamapDAO implements IDatamapDAO {
     @Override
     public List<Datamap> findAllDatamap() {
         List<Datamap> list = null;
-        final String query = "SELECT * FROM Datamap";
+        final String query = "SELECT * FROM datamap";
 
         Connection connection = this.databaseSpring.connect();
         try {

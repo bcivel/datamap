@@ -148,7 +148,7 @@ public class PictureDAO implements IPictureDAO {
     @Override
     public List<Picture> findAllPicture() {
         List<Picture> list = null;
-        final String query = "SELECT * FROM Picture";
+        final String query = "SELECT * FROM picture";
 
         Connection connection = this.databaseSpring.connect();
         try {
@@ -388,7 +388,7 @@ public class PictureDAO implements IPictureDAO {
     public List<Picture> findPicturePerPages(String whereClause) {
         List<Picture> list = null;
         StringBuilder query = new StringBuilder();
-        query.append("SELECT * FROM Picture where 1=1 ");
+        query.append("SELECT * FROM picture where 1=1 ");
         query.append(whereClause);
         
         Connection connection = this.databaseSpring.connect();
