@@ -48,8 +48,8 @@
                     "iDisplayLength": 10,
                     "aoColumns": [
                         {"sName": "ID", "sWidth": "10%", "bVisible": false},
-                        {"sName": "Stream", "sWidth": "10%"},
-                        {"sName": "Page", "sWidth": "10%"},
+                        {"sName": "Stream", "sWidth": "5%"},
+                        {"sName": "Page", "sWidth": "20%"},
                         {"sName": "DataCerberus", "sWidth": "40%"},
                         {"sName": "Picture", "sWidth": "30%"},
                         {"sName": "Xpath", "sWidth": "5%"},
