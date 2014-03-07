@@ -204,7 +204,7 @@ function getValue()
             </table>
         </div>
         <div style="clear:both; height:30px"><p>Pictures</p></div>
-        <div id="picturesList" style="float:left; width: 200px;background-color:#E2E4FF">
+        <div id="picturesList" style="float:left; width: 400px;background-color:#E2E4FF">
             <div class="ncdescriptionheader" style="height:30px" >List of Pictures</div>
             <div>
             <%
