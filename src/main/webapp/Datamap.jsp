@@ -211,10 +211,10 @@ function getValue()
                 int a = 0;
                 for (Picture pict : pictureList) {
                     a++;
+                    %><p><%=pict.getPicture()%></p><%
+                }
             %>
-            <p><%=pict.getPicture()%></p>
-            <%}%>
-            <input type="button" name="reloadjs" value="Reload JavaScript" onClick="removeDiv('<%=pictureList.get(2).getId()%>', '<%=pictureList.get(2).getBase64()%>')">
+            <input type="button" name="reloadjs" value="Reload JavaScript" onClick="removeDiv('<%=pictureList.get(a-1).getId()%>', '<%=pictureList.get(a-1).getBase64()%>')">
         </div>
         </div>
         <div id="prev" style="float:left; width: 100px;background-color:#E2E4FF">prev</div> 
