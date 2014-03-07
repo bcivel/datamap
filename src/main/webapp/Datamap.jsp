@@ -351,7 +351,7 @@ function getValue()
         <script>
             function LoadMyJs(id, picture) { 
 
-                //$('#wPaint').fadeOut("slow");
+                <%if(pictureList != null && pictureList.size() > 0) {%>
 
                 var sId = null;
                 if (id === null){
@@ -431,6 +431,7 @@ function getValue()
                     loadImgBg: loadImgBg,
                     loadImgFg: loadImgFg
                 }).fadeIn("slow");
+                <%}%>
             }
         </script>
 
