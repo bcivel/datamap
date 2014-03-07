@@ -67,6 +67,13 @@ public interface IPictureDAO {
      * @return 
      */
     List<Picture> findPicturePerPages(String whereClause);
+    
+    /**
+     * 
+     * @param colName name of the column of the datamap table
+     * @return List of distinct properties of this column
+     */
+    List<String> findDistinctValuesfromColumn (String colName);
 }
 
 

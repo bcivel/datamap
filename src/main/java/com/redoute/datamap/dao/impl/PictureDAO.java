@@ -424,5 +424,54 @@ public class PictureDAO implements IPictureDAO {
         }
         return list;
     }
+    
+    @Override
+    public List<String> findDistinctValuesfromColumn(String colName) {
+        List<String> result = new ArrayList<String>();
+        
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT distinct ");
+        query.append(colName);
+        query.append(" FROM picture order by ");
+        query.append(colName);
+        query.append(" asc");
+        
+        Connection connection = this.databaseSpring.connect();
+        try {
+            PreparedStatement preStat = connection.prepareStatement(query.toString());
+            try {
+                ResultSet resultSet = preStat.executeQuery();
+                try {
+                 
+                    while (resultSet.next()) {
+                        result.add(resultSet.getString(1)== null ? "" : resultSet.getString(1) );
+                    }
+
+            resultSet.close();
+                } catch (SQLException exception) {
+                    Logger.log(PictureDAO.class.getName(), Level.ERROR, exception.toString());
+                } finally {
+                    resultSet.close();
+                } 
+         
+            } catch (SQLException exception) {
+                Logger.log(PictureDAO.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
+            }
+        
+        } catch (SQLException exception) {
+            Logger.log(PictureDAO.class.getName(), Level.ERROR, exception.toString());
+        } finally {
+            try {
+                if (connection != null) {
+                    Logger.log(PictureDAO.class.getName(), Level.INFO, "Disconnecting to jdbc/qualityfollowup from findDistinctValuesfromParameter");
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(PictureDAO.class.getName(), Level.WARN, e.toString());
+            }
+        }
+        return result;  }
 }
 
