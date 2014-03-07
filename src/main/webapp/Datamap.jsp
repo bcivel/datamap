@@ -61,12 +61,12 @@
                         if (aData[6] == "N")
                         {
                             nRow.className = "gradeX odd";
-                            $('td:eq(1)', nRow).html('<b>' + aData[1] + '</b>');
-                            $('td:eq(2)', nRow).html('<b>' + aData[2] + '</b>');
-                            $('td:eq(3)', nRow).html('<b>' + aData[3] + '</b>');
-                            $('td:eq(4)', nRow).html('<b>' + aData[4] + '</b>');
-                            $('td:eq(5)', nRow).html('<b>' + aData[5] + '</b>');
-                            $('td:eq(6)', nRow).html('<b>' + aData[6] + '</b>');
+                            $('td:eq(0)', nRow).html('<b>' + aData[1] + '</b>');
+                            $('td:eq(1)', nRow).html('<b>' + aData[2] + '</b>');
+                            $('td:eq(2)', nRow).html('<b>' + aData[3] + '</b>');
+                            $('td:eq(3)', nRow).html('<b>' + aData[4] + '</b>');
+                            $('td:eq(4)', nRow).html('<b>' + aData[5] + '</b>');
+                            $('td:eq(5)', nRow).html('<b>' + aData[6] + '</b>');
                         }
                     },
                 }
