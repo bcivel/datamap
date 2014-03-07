@@ -213,15 +213,10 @@ function getValue()
                     a++;
                     %><a style="cursor: pointer" onclick="LoadMyJs('<%=pict.getId()%>', '<%=pict.getBase64()%>')"><%=pict.getPicture()%></a><br><%
                 }
-                if(a > 0) {
-            %>
-                    <input type="button" name="reloadjs" value="Reload JavaScript" onClick="LoadMyJs('<%=pictureList.get(a-1).getId()%>', '<%=pictureList.get(a-1).getBase64()%>')">
-            <%
-                }
             %>
         </div>
         </div>
-        <div id="prev" style="float:left; width: 100px;background-color:#E2E4FF">prev</div> 
+         
     <div id="pictures" style="float:left; width: 650px;background-color:#E2E4FF">    
             <div class="ncdescriptionheader" style="height:30px" >
                 <p style="float:left;">Page:</p><input style="float:left;" value="" onChange="javascript: updatePicture(this, 'page' , 'id')">
