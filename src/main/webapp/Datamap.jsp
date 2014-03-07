@@ -47,13 +47,13 @@
                     "aTargets": [0],
                     "iDisplayLength": 25,
                     "aoColumns": [
-                        {"sName": "ID", "sWidth": "10%"},
+                        {"sName": "ID", "sWidth": "10%", "bVisible": false},
                         {"sName": "Stream", "sWidth": "10%"},
                         {"sName": "Page", "sWidth": "10%"},
                         {"sName": "DataCerberus", "sWidth": "40%"},
-                        {"sName": "Picture", "sWidth": "20%"},
-                        {"sName": "Xpath", "sWidth": "20%"},
-                        {"sName": "Implemented", "sWidth": "10%"}
+                        {"sName": "Picture", "sWidth": "30%"},
+                        {"sName": "Xpath", "sWidth": "5%"},
+                        {"sName": "Implemented", "sWidth": "5%"}
 
                     ],
                     "fnRowCallback": function(nRow, aData, iDisplayIndex) {
@@ -61,7 +61,6 @@
                         if (aData[6] == "N")
                         {
                             nRow.className = "gradeX odd";
-                            $('td:eq(0)', nRow).html('<b>' + aData[0] + '</b>');
                             $('td:eq(1)', nRow).html('<b>' + aData[1] + '</b>');
                             $('td:eq(2)', nRow).html('<b>' + aData[2] + '</b>');
                             $('td:eq(3)', nRow).html('<b>' + aData[3] + '</b>');
