@@ -51,4 +51,9 @@ public class DatamapService implements IDatamapService {
     public Integer getNumberOfDatamapPerCrtiteria(String searchTerm, String inds) {
         return datamapDao.getNumberOfDatamapPerCrtiteria(searchTerm, inds);
     }
+
+    @Override
+    public List<String> findDistinctValuesfromColumn(String colName) {
+        return datamapDao.findDistinctValuesfromColumn(colName);
+    }
 }

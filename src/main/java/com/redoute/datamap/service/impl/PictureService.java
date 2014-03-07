@@ -65,4 +65,9 @@ public class PictureService implements IPictureService {
         } 
         return pictureDao.findAllPicture();
     }
+
+    @Override
+    public List<String> findDistinctValuesfromColumn(String colName) {
+        return pictureDao.findDistinctValuesfromColumn(colName);
+    }
 }

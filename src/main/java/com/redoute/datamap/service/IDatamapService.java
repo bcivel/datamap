@@ -57,4 +57,11 @@ public interface IDatamapService {
      * @return The number of records for these criterias
      */
     Integer getNumberOfDatamapPerCrtiteria(String searchTerm, String inds);
+    
+    /**
+     * 
+     * @param colName name of the column of the datamap table
+     * @return List of distinct properties of this column 
+     */
+    List<String> findDistinctValuesfromColumn(String colName);
 }

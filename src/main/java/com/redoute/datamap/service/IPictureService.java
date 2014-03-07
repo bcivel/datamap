@@ -63,4 +63,11 @@ public interface IPictureService {
      * @return The number of records for these criterias
      */
     Integer getNumberOfPicturePerCrtiteria(String searchTerm, String inds);
+    
+    /**
+     * 
+     * @param colName name of the column of the picture table
+     * @return List of distinct properties of this column
+     */
+    List<String> findDistinctValuesfromColumn (String colName);
 }
