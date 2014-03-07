@@ -225,15 +225,18 @@ function getValue()
                 <button id="deletePicture" style="float:right" onClick="javacript: deletePicture('')">Delete Picture</button>
                 <button id="addPicture" style="float:right" onClick="javacript: popup('AddPicture.jsp')">Add Picture</button>
             </div>
-            <div id=contentDiv" class="content-box" style="background-color:#E2E4FF">
-           <%--<%@ include file="PictureDiv.jsp" %>--%>
-           <div id="wPaint" style="position:relative; width:600px; height:400px; background-color:#7a7a7a; margin:70px auto 20px auto;"></div>
+        <div id="contentParent">
+           <!--<div id="contentDiv" class="content-box" style="background-color:#E2E4FF">-->
+           <%@ include file="PictureDiv.jsp" %>
+<!--           <div id="wPaint" style="position:relative; width:600px; height:400px; background-color:#7a7a7a; margin:70px auto 20px auto;"></div>
             <center id="wPaint-img"></center>
-            </div>
+            </div>-->
+        </div>
             <div class="nctablefooter" style="height:6px"></div>
             <br>
             
-        </div>
+        
+    </div>
 
         <br>
 
@@ -436,11 +439,11 @@ function getValue()
                 </script>
                 <script>
             function removeDiv(id, picture){
-                 $("#contentDiv").remove();
-                 $("#contentDiv").load("PictureDiv.jsp");
-                LoadMyJs(id, picture);
+                 var element = this.document.getElementById("contentDiv");
+                    element.parentNode.removeChild(element);
+                    $("contentParent").load('PictureDiv.jsp');
+                    LoadMyJs(id, picture);
             }
-            
                 </script>
     </body>
 </html>
