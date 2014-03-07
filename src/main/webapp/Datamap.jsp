@@ -211,7 +211,7 @@ function getValue()
                 int a = 0;
                 for (Picture pict : pictureList) {
                     a++;
-                    %><a style="cursor: pointer" onclick="LoadMyJs('<%=pict.getId()%>', '<%=pict.getBase64()%>')"><%=pict.getPicture()%></a><br><%
+                    %><a style="cursor: pointer" onclick="$('#wPaint').fadeOut('slow');LoadMyJs('<%=pict.getId()%>', '<%=pict.getBase64()%>')"><%=pict.getPicture()%></a><br><%
                 }
             %>
         </div>
@@ -351,7 +351,7 @@ function getValue()
         <script>
             function LoadMyJs(id, picture) { 
 
-                $('#wPaint').fadeOut("slow");
+                <%if(pictureList != null && pictureList.size() > 0) {%>
 
                 var sId = null;
                 if (id === null){
@@ -431,6 +431,7 @@ function getValue()
                     loadImgBg: loadImgBg,
                     loadImgFg: loadImgFg
                 }).fadeIn("slow");
+                <%}%>
             }
         </script>
 
