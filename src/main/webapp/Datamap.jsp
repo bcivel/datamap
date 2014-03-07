@@ -213,8 +213,12 @@ function getValue()
                     a++;
                     %><p><%=pict.getPicture()%></p><%
                 }
+                if(a > 0) {
             %>
-            <input type="button" name="reloadjs" value="Reload JavaScript" onClick="removeDiv('<%=pictureList.get(a-1).getId()%>', '<%=pictureList.get(a-1).getBase64()%>')">
+                    <input type="button" name="reloadjs" value="Reload JavaScript" onClick="removeDiv('<%=pictureList.get(a-1).getId()%>', '<%=pictureList.get(a-1).getBase64()%>')">
+            <%
+                }
+            %>
         </div>
         </div>
         <div id="prev" style="float:left; width: 100px;background-color:#E2E4FF">prev</div> 
