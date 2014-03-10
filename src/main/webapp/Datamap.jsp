@@ -28,7 +28,8 @@
         <script type="text/javascript" src="js/jquery.validate.min.js"></script>
         <script type="text/javascript" src="js/jquery-migrate-1.2.1.min.js"></script>
         <script type="text/javascript" src="js/jquery.multiselect.js" charset="utf-8"></script>
-        <style type="text/css">#pictures{height:400pt;overflow:auto}</style> 
+        <style type="text/css">#contentParent{height:400pt;overflow:auto}</style> 
+        <style type="text/css">#pictureList{height:400pt;overflow:auto}</style> 
 
 
         <script type="text/javascript">
@@ -189,11 +190,12 @@
                     </select>
                 </div>
                 <div><input style="float:left" type="button" value="Apply Filter" onClick="document.ExecFilters.submit()"></div>
+            <div><input style="float:right;width:40px; height:40px; border-width: 1px; border-radius: 20px;" type="button" value="R" title="Reporting" onclick="location.href = 'Reporting.jsp'"></div>
             </form>
         </div>
-        <br>
-        <div style="clear:both"><div style="float:left; width:550px"><p>data-cerberus forms</p></div>
-        </div>
+<!--        <div style="clear:both"><div style="float:left; width:550px"><p>data-cerberus forms</p></div>
+        </div>-->
+<div style="clear:both; height:10px"><p></p></div>
         <div style="float:left; width: 1200px;  font: 90% sans-serif">
             <table id="datamapList" class="display">
                 <thead>
@@ -211,8 +213,9 @@
                 </tbody>
             </table>
         </div>
-        <div style="clear:both; height:30px"><p>Pictures</p></div>
-        <div id="picturesList" style="float:left; width: 400px;background-color:#E2E4FF">
+        <!--<div style="clear:both; height:30px"><p>Pictures</p></div>-->
+        <div style="clear:both; height:20px"><p></p></div>
+        <div id="picturesListDiv" style="float:left; width: 400px;background-color:#E2E4FF">
             <div class="ncdescriptionheader" style="height:30px" >List of Pictures</div>
             <div id="pictureList" name="pictureList"></div>
         </div>
@@ -237,8 +240,6 @@
 
 
         </div>
-
-        <br>
 
 
         <div>

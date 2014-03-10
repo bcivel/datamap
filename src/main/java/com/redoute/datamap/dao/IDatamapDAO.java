@@ -84,6 +84,14 @@ public interface IDatamapDAO {
      * @return List of distinct properties of this column
      */
     List<String> findDistinctValuesfromColumn (String colName);
+    
+     /**
+     * 
+     * @param column Name of the column
+     * @param value value to put in the where clause
+     * @return 
+     */
+    List<Datamap> findDatamapListByColumnValue(String column, String value);
 }
 
 
