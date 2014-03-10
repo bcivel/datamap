@@ -72,26 +72,35 @@ public class DatamapService implements IDatamapService {
     public BufferedImage dataImplementedByCriteria(String column, String value) {
         BufferedImage bi = null;
         List<Datamap> datamap = findDatamapListByColumnValue(column, value);
+        List<String> distinctValues = findDistinctValuesfromColumn("implemented");
         String title = "Stream : "+ value;
         
         List<String> implemented = new ArrayList();
         List<String> nonimplemented = new ArrayList();
+        List<List<String>> valueList = new ArrayList();
         
+        for (String valueDis : distinctValues){
+        List<String> test = new ArrayList();
+        test.add(valueDis);
+        valueList.add(test);
+        }
+                
+                
         for (Datamap data : datamap){
-        if (data.getImplemented().equalsIgnoreCase("Y")){
-        implemented.add("Y");
-        }else{
-        nonimplemented.add("N");
+            for (int a = 0 ; a < valueList.size(); a++){
+                if (data.getImplemented().equalsIgnoreCase(valueList.get(a).get(0))){
+                valueList.get(a).add(valueList.get(a).get(0));
+        }
         }
         }
         
         DefaultPieDataset defaultpiedataset = new DefaultPieDataset();
-            String legend = "\"Implemented\"";
-            String dbl = String.valueOf(implemented.size()) + "D";
+        for (List<String> titi : valueList){
+            String legend = "\""+titi.get(0) +"\"";
+            String dbl = String.valueOf(titi.size()) + "D";
             defaultpiedataset.setValue(legend, new Double(dbl));
-            legend = "\"Non Implemented\"";
-            dbl = String.valueOf(nonimplemented.size()) + "D";
-            defaultpiedataset.setValue(legend, new Double(dbl));
+        }
+            
 
 
         bi = graphGenerationService.generatePieChart(defaultpiedataset, title, 2);
