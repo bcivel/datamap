@@ -339,7 +339,7 @@
                     for (var i = 0; i < data.aaData.length; i++) {
                         $("#pictureList").append($("<a></a>")
                                 .attr("style", "cursor: pointer")
-                                .attr("onclick", "$('#wPaint').fadeOut('slow');LoadMyJs('" + data.aaData[i][0] + "','" + data.aaData[i][3] + "');loadDataInput('" + data.aaData[i][0] + "','"+data.aaData[i][1]+"','" + data.aaData[i][2] + "')")
+                                .attr("onclick", "$('#wPaint').fadeOut('slow');LoadMyJs('" + data.aaData[i][0] + "','" + data.aaData[i][3] + "');loadDataInput('" + data.aaData[i][0] + "','"+data.aaData[i][1]+"','" + data.aaData[i][2] + "');")
                                 .text(data.aaData[i][2]));
                         $("#pictureList").append("</br>");
                     }
@@ -461,6 +461,10 @@
                 document.getElementById('pictureInput').value = name;
                 document.getElementById('idInput').value = id;
                 $("[aria-controls='datamapList']").val(name);
+                
+                //simulate keydown keyup to start search on image text.
+                $("[aria-controls='datamapList']").keydown();
+                $("[aria-controls='datamapList']").keyup();
             }
                     </script>
     </body>
