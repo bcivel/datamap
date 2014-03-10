@@ -175,17 +175,17 @@
         <div class="ncdescriptionfirstpart" style="vertical-align: central; clear:both">
             <p style="text-align:left">Data-Cerberus Implementation</p>
             <form action="Datamap.jsp" method="get" name="ExecFilters" id="ExecFilters">
-                <div style="width: 230px;float:left">
+                <div style="width: 300px;float:left">
                     <!--<p style="float:left">creator</p>-->
-                    <select style="width: 200px;float:left" multiple="multiple"  id="stream" name="stream">
+                    <select style="width: 300px;float:left" multiple="multiple"  id="stream" name="stream">
                     </select>
                 </div>
-                <div style="width: 230px;float:left">
-                    <select style="width: 200px;float:left" multiple="multiple"  id="page" name="page">
+                <div style="width: 300px;float:left">
+                    <select style="width: 300px;float:left" multiple="multiple"  id="page" name="page">
                     </select>
                 </div>
-                <div style="width: 230px;float:left">
-                    <select style="width: 200px;float:left" multiple="multiple"  id="picture" name="picture">
+                <div style="width: 300px;float:left">
+                    <select style="width: 300px;float:left" multiple="multiple"  id="picture" name="picture">
                     </select>
                 </div>
                 <div><input style="float:left" type="button" value="Apply Filter" onClick="document.ExecFilters.submit()"></div>
@@ -219,8 +219,9 @@
 
         <div id="pictures" style="float:left; width: 650px;background-color:#E2E4FF">    
             <div class="ncdescriptionheader" style="height:30px" >
-                <p style="float:left;">Page:</p><input style="float:left;" value="" onChange="javascript: updatePicture(this, 'page', 'id')">
-                <p style="float:left;">Picture:</p><input style="float:left;" value="" onChange="javascript: updatePicture(this, 'picture', 'id')">
+                <input id="idInput" style="float:left; display:none" value="">
+                <p style="float:left;">Page:</p><input id="pageInput" style="float:left;" value="" onChange="javascript: updatePicture(this, 'page', 'id')">
+                <p style="float:left;">Picture:</p><input id="pictureInput" style="float:left;" value="" onChange="javascript: updatePicture(this, 'picture', 'id')">
                 <button id="deletePicture" style="float:right" onClick="javacript: deletePicture('')">Delete Picture</button>
                 <button id="addPicture" style="float:right" onClick="javacript: popup('AddPicture.jsp')">Add Picture</button>
             </div>
@@ -338,7 +339,7 @@
                     for (var i = 0; i < data.aaData.length; i++) {
                         $("#pictureList").append($("<a></a>")
                                 .attr("style", "cursor: pointer")
-                                .attr("onclick", "$('#wPaint').fadeOut('slow');LoadMyJs('" + data.aaData[i][0] + "','" + data.aaData[i][3] + "')")
+                                .attr("onclick", "$('#wPaint').fadeOut('slow');LoadMyJs('" + data.aaData[i][0] + "','" + data.aaData[i][3] + "');loadDataInput('" + data.aaData[i][0] + "','"+data.aaData[i][1]+"','" + data.aaData[i][2] + "')")
                                 .text(data.aaData[i][2]));
                         $("#pictureList").append("</br>");
                     }
@@ -454,6 +455,13 @@
             
             }
         </script>
-
+        <script>
+            function loadDataInput(id, page, name){
+                document.getElementById('pageInput').value= page;
+                document.getElementById('pictureInput').value = name;
+                document.getElementById('idInput').value = id;
+                $("[aria-controls='datamapList']").val(name);
+            }
+                    </script>
     </body>
 </html>
