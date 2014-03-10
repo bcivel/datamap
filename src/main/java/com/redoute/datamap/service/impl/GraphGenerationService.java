@@ -8,6 +8,8 @@ import com.redoute.datamap.service.IGraphGenerationService;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GradientPaint;
+import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
 import java.text.DateFormat;
@@ -148,8 +150,20 @@ public class GraphGenerationService implements IGraphGenerationService {
         pieplot.setNoDataMessage("No data available");
         pieplot.setCircular(false);
         pieplot.setLabelGap(0.02D);
+        Paint p1 = new GradientPaint(0.0f, 0.0f, new Color(0x22, 0x22, 0xFF),
+                0.0f, 0.0f, new Color(0x88, 0x88, 0xFF));
+        Paint p2 = new GradientPaint(
+            0.0f, 0.0f, new Color(0x22, 0xFF, 0x22), 0.0f, 0.0f, new Color(0x88, 0xFF, 0x88));
+        Paint p3 = new GradientPaint(
+            0.0f, 0.0f, new Color(0xFF, 0x22, 0x22), 0.0f, 0.0f, new Color(0xFF, 0x88, 0x88));
+        Paint p4 = new GradientPaint(
+            0.0f, 0.0f, new Color(0xFF, 0xFF, 0x22), 0.0f, 0.0f, new Color(0xFF, 0xFF, 0x88));
         //for (int a = 0; a < i ; a++){
-        //pieplot.setSectionPaint(a, Color.decode(seriesColors[a]));}
+        pieplot.setSectionPaint(0, p1);
+        pieplot.setSectionPaint(1, p2);
+        pieplot.setSectionPaint(2, p3);
+        pieplot.setSectionPaint(3, p4);
+        
 
 
         bi = jfreechart.createBufferedImage(500, 270);

@@ -96,9 +96,11 @@ public class DatamapService implements IDatamapService {
         
         DefaultPieDataset defaultpiedataset = new DefaultPieDataset();
         for (List<String> titi : valueList){
+            if (titi.size()-1!=0){
             String legend = "\""+titi.get(0) +"\"";
-            String dbl = String.valueOf(titi.size()) + "D";
+            String dbl = String.valueOf(titi.size()-1) + "D";
             defaultpiedataset.setValue(legend, new Double(dbl));
+            }
         }
             
 
