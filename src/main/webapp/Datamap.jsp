@@ -53,7 +53,7 @@
                         {"sName": "Page", "sWidth": "20%"},
                         {"sName": "DataCerberus", "sWidth": "40%"},
                         {"sName": "Picture", "sWidth": "30%"},
-                        {"sName": "Xpath", "sWidth": "5%"},
+                        {"sName": "Xpath", "sWidth": "5%", "sType": "int"},
                         {"sName": "Implemented", "sWidth": "5%"}
 
                     ],
@@ -379,6 +379,7 @@
         <script type="text/javascript" src="./js/wPaint/plugins/text/wPaint.menu.text.min.js"></script>
         <script type="text/javascript" src="./js/wPaint/plugins/shapes/wPaint.menu.main.shapes.min.js"></script>
         <script type="text/javascript" src="./js/wPaint/plugins/file/wPaint.menu.main.file.min.js"></script>
+        <!--script type="text/javascript" src="./js/wPaint/plugins/zoom/src/wPaint.menu.main.zoom.js"></script-->
         <script>
             function LoadMyJs(id, picture) {
 
@@ -430,7 +431,16 @@
                     // becasue the foregroud image is not transparent.
                     this._showFileModal('bg', images);
                 }
+                /*
+                function zoomImgBg() {
 
+                    // internal function for displaying background images modal
+                    // where images is an array of images (base64 or url path)
+                    // NOTE: that if you can't see the bg image changing it's probably
+                    // becasue the foregroud image is not transparent.
+                    this._zoomImgBg('bg', images);
+                }
+                */
                 function loadImgFg() {
 
                     // internal function for displaying foreground images modal
@@ -440,6 +450,7 @@
 
                 // remove data of the current wPaint element
                 $.removeData(wPaint);
+                $('#wPaint').empty();
 
                 // Create new one wPaint
                 $('#wPaint').wPaint({
@@ -450,8 +461,9 @@
                     menuOffsetTop: -50,
                     saveImg: saveImg,
                     loadImgBg: loadImgBg,
-                    loadImgFg: loadImgFg
+                    loadImgFg: loadImgFg,
                 }).fadeIn("slow");
+//                    zoomImgBg: zoomImgBg,
             
             }
         </script>
