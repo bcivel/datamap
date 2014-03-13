@@ -55,7 +55,10 @@
     fontFamily     : 'Arial', // active font family for text input
     fontBold       : false,   // text input bold enable/disable
     fontItalic     : false,   // text input italic enable/disable
-    fontUnderline  : false    // text input italic enable/disable
+    fontUnderline  : false,    // text input italic enable/disable
+    textColor       : $.fn.wPaint.defaults.strokeStyle, 
+    textBorderColor : $.fn.wPaint.defaults.fillStyle,
+    textBgColor     : $.fn.wPaint.defaults.fillStyle
   });
 
   // extend functions
@@ -99,7 +102,9 @@
      * setters
      ****************************************/
     setFillStyle: function (fillStyle) {
-      this.$textInput.css('color', fillStyle);
+      this.$textInput.css('color', this.options.textColor);
+      this.$textInput.css('border', "1px solid"+ this.options.textBorderColor);
+      this.$textInput.css('background-color', this.options.textBgColor);
     },
 
     setFontSize: function (size) {
@@ -195,8 +200,33 @@
       
       lines = this.$textInput.val(linesNew.join('\n')).val().split('\n');
 
+        var width = 0;
+        var height = 0;
+        for (i = 0, ii = lines.length; i < ii; i++) {
+          this.ctx.textBaseline = 'top';
+          this.ctx.font = fontString;
+
+
+          /// get width of text
+          if(this.ctx.measureText(lines[i]).width > width) {
+              width = this.ctx.measureText(lines[i]).width;
+          }
+          
+          height += this.options.fontSize;
+        }
+        
+        /// rect for border
+        /// draw background rect assuming height of font
+        this.ctx.fillStyle = this.options.textBorderColor;
+        this.ctx.fillRect(parseInt(left-5), parseInt(top-5), parseInt(width+10), parseInt(height, 10)+7);
+
+        /// draw background rect assuming height of font
+        this.ctx.fillStyle = this.options.textBgColor;
+        this.ctx.fillRect(parseInt(left-3), parseInt(top-3), parseInt(width+6), parseInt(height, 10)+3);
+        /// color for text
+        this.ctx.fillStyle = this.options.textColor;
+
       for (i = 0, ii = lines.length; i < ii; i++) {
-        this.ctx.fillStyle = this.options.fillStyle;
         this.ctx.textBaseline = 'top';
         this.ctx.font = fontString;
         this.ctx.fillText(lines[i], left, top);

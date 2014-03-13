@@ -382,7 +382,7 @@
         <script type="text/javascript" src="./js/wPaint/src/wPaint.js"></script>
         <script type="text/javascript" src="./js/wPaint/src/wPaint.utils.js"></script>
         <script type="text/javascript" src="./js/wPaint/plugins/main/wPaint.menu.main.min.js"></script>
-        <script type="text/javascript" src="./js/wPaint/plugins/text/wPaint.menu.text.min.js"></script>
+        <script type="text/javascript" src="./js/wPaint/plugins/text/src/wPaint.menu.text.js"></script>
         <script type="text/javascript" src="./js/wPaint/plugins/shapes/wPaint.menu.main.shapes.min.js"></script>
         <script type="text/javascript" src="./js/wPaint/plugins/file/wPaint.menu.main.file.min.js"></script>
         <!--script type="text/javascript" src="./js/wPaint/plugins/zoom/src/wPaint.menu.main.zoom.js"></script-->
@@ -465,6 +465,12 @@
                     path: './js/wPaint/',
                     image: sPicture,
                     bg: '#E2E4FF',
+                    fillStyle: 'transparent',
+                    textColor: '#fff',
+                    textBgColor: '#007700',
+                    textBorderColor: '#FF0000',
+                    strokeStyle: '#007700',
+                    fontBold: true,
                     menuOffsetLeft: 0,
                     menuOffsetTop: -50,
                     saveImg: saveImg,
