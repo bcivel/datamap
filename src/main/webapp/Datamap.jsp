@@ -336,16 +336,21 @@
         </script>
         <script type="text/javascript">
             var test = document.getElementById("testtest").value;
-            (document).ready($.get('FindAllPicture'+test, function(data) {
+            function findAllPictures(test) {
+                $.get('FindAllPicture'+test, function(data) {
+                    $("#pictureList").empty();
                     for (var i = 0; i < data.aaData.length; i++) {
                         $("#pictureList").append($("<a></a>")
                                 .attr("style", "cursor: pointer")
                                 .attr("onclick", "$('#wPaint').fadeOut('slow');LoadMyJs('" + data.aaData[i][0] + "','" + data.aaData[i][3] + "');loadDataInput('" + data.aaData[i][0] + "','"+data.aaData[i][1]+"','" + data.aaData[i][2] + "');")
+                                .attr("id","picture_"+ data.aaData[i][0])
                                 .text(data.aaData[i][2]));
                         $("#pictureList").append("</br>");
                     }
-                })
-            );
+                });
+            }
+
+            (document).ready(findAllPictures(test));
         </script>
         <script>
             function deletePicture(id) {
@@ -404,22 +409,24 @@
                         data: {image: image},
                         success: function(resp) {
 
-                            // internal function for displaying status messages in the canvas
-                            _this._displayStatus('Image saved successfully');
-
                             // doesn't have to be json, can be anything
                             // returned from server after upload as long
                             // as it contains the path to the image url
                             // or a base64 encoded png, either will work
-                            resp = $.parseJSON(resp);
+                            //resp = $.parseJSON(resp);
 
                             // update images array / object or whatever
                             // is being used to keep track of the images
                             // can store path or base64 here (but path is better since it's much smaller)
-                            images.push(resp.img);
+                            images.push(image);
+                            findAllPictures(test);
 
                             // do something with the image
                             $('#wPaint-img').attr('src', image);
+
+                            // internal function for displaying status messages in the canvas
+                            _this._displayStatus('Image saved successfully');
+
                         }
                     });
                 }
