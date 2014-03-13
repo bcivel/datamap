@@ -3,7 +3,11 @@ package com.redoute.datamap.service.impl;
 import com.redoute.datamap.dao.impl.DatamapDAO;
 import com.redoute.datamap.entity.Datamap;
 import com.redoute.datamap.service.IDatamapService;
+import com.redoute.datamap.service.IGraphGenerationService;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
+import org.jfree.data.general.DefaultPieDataset;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +20,8 @@ public class DatamapService implements IDatamapService {
 
     @Autowired
     DatamapDAO datamapDao;
+    @Autowired
+    IGraphGenerationService graphGenerationService;
 
     @Override
     public Datamap findDatamapByKey(String name) {
@@ -55,5 +61,53 @@ public class DatamapService implements IDatamapService {
     @Override
     public List<String> findDistinctValuesfromColumn(String colName) {
         return datamapDao.findDistinctValuesfromColumn(colName);
+    }
+
+    @Override
+    public List<Datamap> findDatamapListByColumnValue(String column, String value) {
+        return datamapDao.findDatamapListByColumnValue(column, value);
+    }
+
+    @Override
+    public BufferedImage dataImplementedByCriteria(String column, String value) {
+        BufferedImage bi = null;
+        List<Datamap> datamap = findDatamapListByColumnValue(column, value);
+        List<String> distinctValues = findDistinctValuesfromColumn("implemented");
+        String title = "Stream : "+ value;
+        
+        List<String> implemented = new ArrayList();
+        List<String> nonimplemented = new ArrayList();
+        List<List<String>> valueList = new ArrayList();
+        
+        for (String valueDis : distinctValues){
+        List<String> test = new ArrayList();
+        test.add(valueDis);
+        valueList.add(test);
+        }
+                
+                
+        for (Datamap data : datamap){
+            for (int a = 0 ; a < valueList.size(); a++){
+                if (data.getImplemented().equalsIgnoreCase(valueList.get(a).get(0))){
+                valueList.get(a).add(valueList.get(a).get(0));
+        }
+        }
+        }
+        
+        DefaultPieDataset defaultpiedataset = new DefaultPieDataset();
+        for (List<String> titi : valueList){
+            if (titi.size()-1!=0){
+            String legend = "\""+titi.get(0) +"\"";
+            String dbl = String.valueOf(titi.size()-1) + "D";
+            defaultpiedataset.setValue(legend, new Double(dbl));
+            }
+        }
+            
+
+
+        bi = graphGenerationService.generatePieChart(defaultpiedataset, title, 2);
+
+        return bi;
+        
     }
 }

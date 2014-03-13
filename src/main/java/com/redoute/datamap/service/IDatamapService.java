@@ -1,6 +1,7 @@
 package com.redoute.datamap.service;
 
 import com.redoute.datamap.entity.Datamap;
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 /**
@@ -64,4 +65,20 @@ public interface IDatamapService {
      * @return List of distinct properties of this column 
      */
     List<String> findDistinctValuesfromColumn(String colName);
+    
+    /**
+     * 
+     * @param column Name of the column
+     * @param value value to put in the where clause
+     * @return 
+     */
+    List<Datamap> findDatamapListByColumnValue(String column, String value);
+    
+    /**
+     * 
+     * @param column Name of the column
+     * @param value value to put in the where clause
+     * @return 
+     */
+    BufferedImage dataImplementedByCriteria(String column, String value);
 }
