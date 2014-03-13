@@ -470,7 +470,7 @@
                     textColor: '#fff',
                     textBgColor: '#007700',
                     textBorderColor: '#FF0000',
-                    fontSize: '22,
+                    fontSize: '22',
                     fontBold: true,
                     menuOffsetLeft: 0,
                     menuOffsetTop: -50,
