@@ -54,7 +54,7 @@
                         {"sName": "Page", "sWidth": "20%"},
                         {"sName": "DataCerberus", "sWidth": "40%"},
                         {"sName": "Picture", "sWidth": "30%"},
-                        {"sName": "Xpath", "sWidth": "5%", "sType": "int"},
+                        {"sName": "Xpath", "sWidth": "5%"},
                         {"sName": "Implemented", "sWidth": "5%"}
 
                     ],
@@ -70,7 +70,7 @@
                             $('td:eq(4)', nRow).html('<b>' + aData[5] + '</b>');
                             $('td:eq(5)', nRow).html('<b>' + aData[6] + '</b>');
                         }
-                    }
+                    },
                 }
                 ).makeEditable({
                     sAddURL: "CreateDatamap",
@@ -113,7 +113,7 @@
                             placeholder: ''}
 
                     ]
-                });
+                })
             });
 
 
@@ -139,7 +139,7 @@
         </script>
         <link rel="Stylesheet" type="text/css" href="./js/wPaint/demo/demo.css" />
     </head>
-    <body  id="wrapper">
+    <body  id="wrapper" onLoad="LoadMyJs(null, null)">
         <%
             String uri = "?";
 
@@ -166,6 +166,14 @@
                     uri += "&picture=" + picture[a];
                 }
             };
+            
+            String[] impl = null;
+            if (request.getParameterValues("impl") != null && !request.getParameter("impl").equals("All")) {
+                impl = request.getParameterValues("impl");
+                for (int a = 0; a < impl.length; a++) {
+                    uri += "&impl=" + impl[a];
+                }
+            };
 
             ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
             IPictureService pictureService = appContext.getBean(IPictureService.class);
@@ -176,17 +184,21 @@
         <div class="ncdescriptionfirstpart" style="vertical-align: central; clear:both">
             <p style="text-align:left">Data-Cerberus Implementation</p>
             <form action="Datamap.jsp" method="get" name="ExecFilters" id="ExecFilters">
-                <div style="width: 300px;float:left">
+                <div style="width: 250px;float:left">
                     <!--<p style="float:left">creator</p>-->
-                    <select style="width: 300px;float:left" multiple="multiple"  id="stream" name="stream">
+                    <select style="width: 250px;float:left" multiple="multiple"  id="stream" name="stream">
                     </select>
                 </div>
-                <div style="width: 300px;float:left">
-                    <select style="width: 300px;float:left" multiple="multiple"  id="page" name="page">
+                <div style="width: 250px;float:left">
+                    <select style="width: 250px;float:left" multiple="multiple"  id="page" name="page">
                     </select>
                 </div>
-                <div style="width: 300px;float:left">
-                    <select style="width: 300px;float:left" multiple="multiple"  id="picture" name="picture">
+                <div style="width: 250px;float:left">
+                    <select style="width: 250px;float:left" multiple="multiple"  id="picture" name="picture">
+                    </select>
+                </div>
+                <div style="width: 250px;float:left">
+                    <select style="width: 250px;float:left" multiple="multiple"  id="impl" name="impl">
                     </select>
                 </div>
                 <div><input style="float:left" type="button" value="Apply Filter" onClick="document.ExecFilters.submit()"></div>
@@ -335,22 +347,33 @@
             ));
         </script>
         <script type="text/javascript">
+            (document).ready($.get('GetDistinctValueFromTableColumn?table=Datamap&colName=implemented', function(data) {
+                for (var i = 0; i < data.length; i++) {
+                    $("#impl").append($("<option></option>")
+                            .attr("value", data[i])
+                            .text(data[i]))
+                }
+                $("#impl").multiselect({
+                    header: "Implemented Status",
+                    noneSelectedText: "Select Implemented Status",
+                    selectedText: "# of # Status selected"
+                });
+
+            }
+            ));
+        </script>
+        <script type="text/javascript">
             var test = document.getElementById("testtest").value;
-            function findAllPictures(test) {
-                $.get('FindAllPicture'+test, function(data) {
-                    $("#pictureList").empty();
+            (document).ready($.get('FindAllPicture'+test, function(data) {
                     for (var i = 0; i < data.aaData.length; i++) {
                         $("#pictureList").append($("<a></a>")
                                 .attr("style", "cursor: pointer")
                                 .attr("onclick", "$('#wPaint').fadeOut('slow');LoadMyJs('" + data.aaData[i][0] + "','" + data.aaData[i][3] + "');loadDataInput('" + data.aaData[i][0] + "','"+data.aaData[i][1]+"','" + data.aaData[i][2] + "');")
-                                .attr("id","picture_"+ data.aaData[i][0])
                                 .text(data.aaData[i][2]));
                         $("#pictureList").append("</br>");
                     }
-                });
-            }
-
-            (document).ready(findAllPictures(test));
+                })
+            );
         </script>
         <script>
             function deletePicture(id) {
@@ -382,100 +405,10 @@
         <script type="text/javascript" src="./js/wPaint/src/wPaint.js"></script>
         <script type="text/javascript" src="./js/wPaint/src/wPaint.utils.js"></script>
         <script type="text/javascript" src="./js/wPaint/plugins/main/wPaint.menu.main.min.js"></script>
-        <script type="text/javascript" src="./js/wPaint/plugins/text/src/wPaint.menu.text.js"></script>
+        <script type="text/javascript" src="./js/wPaint/plugins/text/wPaint.menu.text.min.js"></script>
         <script type="text/javascript" src="./js/wPaint/plugins/shapes/wPaint.menu.main.shapes.min.js"></script>
         <script type="text/javascript" src="./js/wPaint/plugins/file/wPaint.menu.main.file.min.js"></script>
-        <!--script type="text/javascript" src="./js/wPaint/plugins/zoom/src/wPaint.menu.main.zoom.js"></script-->
         <script>
-            function saveImg(image) {
-                var _this = this;
-
-                $.ajax({
-                    type: 'POST',
-                    url: './UploadPicture?id=' + sId,
-                    data: {image: image},
-                    success: function(resp) {
-                        findAllPictures(test);
-
-                        // do something with the image
-                        $('#wPaint-img').attr('src', image);
-
-                        // internal function for displaying status messages in the canvas
-                        _this._displayStatus('Image saved successfully');
-
-                    }
-                });
-            }
-
-            /*
-            function loadImgBg() {
-
-                // internal function for displaying background images modal
-                // where images is an array of images (base64 or url path)
-                // NOTE: that if you can't see the bg image changing it's probably
-                // becasue the foregroud image is not transparent.
-                this._showFileModal('bg', images);
-            }
-
-
-            function loadImgFg() {
-
-                // internal function for displaying foreground images modal
-                // where images is an array of images (base64 or url path)
-                this._showFileModal('fg', images);
-            }
-            */
-            
-            // update elements dimensions
-            // call wPaint('resize')
-            function zoomImgBg() {
-                if(!this.options.fullScreen) {
-                    this.options.width = $(this.options.wpaintSelector).width();
-                    this.options.height = $(this.options.wpaintSelector).height();
-
-                    $(this.options.wpaintSelector).css({
-                      width: $(window).width(),
-                      height: $(window).height()
-                    });
-                } else {
-                    $(this.options.wpaintSelector).css({
-                      width: this.options.width,
-                      height: this.options.height
-                    });
-                }
-                this.ctxBgResize = false;
-                this.ctxResize = false;
-
-                this.options.fullScreen = !this.options.fullScreen;
-                var bg = this.getBg(),
-                    image = this.getImage();
-
-                this.width = this.$el.width();
-                this.height = this.$el.height();
-
-                this.canvasBg.width = this.width;
-                this.canvasBg.height = this.height;
-                this.canvas.width = this.width;
-                this.canvas.height = this.height;
-
-                if (this.ctxBgResize === false) {
-                  this.ctxBgResize = true;
-                  this.setBg(bg, false);
-                }
-
-                if (this.ctxResize === false) {
-                  this.ctxResize = true;
-                  this.setImage(image, '', false, true);
-                }
-
-                // internal function for displaying background images modal
-                // where images is an array of images (base64 or url path)
-                // NOTE: that if you can't see the bg image changing it's probably
-                // becasue the foregroud image is not transparent.
-                //this._zoomImgBg('bg', images);
-            }
-
-
             function LoadMyJs(id, picture) {
 
             var sId = null;
@@ -485,32 +418,70 @@
                    sPicture = picture;
                 }
 
+                var images = ['./js/wPaint/test/uploads/redoute.jpg'];
+
+
+
+                function saveImg(image) {
+                    var _this = this;
+
+                    $.ajax({
+                        type: 'POST',
+                        url: './UploadPicture?id=' + sId,
+                        data: {image: image},
+                        success: function(resp) {
+
+                            // internal function for displaying status messages in the canvas
+                            _this._displayStatus('Image saved successfully');
+
+                            // doesn't have to be json, can be anything
+                            // returned from server after upload as long
+                            // as it contains the path to the image url
+                            // or a base64 encoded png, either will work
+                            resp = $.parseJSON(resp);
+
+                            // update images array / object or whatever
+                            // is being used to keep track of the images
+                            // can store path or base64 here (but path is better since it's much smaller)
+                            images.push(resp.img);
+
+                            // do something with the image
+                            $('#wPaint-img').attr('src', image);
+                        }
+                    });
+                }
+
+                function loadImgBg() {
+
+                    // internal function for displaying background images modal
+                    // where images is an array of images (base64 or url path)
+                    // NOTE: that if you can't see the bg image changing it's probably
+                    // becasue the foregroud image is not transparent.
+                    this._showFileModal('bg', images);
+                }
+
+                function loadImgFg() {
+
+                    // internal function for displaying foreground images modal
+                    // where images is an array of images (base64 or url path)
+                    this._showFileModal('fg', images);
+                }
+
                 // remove data of the current wPaint element
                 $.removeData(wPaint);
-                $('#wPaint').empty();
 
                 // Create new one wPaint
                 $('#wPaint').wPaint({
                     path: './js/wPaint/',
                     image: sPicture,
                     bg: '#E2E4FF',
-                    fillStyle: 'transparent',
-                    strokeStyle: '#007700',
-                    textColor: '#fff',
-                    textBgColor: '#007700',
-                    textBorderColor: '#FF0000',
-                    fontSize: '22',
-                    fontBold: true,
                     menuOffsetLeft: 0,
                     menuOffsetTop: -50,
                     saveImg: saveImg,
-                    wpaintSelector: '#wPaint'
-                });
-//                    zoomImgBg: zoomImgBg
-                delete $('#wPaint').wPaint.menus.main.items.loadBg;
-                delete $('#wPaint').wPaint.menus.main.items.loadFg;
-                //$('#wPaint').wPaint.menus.reset();
-                $('#wPaint').fadeIn("slow");
+                    loadImgBg: loadImgBg,
+                    loadImgFg: loadImgFg
+                }).fadeIn("slow");
+            
             }
         </script>
         <script>

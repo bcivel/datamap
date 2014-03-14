@@ -66,7 +66,7 @@ public class FindAllDatamap extends HttpServlet {
             String[] stream = null;
             String[] page = null;
             String datacerberus = "";
-            String implemented = "";
+            String[] implemented = null;
             String[] picture = null;
             String xpath = "";
 
@@ -79,12 +79,14 @@ public class FindAllDatamap extends HttpServlet {
             if (request.getParameterValues("picture") != null) {
             picture = request.getParameterValues("picture");
             }
+            if (request.getParameterValues("impl") != null) {
+            implemented = request.getParameterValues("impl");
+            }
             
             id = policy.sanitize(request.getParameter("sSearch_0"));
             datacerberus = policy.sanitize(request.getParameter("sSearch_3"));
             xpath = policy.sanitize(request.getParameter("sSearch_5"));
-            implemented = policy.sanitize(request.getParameter("sSearch_6"));
-
+            
             List<String> sArray = new ArrayList<String>();
             if (!id.equals("")) {
                 String sId = " `Id` like '%" + id + "%'";
@@ -114,14 +116,19 @@ public class FindAllDatamap extends HttpServlet {
             spicture += " picture like '%" + picture[picture.length - 1] + "%') ";
             sArray.add(spicture);
         }
+            if (implemented != null) {
+            String simplemented = " (";
+            for (int a = 0; a < implemented.length - 1; a++) {
+                simplemented += " implemented like '%" + implemented[a] + "%' or";
+            }
+            simplemented += " implemented like '%" + implemented[implemented.length - 1] + "%') ";
+            sArray.add(simplemented);
+        }
             if (!datacerberus.equals("")) {
                 String sDatacerberus = " `datacerberus` like '%" + datacerberus + "%'";
                 sArray.add(sDatacerberus);
             }
-            if (!implemented.equals("")) {
-                String sImplemented = " `implemented` like '%" + implemented + "%'";
-                sArray.add(sImplemented);
-            }
+            
           if (!xpath.equals("")) {
                 String sxpath = " `xpath` like '%" + xpath + "%'";
                 sArray.add(sxpath);
