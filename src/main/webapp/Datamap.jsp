@@ -366,7 +366,8 @@
                 $("[aria-controls='datamapList']").keyup();
             }
 
-            $(document).ready($.get('GetDistinctValueFromTableColumn?table=Datamap&colName=Stream', function(data) {
+            $(document).ready(
+                $.get('GetDistinctValueFromTableColumn?table=Datamap&colName=Stream', function(data) {
                     for (var i = 0; i < data.length; i++) {
                         $("#stream").append($("<option></option>")
                                 .attr("value", data[i])
@@ -378,7 +379,7 @@
                         selectedText: "# of # stream selected"
                     });
 
-                };
+                });
                 
                 $.get('GetDistinctValueFromTableColumn?table=Datamap&colName=Page', function(data) {
                     for (var i = 0; i < data.length; i++) {
@@ -392,7 +393,7 @@
                         selectedText: "# of # page selected"
                     });
 
-                };
+                });
                 
                 $.get('GetDistinctValueFromTableColumn?table=Datamap&colName=Picture', function(data) {
                     for (var i = 0; i < data.length; i++) {
@@ -406,7 +407,7 @@
                         selectedText: "# of # Picture selected"
                     });
 
-                };
+                });
                 
                 $.get('GetDistinctValueFromTableColumn?table=Datamap&colName=implemented', function(data) {
                     for (var i = 0; i < data.length; i++) {
@@ -420,10 +421,10 @@
                         selectedText: "# of # Status selected"
                     });
 
-                };
+                });
                         
                 findAllPictures(test);
-            ));
+            );
         </script>
         <!-- jQuery UI -->
         <script type="text/javascript" src="./js/wPaint/lib/jquery.ui.core.1.10.3.min.js"></script>
