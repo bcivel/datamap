@@ -509,5 +509,53 @@ public class DatamapDAO implements IDatamapDAO {
         }
         return result;
     }
+
+    @Override
+    public boolean allImplementedByCriteria(String column, String value) {
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT count(*) as val FROM datamap where `");
+        query.append(column);
+        query.append("` = ? and implemented!='Y'");
+        
+        Connection connection = this.databaseSpring.connect();
+        try {
+            PreparedStatement preStat = connection.prepareStatement(query.toString());
+            try {
+                preStat.setString(1, value);
+                ResultSet resultSet = preStat.executeQuery();
+                try {
+                        if (resultSet.next()) {
+                            if (resultSet.getString("val").equals("0")){
+                            return true;
+                            }
+                            
+                        }
+
+            resultSet.close();
+                } catch (SQLException exception) {
+                    Logger.log(DatamapDAO.class.getName(), Level.ERROR, exception.toString());
+                } finally {
+                    resultSet.close();
+                } 
+         
+            } catch (SQLException exception) {
+                Logger.log(DatamapDAO.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
+            }
+        
+        } catch (SQLException exception) {
+            Logger.log(DatamapDAO.class.getName(), Level.ERROR, exception.toString());
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(DatamapDAO.class.getName(), Level.WARN, e.toString());
+            }
+        }
+        return false;
+    }
 }
 

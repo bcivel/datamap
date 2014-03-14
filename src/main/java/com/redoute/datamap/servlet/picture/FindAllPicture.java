@@ -8,6 +8,7 @@ package com.redoute.datamap.servlet.picture;
 
 import com.redoute.datamap.entity.Picture;
 import com.redoute.datamap.log.Logger;
+import com.redoute.datamap.service.IDatamapService;
 import com.redoute.datamap.service.IPictureService;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -124,17 +125,20 @@ public class FindAllPicture extends HttpServlet {
 
             ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
             IPictureService pictureService = appContext.getBean(IPictureService.class);
+            IDatamapService datamapService = appContext.getBean(IDatamapService.class);
 
             List<Picture> datamapList = pictureService.findPictureListByCriteria(inds, joined);
 
             JSONObject jsonResponse = new JSONObject();
 
             for (Picture datamap : datamapList) {
+                boolean isImpl = datamapService.allImplementedByCriteria("picture", datamap.getPicture());
                 JSONArray row = new JSONArray();
                 row.put(datamap.getId())
                         .put(datamap.getPage())
                         .put(datamap.getPicture())
-                        .put(datamap.getBase64());
+                        .put(datamap.getBase64())
+                        .put(isImpl == true ? "Y" : "N");
 
                 data.put(row);
             }

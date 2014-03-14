@@ -11,7 +11,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <div id="contentDiv" class="content-box" style="background-color:#E2E4FF">
-            <div id="wPaint" style="position:relative; width:600px; height:400px; background-color:#7a7a7a; margin:70px auto 20px auto;"></div>
+            <div id="wPaint" style="position:relative; width:600px; height:360px; background-color:#7a7a7a; margin:70px auto 20px auto;"></div>
 
 <center id="wPaint-img"></center>
 </div>

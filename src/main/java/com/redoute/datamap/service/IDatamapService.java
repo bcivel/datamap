@@ -81,4 +81,12 @@ public interface IDatamapService {
      * @return 
      */
     BufferedImage dataImplementedByCriteria(String column, String value);
+    
+    /**
+     * 
+     * @param column
+     * @param value
+     * @return 
+     */
+    boolean allImplementedByCriteria(String column, String value);
 }

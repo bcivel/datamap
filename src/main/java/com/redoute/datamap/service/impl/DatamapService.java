@@ -110,4 +110,9 @@ public class DatamapService implements IDatamapService {
         return bi;
         
     }
+
+    @Override
+    public boolean allImplementedByCriteria(String column, String value) {
+        return datamapDao.allImplementedByCriteria(column, value);
+    }
 }

@@ -399,6 +399,7 @@
                     for (var i = 0; i < data.aaData.length; i++) {
                         $("#pictureList").append($("<a></a>")
                                 .attr("style", "cursor: pointer")
+                                .attr("class", "allImplemented"+data.aaData[i][4])
                                 .attr("onclick", "$('#wPaint').fadeOut('slow');LoadMyJs('" + data.aaData[i][0] + "','" + data.aaData[i][3] + "');loadDataInput('" + data.aaData[i][0] + "','"+data.aaData[i][1]+"','" + data.aaData[i][2] + "');")
                                 .attr("id","picture_"+ data.aaData[i][0])
                                 .text(data.aaData[i][2]));

@@ -92,6 +92,13 @@ public interface IDatamapDAO {
      * @return 
      */
     List<Datamap> findDatamapListByColumnValue(String column, String value);
+    
+    /**
+     * 
+     * @param criteria
+     * @return 
+     */
+    boolean allImplementedByCriteria(String column, String value);
 }
 
 

@@ -8,6 +8,15 @@ input{
     
 }
 
+a{
+    text-decoration-color: black;
+}
+
+.allImplementedN{
+    font-weight : bold;
+}
+
+                                
 .ncdescriptionfirstpart{
     border: solid;
     border-width: 1px;
