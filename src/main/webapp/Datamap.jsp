@@ -70,7 +70,7 @@
                             $('td:eq(4)', nRow).html('<b>' + aData[5] + '</b>');
                             $('td:eq(5)', nRow).html('<b>' + aData[6] + '</b>');
                         }
-                    },
+                    }
                 }
                 ).makeEditable({
                     sAddURL: "CreateDatamap",
@@ -113,7 +113,7 @@
                             placeholder: ''}
 
                     ]
-                })
+                });
             });
 
 
@@ -139,7 +139,7 @@
         </script>
         <link rel="Stylesheet" type="text/css" href="./js/wPaint/demo/demo.css" />
     </head>
-    <body  id="wrapper" onLoad="LoadMyJs(null, null)">
+    <body  id="wrapper">
         <%
             String uri = "?";
 
@@ -387,6 +387,95 @@
         <script type="text/javascript" src="./js/wPaint/plugins/file/wPaint.menu.main.file.min.js"></script>
         <!--script type="text/javascript" src="./js/wPaint/plugins/zoom/src/wPaint.menu.main.zoom.js"></script-->
         <script>
+            function saveImg(image) {
+                var _this = this;
+
+                $.ajax({
+                    type: 'POST',
+                    url: './UploadPicture?id=' + sId,
+                    data: {image: image},
+                    success: function(resp) {
+                        findAllPictures(test);
+
+                        // do something with the image
+                        $('#wPaint-img').attr('src', image);
+
+                        // internal function for displaying status messages in the canvas
+                        _this._displayStatus('Image saved successfully');
+
+                    }
+                });
+            }
+
+            /*
+            function loadImgBg() {
+
+                // internal function for displaying background images modal
+                // where images is an array of images (base64 or url path)
+                // NOTE: that if you can't see the bg image changing it's probably
+                // becasue the foregroud image is not transparent.
+                this._showFileModal('bg', images);
+            }
+
+
+            function loadImgFg() {
+
+                // internal function for displaying foreground images modal
+                // where images is an array of images (base64 or url path)
+                this._showFileModal('fg', images);
+            }
+            */
+            
+            // update elements dimensions
+            // call wPaint('resize')
+            function zoomImgBg() {
+                if(!this.options.fullScreen) {
+                    this.options.width = $(this.options.wpaintSelector).width();
+                    this.options.height = $(this.options.wpaintSelector).height();
+
+                    $(this.options.wpaintSelector).css({
+                      width: $(window).width(),
+                      height: $(window).height()
+                    });
+                } else {
+                    $(this.options.wpaintSelector).css({
+                      width: this.options.width,
+                      height: this.options.height
+                    });
+                }
+                this.ctxBgResize = false;
+                this.ctxResize = false;
+
+                this.options.fullScreen = !this.options.fullScreen;
+                var bg = this.getBg(),
+                    image = this.getImage();
+
+                this.width = this.$el.width();
+                this.height = this.$el.height();
+
+                this.canvasBg.width = this.width;
+                this.canvasBg.height = this.height;
+                this.canvas.width = this.width;
+                this.canvas.height = this.height;
+
+                if (this.ctxBgResize === false) {
+                  this.ctxBgResize = true;
+                  this.setBg(bg, false);
+                }
+
+                if (this.ctxResize === false) {
+                  this.ctxResize = true;
+                  this.setImage(image, '', false, true);
+                }
+
+                // internal function for displaying background images modal
+                // where images is an array of images (base64 or url path)
+                // NOTE: that if you can't see the bg image changing it's probably
+                // becasue the foregroud image is not transparent.
+                //this._zoomImgBg('bg', images);
+            }
+
+
             function LoadMyJs(id, picture) {
 
             var sId = null;
@@ -394,66 +483,6 @@
             if (id !== null && picture !== null) {
                     sId = id;
                    sPicture = picture;
-                }
-
-                var images = ['./js/wPaint/test/uploads/redoute.jpg'];
-
-
-
-                function saveImg(image) {
-                    var _this = this;
-
-                    $.ajax({
-                        type: 'POST',
-                        url: './UploadPicture?id=' + sId,
-                        data: {image: image},
-                        success: function(resp) {
-
-                            // doesn't have to be json, can be anything
-                            // returned from server after upload as long
-                            // as it contains the path to the image url
-                            // or a base64 encoded png, either will work
-                            //resp = $.parseJSON(resp);
-
-                            // update images array / object or whatever
-                            // is being used to keep track of the images
-                            // can store path or base64 here (but path is better since it's much smaller)
-                            images.push(image);
-                            findAllPictures(test);
-
-                            // do something with the image
-                            $('#wPaint-img').attr('src', image);
-
-                            // internal function for displaying status messages in the canvas
-                            _this._displayStatus('Image saved successfully');
-
-                        }
-                    });
-                }
-
-                function loadImgBg() {
-
-                    // internal function for displaying background images modal
-                    // where images is an array of images (base64 or url path)
-                    // NOTE: that if you can't see the bg image changing it's probably
-                    // becasue the foregroud image is not transparent.
-                    this._showFileModal('bg', images);
-                }
-                /*
-                function zoomImgBg() {
-
-                    // internal function for displaying background images modal
-                    // where images is an array of images (base64 or url path)
-                    // NOTE: that if you can't see the bg image changing it's probably
-                    // becasue the foregroud image is not transparent.
-                    this._zoomImgBg('bg', images);
-                }
-                */
-                function loadImgFg() {
-
-                    // internal function for displaying foreground images modal
-                    // where images is an array of images (base64 or url path)
-                    this._showFileModal('fg', images);
                 }
 
                 // remove data of the current wPaint element
@@ -475,11 +504,13 @@
                     menuOffsetLeft: 0,
                     menuOffsetTop: -50,
                     saveImg: saveImg,
-                    loadImgBg: loadImgBg,
-                    loadImgFg: loadImgFg,
-                }).fadeIn("slow");
-//                    zoomImgBg: zoomImgBg,
-            
+                    wpaintSelector: '#wPaint'
+                });
+//                    zoomImgBg: zoomImgBg
+                delete $('#wPaint').wPaint.menus.main.items.loadBg;
+                delete $('#wPaint').wPaint.menus.main.items.loadFg;
+                //$('#wPaint').wPaint.menus.reset();
+                $('#wPaint').fadeIn("slow");
             }
         </script>
         <script>
