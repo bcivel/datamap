@@ -444,7 +444,6 @@
         <script type="text/javascript" src="./js/wPaint/plugins/text/src/wPaint.menu.text.js"></script>
         <script type="text/javascript" src="./js/wPaint/plugins/shapes/wPaint.menu.main.shapes.min.js"></script>
         <script type="text/javascript" src="./js/wPaint/plugins/file/wPaint.menu.main.file.min.js"></script>
-        <!--script type="text/javascript" src="./js/wPaint/plugins/zoom/src/wPaint.menu.main.zoom.js"></script-->
         <script>
             function saveImg(image) {
                 var _this = this;
@@ -465,36 +464,6 @@
                     }
                 });
             }
-            
-            // update elements dimensions
-            // call wPaint('resize')
-            function zoomImgBg() {
-                if(!this.options.fullScreen) {
-                    this.options.width = $(this.options.wpaintSelector).width();
-                    this.options.height = $(this.options.wpaintSelector).height();
-
-                    $(this.options.wpaintSelector).css({
-                      width: $(window).width(),
-                      height: $(window).height()
-                    });
-                } else {
-                    $(this.options.wpaintSelector).css({
-                      width: this.options.width,
-                      height: this.options.height
-                    });
-                }
-
-                this.options.fullScreen = !this.options.fullScreen;
-                
-                this.resize();
-
-                // internal function for displaying background images modal
-                // where images is an array of images (base64 or url path)
-                // NOTE: that if you can't see the bg image changing it's probably
-                // becasue the foregroud image is not transparent.
-                //this._zoomImgBg('bg', images);
-            }
-
 
             function LoadMyJs(id, picture) {
 
@@ -526,7 +495,6 @@
                     saveImg: saveImg,
                     wpaintSelector: '#wPaint'
                 });
-//                    zoomImgBg: zoomImgBg
                 delete $('#wPaint').wPaint.menus.main.items.loadBg;
                 delete $('#wPaint').wPaint.menus.main.items.loadFg;
 

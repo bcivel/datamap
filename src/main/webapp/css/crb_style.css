@@ -856,3 +856,14 @@ table.doctb {
 }
 
 #navlist li:hover > .subnav { display: block; }
+
+#wPaint {
+    left: 3%;
+    top: 3%;
+    z-index: 10000000;
+    position:relative;
+    background-color:#7a7a7a;
+    margin:70px auto 20px auto;
+    width: 400px;
+    height: 600px;
+}
