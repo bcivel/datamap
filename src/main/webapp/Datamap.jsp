@@ -485,7 +485,7 @@
                 } else {
                     $(this.options.wpaintSelector).css({
                         position: 'relative',
-                        width: '600px',
+                        width: '360px',
                         height: '600px'                        
                     });
                 }
