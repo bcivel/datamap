@@ -150,8 +150,7 @@
                 var x = document.getElementById("testtest").value;
                 return x;
             }
-        </script>
-        <script type="text/javascript">
+
             function updatePicture(value, columnName, id) {
                 var sValue = value.value;
                 var sColumnName = columnName;
@@ -328,70 +327,6 @@
         
 
         <script type="text/javascript">
-            (document).ready($.get('GetDistinctValueFromTableColumn?table=Datamap&colName=Stream', function(data) {
-                for (var i = 0; i < data.length; i++) {
-                    $("#stream").append($("<option></option>")
-                            .attr("value", data[i])
-                            .text(data[i]))
-                }
-                $("#stream").multiselect({
-                    header: "Stream",
-                    noneSelectedText: "Select Stream",
-                    selectedText: "# of # stream selected"
-                });
-
-            }
-            ));
-        </script>
-        <script type="text/javascript">
-            (document).ready($.get('GetDistinctValueFromTableColumn?table=Datamap&colName=Page', function(data) {
-                for (var i = 0; i < data.length; i++) {
-                    $("#page").append($("<option></option>")
-                            .attr("value", data[i])
-                            .text(data[i]))
-                }
-                $("#page").multiselect({
-                    header: "Page",
-                    noneSelectedText: "Select Page",
-                    selectedText: "# of # page selected"
-                });
-
-            }
-            ));
-        </script>
-        <script type="text/javascript">
-            (document).ready($.get('GetDistinctValueFromTableColumn?table=Datamap&colName=Picture', function(data) {
-                for (var i = 0; i < data.length; i++) {
-                    $("#picture").append($("<option></option>")
-                            .attr("value", data[i])
-                            .text(data[i]))
-                }
-                $("#picture").multiselect({
-                    header: "Picture",
-                    noneSelectedText: "Select Picture",
-                    selectedText: "# of # Picture selected"
-                });
-
-            }
-            ));
-        </script>
-        <script type="text/javascript">
-            (document).ready($.get('GetDistinctValueFromTableColumn?table=Datamap&colName=implemented', function(data) {
-                for (var i = 0; i < data.length; i++) {
-                    $("#impl").append($("<option></option>")
-                            .attr("value", data[i])
-                            .text(data[i]))
-                }
-                $("#impl").multiselect({
-                    header: "Implemented Status",
-                    noneSelectedText: "Select Implemented Status",
-                    selectedText: "# of # Status selected"
-                });
-
-            }
-            ));
-        </script>
-        <script type="text/javascript">
             var test = document.getElementById("testtest").value;
             function findAllPictures(test) {
                 $.get('FindAllPicture'+test, function(data) {
@@ -407,9 +342,6 @@
                 });
             }
 
-            (document).ready(findAllPictures(test));
-        </script>
-        <script>
             function deletePicture(id) {
 
                 if (confirm('Beware, the picture will be deleted')) {
@@ -417,12 +349,81 @@
                     alert('toto');
                 }
             }
-        </script>
-        <script>
+
             function popup(mylink) {
                 window.open(mylink, 'popup',
                         'width=600,height=500,scrollbars=yes,menubar=false,location=false');
             }
+            
+            function loadDataInput(id, page, name){
+                document.getElementById('pageInput').value= page;
+                document.getElementById('pictureInput').value = name;
+                document.getElementById('idInput').value = id;
+                $("[aria-controls='datamapList']").val(name);
+                
+                //simulate keydown keyup to start search on image text.
+                $("[aria-controls='datamapList']").keydown();
+                $("[aria-controls='datamapList']").keyup();
+            }
+
+            $(document).ready($.get('GetDistinctValueFromTableColumn?table=Datamap&colName=Stream', function(data) {
+                    for (var i = 0; i < data.length; i++) {
+                        $("#stream").append($("<option></option>")
+                                .attr("value", data[i])
+                                .text(data[i]))
+                    }
+                    $("#stream").multiselect({
+                        header: "Stream",
+                        noneSelectedText: "Select Stream",
+                        selectedText: "# of # stream selected"
+                    });
+
+                };
+                
+                $.get('GetDistinctValueFromTableColumn?table=Datamap&colName=Page', function(data) {
+                    for (var i = 0; i < data.length; i++) {
+                        $("#page").append($("<option></option>")
+                                .attr("value", data[i])
+                                .text(data[i]))
+                    }
+                    $("#page").multiselect({
+                        header: "Page",
+                        noneSelectedText: "Select Page",
+                        selectedText: "# of # page selected"
+                    });
+
+                };
+                
+                $.get('GetDistinctValueFromTableColumn?table=Datamap&colName=Picture', function(data) {
+                    for (var i = 0; i < data.length; i++) {
+                        $("#picture").append($("<option></option>")
+                                .attr("value", data[i])
+                                .text(data[i]))
+                    }
+                    $("#picture").multiselect({
+                        header: "Picture",
+                        noneSelectedText: "Select Picture",
+                        selectedText: "# of # Picture selected"
+                    });
+
+                };
+                
+                $.get('GetDistinctValueFromTableColumn?table=Datamap&colName=implemented', function(data) {
+                    for (var i = 0; i < data.length; i++) {
+                        $("#impl").append($("<option></option>")
+                                .attr("value", data[i])
+                                .text(data[i]))
+                    }
+                    $("#impl").multiselect({
+                        header: "Implemented Status",
+                        noneSelectedText: "Select Implemented Status",
+                        selectedText: "# of # Status selected"
+                    });
+
+                };
+                        
+                findAllPictures(test);
+            ));
         </script>
         <!-- jQuery UI -->
         <script type="text/javascript" src="./js/wPaint/lib/jquery.ui.core.1.10.3.min.js"></script>
@@ -463,25 +464,6 @@
                     }
                 });
             }
-
-            /*
-            function loadImgBg() {
-
-                // internal function for displaying background images modal
-                // where images is an array of images (base64 or url path)
-                // NOTE: that if you can't see the bg image changing it's probably
-                // becasue the foregroud image is not transparent.
-                this._showFileModal('bg', images);
-            }
-
-
-            function loadImgFg() {
-
-                // internal function for displaying foreground images modal
-                // where images is an array of images (base64 or url path)
-                this._showFileModal('fg', images);
-            }
-            */
             
             // update elements dimensions
             // call wPaint('resize')
@@ -500,30 +482,10 @@
                       height: this.options.height
                     });
                 }
-                this.ctxBgResize = false;
-                this.ctxResize = false;
 
                 this.options.fullScreen = !this.options.fullScreen;
-                var bg = this.getBg(),
-                    image = this.getImage();
-
-                this.width = this.$el.width();
-                this.height = this.$el.height();
-
-                this.canvasBg.width = this.width;
-                this.canvasBg.height = this.height;
-                this.canvas.width = this.width;
-                this.canvas.height = this.height;
-
-                if (this.ctxBgResize === false) {
-                  this.ctxBgResize = true;
-                  this.setBg(bg, false);
-                }
-
-                if (this.ctxResize === false) {
-                  this.ctxResize = true;
-                  this.setImage(image, '', false, true);
-                }
+                
+                this.resize();
 
                 // internal function for displaying background images modal
                 // where images is an array of images (base64 or url path)
@@ -566,21 +528,9 @@
 //                    zoomImgBg: zoomImgBg
                 delete $('#wPaint').wPaint.menus.main.items.loadBg;
                 delete $('#wPaint').wPaint.menus.main.items.loadFg;
-                //$('#wPaint').wPaint.menus.reset();
+
                 $('#wPaint').fadeIn("slow");
             }
         </script>
-        <script>
-            function loadDataInput(id, page, name){
-                document.getElementById('pageInput').value= page;
-                document.getElementById('pictureInput').value = name;
-                document.getElementById('idInput').value = id;
-                $("[aria-controls='datamapList']").val(name);
-                
-                //simulate keydown keyup to start search on image text.
-                $("[aria-controls='datamapList']").keydown();
-                $("[aria-controls='datamapList']").keyup();
-            }
-                    </script>
     </body>
 </html>
