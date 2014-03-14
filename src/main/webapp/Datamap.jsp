@@ -445,29 +445,83 @@
         <script type="text/javascript" src="./js/wPaint/plugins/text/src/wPaint.menu.text.js"></script>
         <script type="text/javascript" src="./js/wPaint/plugins/shapes/wPaint.menu.main.shapes.min.js"></script>
         <script type="text/javascript" src="./js/wPaint/plugins/file/wPaint.menu.main.file.min.js"></script>
+        <!--script type="text/javascript" src="./js/wPaint/plugins/zoom/src/wPaint.menu.main.zoom.js"></script-->
         <script>
-            function saveImg(image) {
-                var _this = this;
 
-                $.ajax({
-                    type: 'POST',
-                    url: './UploadPicture?id=' + sId,
-                    data: {image: image},
-                    success: function(resp) {
-                        findAllPictures(test);
 
-                        // do something with the image
-                        $('#wPaint-img').attr('src', image);
+            // update elements dimensions
+            // call wPaint('resize')
+            function zoomImgBg() {
+                if(!this.options.fullScreen) {
+                    $(this.options.wpaintSelector).css({
+                        position: 'absolute',
+                        width: '90%',
+                        height: '90%'                        
+                    });
+                this.ctxBgResize = false;
+                this.ctxResize = false;
 
-                        // internal function for displaying status messages in the canvas
-                        _this._displayStatus('Image saved successfully');
+                var bg = this.getBg(),
+                    image = this.getImage();
 
-                    }
-                });
+                this.width = this.$el.width();
+                this.height = this.$el.height();
+
+                this.canvasBg.width = this.width;
+                this.canvasBg.height = this.height;
+                this.canvas.width = this.width;
+                this.canvas.height = this.height;
+
+                if (this.ctxBgResize === false) {
+                  this.ctxBgResize = true;
+                  this.setBg(bg, false);
+                }
+
+                if (this.ctxResize === false) {
+                  this.ctxResize = true;
+                  this.setImage(image, '', false, true);
+                }
+        
+                } else {
+                    $(this.options.wpaintSelector).css({
+                        position: 'relative',
+                        width: '600px',
+                        height: '600px'                        
+                    });
+                }
+                this.options.fullScreen = !this.options.fullScreen;
+                
+                //this.resize();
+
+                // internal function for displaying background images modal
+                // where images is an array of images (base64 or url path)
+                // NOTE: that if you can't see the bg image changing it's probably
+                // becasue the foregroud image is not transparent.
+                //this._zoomImgBg('bg', images);
             }
 
-            function LoadMyJs(id, picture) {
 
+            function LoadMyJs(id, picture) {
+                
+                function saveImg(image) {
+                    var _this = this;
+
+                    $.ajax({
+                        type: 'POST',
+                        url: './UploadPicture?id=' + sId,
+                        data: {image: image},
+                        success: function(resp) {
+                            findAllPictures(test);
+
+                            // do something with the image
+                            $('#wPaint-img').attr('src', image);
+
+                            // internal function for displaying status messages in the canvas
+                            _this._displayStatus('Image saved successfully');
+
+                        }
+                    });
+                }
             var sId = null;
             var sPicture = null;
             if (id !== null && picture !== null) {
@@ -497,6 +551,7 @@
                     saveImg: saveImg,
                     wpaintSelector: '#wPaint'
                 });
+//                    zoomImgBg: zoomImgBg,
                 delete $('#wPaint').wPaint.menus.main.items.loadBg;
                 delete $('#wPaint').wPaint.menus.main.items.loadFg;
 
