@@ -366,7 +366,7 @@
                 $("[aria-controls='datamapList']").keyup();
             }
 
-            $(document).ready(
+            $(document).ready(function(){
                 $.get('GetDistinctValueFromTableColumn?table=Datamap&colName=Stream', function(data) {
                     for (var i = 0; i < data.length; i++) {
                         $("#stream").append($("<option></option>")
@@ -424,7 +424,7 @@
                 });
                         
                 findAllPictures(test);
-            );
+            });
         </script>
         <!-- jQuery UI -->
         <script type="text/javascript" src="./js/wPaint/lib/jquery.ui.core.1.10.3.min.js"></script>
