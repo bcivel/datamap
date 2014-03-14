@@ -48,7 +48,7 @@ public class DeleteDatamap extends HttpServlet {
             IDatamapService datamapService = appContext.getBean(IDatamapService.class);
             IFactoryDatamap factoryDatamap = appContext.getBean(IFactoryDatamap.class);
 
-            Datamap sqlLib = factoryDatamap.create(Integer.valueOf(name), null, null, null, null,null, null);
+            Datamap sqlLib = factoryDatamap.create(Integer.valueOf(name), null, null, null, null, null, null, null);
             datamapService.deleteDatamap(sqlLib);
             
         } finally {

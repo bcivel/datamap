@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class FactoryDatamap implements IFactoryDatamap {
 
     @Override
-    public Datamap create(Integer id,String stream,String page,String datacerberus,String implemented, String xpath, String picture) {
+    public Datamap create(Integer id,String stream,String page,String datacerberus,String implemented, String xpath, String picture, String comment) {
         Datamap datamap = new Datamap();
         datamap.setDatacerberus(datacerberus);
         datamap.setId(id);
@@ -24,6 +24,7 @@ public class FactoryDatamap implements IFactoryDatamap {
         datamap.setStream(stream);
         datamap.setXpath(xpath);
         datamap.setPicture(picture);
+        datamap.setComment(comment);
         return datamap;
     }
 

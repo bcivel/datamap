@@ -48,12 +48,13 @@ public class CreateDatamap extends HttpServlet {
         String implemented = policy.sanitize(request.getParameter("implemented"));
         String xpath = policy.sanitize(request.getParameter("xpath"));
         String picture = policy.sanitize(request.getParameter("picture"));
+        String comment = policy.sanitize(request.getParameter("comment"));
         
         ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
         IDatamapService datamapService = appContext.getBean(IDatamapService.class);
         IFactoryDatamap factoryDatamap = appContext.getBean(IFactoryDatamap.class);
         
-        Datamap datamap = factoryDatamap.create(0, stream, page, datacerberus, implemented ,xpath,picture);
+        Datamap datamap = factoryDatamap.create(0, stream, page, datacerberus, implemented , xpath, picture, comment);
         datamapService.createDatamap(datamap);
             
         response.sendRedirect("Datamap.jsp");

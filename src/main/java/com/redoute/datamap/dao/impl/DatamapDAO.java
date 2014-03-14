@@ -82,8 +82,8 @@ public class DatamapDAO implements IDatamapDAO {
     @Override
     public void createDatamap(Datamap datamap) {
         StringBuilder query = new StringBuilder();
-        query.append("INSERT INTO datamap (`id`,`stream`,`page`,`datacerberus`,`implemented`, `xpath`, `picture`) ");
-        query.append("VALUES (0,?,?,?,?,?,?)");
+        query.append("INSERT INTO datamap (`id`,`stream`,`page`,`datacerberus`,`implemented`, `xpath`, `picture`, `comment`) ");
+        query.append("VALUES (0,?,?,?,?,?,?,?)");
 
         Connection connection = this.databaseSpring.connect();
         try {
@@ -95,6 +95,7 @@ public class DatamapDAO implements IDatamapDAO {
                 preStat.setString(4, datamap.getImplemented());
                 preStat.setString(5, datamap.getXpath());
                 preStat.setString(6, datamap.getPicture());
+                preStat.setString(7, datamap.getComment());
 
                 preStat.executeUpdate();
 
@@ -214,6 +215,9 @@ public class DatamapDAO implements IDatamapDAO {
         gSearch.append(" or `picture` like '%");
         gSearch.append(searchTerm);
         gSearch.append("%'");
+        gSearch.append(" or `comment` like '%");
+        gSearch.append(searchTerm);
+        gSearch.append("%'");
         gSearch.append(" or `datacerberus` like '%");
         gSearch.append(searchTerm);
         gSearch.append("%')");
@@ -287,8 +291,9 @@ public class DatamapDAO implements IDatamapDAO {
         String implemented = resultSet.getString("implemented");
         String xpath = resultSet.getString("xpath");
         String picture = resultSet.getString("picture");
+        String comment = resultSet.getString("comment");
 
-        return factoryDatamap.create(id, stream, page, datacerberus, implemented,xpath,picture);
+        return factoryDatamap.create(id, stream, page, datacerberus, implemented, xpath, picture, comment);
     }
 
     @Override
@@ -353,6 +358,9 @@ public class DatamapDAO implements IDatamapDAO {
         gSearch.append(searchTerm);
         gSearch.append("%'");
         gSearch.append(" or `picture` like '%");
+        gSearch.append(searchTerm);
+        gSearch.append("%'");
+        gSearch.append(" or `comment` like '%");
         gSearch.append(searchTerm);
         gSearch.append("%'");
         gSearch.append(" or `datacerberus` like '%");

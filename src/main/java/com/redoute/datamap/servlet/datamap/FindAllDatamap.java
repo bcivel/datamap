@@ -69,6 +69,7 @@ public class FindAllDatamap extends HttpServlet {
             String[] implemented = null;
             String[] picture = null;
             String xpath = "";
+            String comment = "";
 
             if (request.getParameterValues("page") != null) {
             page = request.getParameterValues("page");
@@ -82,10 +83,14 @@ public class FindAllDatamap extends HttpServlet {
             if (request.getParameterValues("impl") != null) {
             implemented = request.getParameterValues("impl");
             }
+            if (request.getParameterValues("comment") != null) {
+                comment = request.getParameter("comment");
+            }
             
             id = policy.sanitize(request.getParameter("sSearch_0"));
             datacerberus = policy.sanitize(request.getParameter("sSearch_3"));
             xpath = policy.sanitize(request.getParameter("sSearch_5"));
+            //comment = policy.sanitize(request.getParameter("sSearch_6"));
             
             List<String> sArray = new ArrayList<String>();
             if (!id.equals("")) {
@@ -132,6 +137,11 @@ public class FindAllDatamap extends HttpServlet {
           if (!xpath.equals("")) {
                 String sxpath = " `xpath` like '%" + xpath + "%'";
                 sArray.add(sxpath);
+            }
+
+          if (!comment.equals("")) {
+                String scomment = " `comment` like '%" + comment + "%'";
+                sArray.add(scomment);
             }
 
             StringBuilder individualSearch = new StringBuilder();
@@ -195,7 +205,8 @@ public class FindAllDatamap extends HttpServlet {
                         .put(datamap.getDatacerberus())
                         .put(datamap.getPicture())
                         .put(datamap.getXpath())
-                        .put(datamap.getImplemented());
+                        .put(datamap.getImplemented())
+                        .put(datamap.getComment());
 
                 data.put(row);
             }

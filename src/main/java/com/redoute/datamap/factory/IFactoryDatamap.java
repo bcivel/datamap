@@ -13,5 +13,5 @@ import com.redoute.datamap.entity.Datamap;
  */
 public interface IFactoryDatamap {
     
-    Datamap create(Integer id,String stream,String page,String datacerberus,String implemented, String xpath,String picture);
+    Datamap create(Integer id,String stream,String page,String datacerberus,String implemented, String xpath, String picture, String comment);
 }

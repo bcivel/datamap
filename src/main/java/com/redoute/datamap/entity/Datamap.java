@@ -17,6 +17,15 @@ public class Datamap {
     private String implemented;
     private String picture;
     private String xpath;
+    private String comment;
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
     public String getPicture() {
         return picture;
