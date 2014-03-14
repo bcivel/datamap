@@ -28,8 +28,8 @@
         <script type="text/javascript" src="js/jquery.validate.min.js"></script>
         <script type="text/javascript" src="js/jquery-migrate-1.2.1.min.js"></script>
         <script type="text/javascript" src="js/jquery.multiselect.js" charset="utf-8"></script>
-        <style type="text/css">#contentParent{height:400pt;overflow:auto}</style> 
-        <style type="text/css">#pictureList{height:400pt;overflow:auto}</style> 
+        <style type="text/css">#contentParent{height:360pt;overflow:auto}</style> 
+        <style type="text/css">#pictureList{height:360pt;overflow:auto}</style> 
 
 
         <script type="text/javascript">
@@ -47,7 +47,7 @@
                     "sPaginationType": "full_numbers",
                     "bSearchable": true,
                     "aTargets": [0],
-                    "iDisplayLength": 10,
+                    "iDisplayLength": 100,
                     "aoColumns": [
                         {"sName": "ID", "sWidth": "10%", "bVisible": false},
                         {"sName": "Stream", "sWidth": "5%"},
@@ -210,17 +210,17 @@
         <div class="ncdescriptionfirstpart" style="vertical-align: central; clear:both">
             <p style="text-align:left">Data-Cerberus Implementation</p>
             <form action="Datamap.jsp" method="get" name="ExecFilters" id="ExecFilters">
-                <div style="width: 300px;float:left">
+                <div style="width: 250px;float:left">
                     <!--<p style="float:left">creator</p>-->
-                    <select style="width: 300px;float:left" multiple="multiple"  id="stream" name="stream">
+                    <select style="width: 250px;float:left" multiple="multiple"  id="stream" name="stream">
                     </select>
                 </div>
-                <div style="width: 300px;float:left">
-                    <select style="width: 300px;float:left" multiple="multiple"  id="page" name="page">
+                <div style="width: 250px;float:left">
+                    <select style="width: 250px;float:left" multiple="multiple"  id="page" name="page">
                     </select>
                 </div>
-                <div style="width: 300px;float:left">
-                    <select style="width: 300px;float:left" multiple="multiple"  id="picture" name="picture">
+                <div style="width: 250px;float:left">
+                    <select style="width: 250px;float:left" multiple="multiple"  id="picture" name="picture">
                     </select>
                 </div>
                 <div style="width: 250px;float:left">
@@ -231,8 +231,30 @@
             <div><input style="float:right;width:40px; height:40px; border-width: 1px; border-radius: 20px;" type="button" value="R" title="Reporting" onclick="location.href = 'Reporting.jsp'"></div>
             </form>
         </div>
-<!--        <div style="clear:both"><div style="float:left; width:550px"><p>data-cerberus forms</p></div>
-        </div>-->
+<div style="clear:both; height:10px"></div>
+        <div id="picturesListDiv" style="float:left; width: 400px;background-color:#E2E4FF">
+            <div class="ncdescriptionheader" style="height:30px" >List of Pictures</div>
+            <div id="pictureList" name="pictureList"></div>
+            <div class="nctablefooter" style="height:6px"></div>
+        </div>
+
+        <div id="pictures" style="float:left; width: 650px;background-color:#E2E4FF">    
+            <div class="ncdescriptionheader" style="height:30px" >
+                <input id="idInput" style="float:left; display:none" value="">
+                <p style="float:left;">Page:</p><input id="pageInput" style="float:left;" value="" onChange="javascript: updatePicture(this, 'page', 'id')">
+                <p style="float:left;">Picture:</p><input id="pictureInput" style="float:left;" value="" onChange="javascript: updatePicture(this, 'picture', 'id')">
+                <button id="deletePicture" style="float:right" onClick="javacript: deletePicture('')">Delete Picture</button>
+                <button id="addPicture" style="float:right" onClick="javacript: popup('AddPicture.jsp')">Add Picture</button>
+            </div>
+            <div id="contentParent">
+                <!--<div id="contentDiv" class="content-box" style="background-color:#E2E4FF">-->
+                <%@ include file="PictureDiv.jsp" %>
+                <!--           <div id="wPaint" style="position:relative; width:600px; height:400px; background-color:#7a7a7a; margin:70px auto 20px auto;"></div>
+                            <center id="wPaint-img"></center>
+                            </div>-->
+            </div>
+            <div class="nctablefooter" style="height:6px"></div>
+            </div>
 <div style="clear:both; height:10px"><p></p></div>
         <div style="float:left; width: 1200px;  font: 90% sans-serif">
             <table id="datamapList" class="display">
@@ -253,32 +275,7 @@
             </table>
         </div>
         <!--<div style="clear:both; height:30px"><p>Pictures</p></div>-->
-        <div style="clear:both; height:20px"><p></p></div>
-        <div id="picturesListDiv" style="float:left; width: 400px;background-color:#E2E4FF">
-            <div class="ncdescriptionheader" style="height:30px" >List of Pictures</div>
-            <div id="pictureList" name="pictureList"></div>
-        </div>
-
-        <div id="pictures" style="float:left; width: 650px;background-color:#E2E4FF">    
-            <div class="ncdescriptionheader" style="height:30px" >
-                <input id="idInput" style="float:left; display:none" value="">
-                <p style="float:left;">Page:</p><input id="pageInput" style="float:left;" value="" onChange="javascript: updatePicture(this, 'page', 'id')">
-                <p style="float:left;">Picture:</p><input id="pictureInput" style="float:left;" value="" onChange="javascript: updatePicture(this, 'picture', 'id')">
-                <button id="deletePicture" style="float:right" onClick="javacript: deletePicture('')">Delete Picture</button>
-                <button id="addPicture" style="float:right" onClick="javacript: popup('AddPicture.jsp')">Add Picture</button>
-            </div>
-            <div id="contentParent">
-                <!--<div id="contentDiv" class="content-box" style="background-color:#E2E4FF">-->
-                <%@ include file="PictureDiv.jsp" %>
-                <!--           <div id="wPaint" style="position:relative; width:600px; height:400px; background-color:#7a7a7a; margin:70px auto 20px auto;"></div>
-                            <center id="wPaint-img"></center>
-                            </div>-->
-            </div>
-            <div class="nctablefooter" style="height:6px"></div>
-            <br>
-
-
-        </div>
+        
 
 
         <div>
