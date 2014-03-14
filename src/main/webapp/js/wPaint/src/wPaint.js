@@ -178,7 +178,7 @@
 
         if (!resize) {
           // get width/height
-          if (myImage.width > _this.width || myImage.height > _this.height) {
+          if (myImage.width > _this.width || myImage.height > _this.height || _this.options.imageStretch) {
             xR = _this.width / myImage.width;
             yR = _this.height / myImage.height;
 
@@ -569,6 +569,7 @@
         if(!menu.items[key].img) {
             menu.items[key].img = _this.wPaint.options.path + menu.img;
         } else if(menu.items[key].img.indexOf(_this.wPaint.options.path) !== 0) {
+            // if plugin path does not start by options.path add it
             menu.items[key].img = _this.wPaint.options.path + menu.items[key].img;
         }
 
@@ -1177,6 +1178,7 @@
     menuOffsetTop:   5,                  // top offset of primary menu
     bg:              null,               // set bg on init
     image:           null,               // set image on init
+    imageStretch:    false,              // stretch smaller images to full canvans dimensions
     onShapeDown:     null,               // callback for draw down event
     onShapeMove:     null,               // callback for draw move event
     onShapeUp:       null                // callback for draw up event

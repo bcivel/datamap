@@ -493,6 +493,7 @@
                     fontBold: true,
                     menuOffsetLeft: 0,
                     menuOffsetTop: -50,
+                    imageStretch: true,
                     saveImg: saveImg,
                     wpaintSelector: '#wPaint'
                 });
