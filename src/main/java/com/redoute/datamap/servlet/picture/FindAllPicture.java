@@ -50,6 +50,8 @@ public class FindAllPicture extends HttpServlet {
         try {
             String page[] = null;
             String picture[] = null;
+            String implemented[] = null;
+            String stream[] = null;
 
             if (request.getParameterValues("page") != null) {
             page = request.getParameterValues("page");
@@ -57,22 +59,46 @@ public class FindAllPicture extends HttpServlet {
             if (request.getParameterValues("picture") != null) {
             picture = request.getParameterValues("picture");
             }
+            if (request.getParameterValues("impl") != null) {
+            implemented = request.getParameterValues("impl");
+            }
+            if (request.getParameterValues("stream") != null) {
+            stream = request.getParameterValues("stream");
+            }
             List<String> sArray = new ArrayList<String>();
+            List<String> sArrayJ = new ArrayList<String>();
             if (page != null) {
             String spage = " (";
             for (int a = 0; a < page.length - 1; a++) {
-                spage += " `page` like '%" + page[a] + "%' or";
+                spage += " p.`page` like '%" + page[a] + "%' or";
             }
-            spage += " `page` like '%" + page[page.length - 1] + "%') ";
+            spage += " p.`page` like '%" + page[page.length - 1] + "%') ";
             sArray.add(spage);
         }
             if (picture != null) {
             String spicture = " (";
             for (int a = 0; a < picture.length - 1; a++) {
-                spicture += " `picture` like '%" + picture[a] + "%' or";
+                spicture += " p.`picture` like '%" + picture[a] + "%' or";
             }
-            spicture += " `picture` like '%" + picture[picture.length - 1] + "%') ";
+            spicture += " p.`picture` like '%" + picture[picture.length - 1] + "%') ";
             sArray.add(spicture);
+        }
+            
+            if (implemented != null) {
+            String simplemented = " (";
+            for (int a = 0; a < implemented.length - 1; a++) {
+                simplemented += " d.`implemented` like '%" + implemented[a] + "%' or";
+            }
+            simplemented += " d.`implemented` like '%" + implemented[implemented.length - 1] + "%') ";
+            sArrayJ.add(simplemented);
+        }
+            if (stream != null) {
+            String sstream = " (";
+            for (int a = 0; a < stream.length - 1; a++) {
+                sstream += " d.`stream` like '%" + stream[a] + "%' or";
+            }
+            sstream += " d.`stream` like '%" + stream[stream.length - 1] + "%') ";
+            sArrayJ.add(sstream);
         }
             
             StringBuilder individualSearch = new StringBuilder();
@@ -82,15 +108,24 @@ public class FindAllPicture extends HttpServlet {
                     individualSearch.append(sArray.get(i));
                 }
                }
+            
+            StringBuilder joinedSearch = new StringBuilder();
+            if (sArrayJ.size() >= 1) {
+                for (int i = 0; i < sArrayJ.size(); i++) {
+                    joinedSearch.append(" and ");
+                    joinedSearch.append(sArrayJ.get(i));
+                }
+               }
 
             String inds = String.valueOf(individualSearch);
+            String joined = String.valueOf(joinedSearch);
 
             JSONArray data = new JSONArray(); //data that will be shown in the table
 
             ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
             IPictureService pictureService = appContext.getBean(IPictureService.class);
 
-            List<Picture> datamapList = pictureService.findPictureListByCriteria(inds);
+            List<Picture> datamapList = pictureService.findPictureListByCriteria(inds, joined);
 
             JSONObject jsonResponse = new JSONObject();
 

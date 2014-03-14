@@ -185,19 +185,33 @@ public class PictureDAO implements IPictureDAO {
     }
 
     @Override
-    public List<Picture> findPictureListByCriteria(String individualSearch) {
+    public List<Picture> findPictureListByCriteria(String individualSearch, String joinedSearch) {
         List<Picture> pictureList = new ArrayList<Picture>();
         StringBuilder gSearch = new StringBuilder();
         StringBuilder searchSQL = new StringBuilder();
+        StringBuilder searchSQL2 = new StringBuilder();
 
         StringBuilder query = new StringBuilder();
-        query.append("SELECT * FROM picture where 1=1 ");
+        query.append("SELECT * FROM picture p ");
+        
+        if (!joinedSearch.equals("")){
+        query.append(" join datamap d on p.page=d.page and p.picture=d.picture ");
+        }
+        
+        query.append(" where 1=1 ");
+        
+        if (!joinedSearch.equals("")){
+        searchSQL.append(joinedSearch);
+        }
 
         if (!individualSearch.equals("")) {
             searchSQL.append(individualSearch);
             } 
 
+        query.append(searchSQL2);
         query.append(searchSQL);
+        
+        query.append(" group by p.page,p.picture ");
         
         Logger.log("test", Level.FATAL, query.toString());
         Connection connection = this.databaseSpring.connect();

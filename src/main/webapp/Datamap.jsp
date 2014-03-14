@@ -380,7 +380,6 @@
 
                 if (confirm('Beware, the picture will be deleted')) {
                     window.location = "DeletePicture?id=" + id;
-                    alert('toto');
                 }
             }
         </script>

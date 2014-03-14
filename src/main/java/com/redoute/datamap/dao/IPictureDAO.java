@@ -36,9 +36,10 @@ public interface IPictureDAO {
     /**
      *
      * @param individualSearch search term on a dedicated column of the resultSet
+     * @param joinedSearch search term on collumn on joinedTable
      * @return
      */
-    List<Picture> findPictureListByCriteria(String individualSearch);
+    List<Picture> findPictureListByCriteria(String individualSearch, String joinedSearch);
     
     /**
      * 

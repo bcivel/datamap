@@ -38,10 +38,11 @@ public interface IPictureService {
     /**
      *
      * @param individualSearch search term on a dedicated column of the
+     * @param joinedSearch search term on join other table
      * resultSet
      * @return
      */
-    List<Picture> findPictureListByCriteria(String individualSearch);
+    List<Picture> findPictureListByCriteria(String individualSearch, String joinedSearch);
     
     /**
      * 
