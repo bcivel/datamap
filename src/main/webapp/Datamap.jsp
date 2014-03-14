@@ -61,16 +61,38 @@
                     ],
                     "fnRowCallback": function(nRow, aData, iDisplayIndex) {
                         /* Append the grade to the default row class name */
-                        if (aData[7] == "N")
+                        if (aData[6] === "N")
                         {
                             nRow.className = "gradeX odd";
-                            $('td:eq(0)', nRow).html('<b>' + aData[1] + '</b>');
-                            $('td:eq(1)', nRow).html('<b>' + aData[2] + '</b>');
-                            $('td:eq(2)', nRow).html('<b>' + aData[3] + '</b>');
-                            $('td:eq(3)', nRow).html('<b>' + aData[4] + '</b>');
-                            $('td:eq(4)', nRow).html('<b>' + aData[5] + '</b>');
-                            $('td:eq(5)', nRow).html('<b>' + aData[6] + '</b>');
-                            $('td:eq(6)', nRow).html('<b>' + aData[7] + '</b>');
+                            $('td:eq(0)', nRow).html(aData[1]);
+                            $('td:eq(1)', nRow).html(aData[2]);
+                            $('td:eq(2)', nRow).html(aData[3]);
+                            $('td:eq(3)', nRow).html(aData[4]);
+                            $('td:eq(4)', nRow).html(aData[5]);
+                            $('td:eq(5)', nRow).html(aData[6]);
+                            $('td:eq(6)', nRow).html(aData[7]);
+                        }
+                        if (aData[6] === "Y")
+                        {
+                            nRow.className = "gradeA odd";
+                            $('td:eq(0)', nRow).html(aData[1]);
+                            $('td:eq(1)', nRow).html(aData[2]);
+                            $('td:eq(2)', nRow).html(aData[3]);
+                            $('td:eq(3)', nRow).html(aData[4]);
+                            $('td:eq(4)', nRow).html(aData[5]);
+                            $('td:eq(5)', nRow).html(aData[6]);
+                            $('td:eq(6)', nRow).html(aData[7]);
+                        }
+                        if ((aData[6] !== "Y") && (aData[6] !== "N"))
+                        {
+                            nRow.className = "gradeC odd";
+                            $('td:eq(0)', nRow).html(aData[1]);
+                            $('td:eq(1)', nRow).html(aData[2]);
+                            $('td:eq(2)', nRow).html(aData[3]);
+                            $('td:eq(3)', nRow).html(aData[4]);
+                            $('td:eq(4)', nRow).html(aData[5]);
+                            $('td:eq(5)', nRow).html(aData[6]);
+                            $('td:eq(6)', nRow).html(aData[7]);
                         }
                     }
                 }
