@@ -43,7 +43,7 @@
             </div>
             <div style="width: 400px; clear:both">
                 <label for="Screenshot" style="font-weight:bold">Screenshot</label><br>
-                <textarea name="Screenshot" id="Screenshot" class="ncdetailstext"  style="width:500px; height:85px"></textarea>
+                <textarea name="Screenshot" id="Screenshot" class="ncdetailstext" placeholder="toot" style="width:500px; height:85px"></textarea>
                 <input id="ScreenshotDetail" class="ncdetailstext" name="ScreenshotDetail" type="hidden" value="" />
             </div>
             <div>

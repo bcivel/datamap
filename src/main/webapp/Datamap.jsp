@@ -231,13 +231,13 @@
             </form>
         </div>
 <div style="clear:both; height:10px"></div>
-        <div id="picturesListDiv" style="float:left; width: 400px;background-color:#E2E4FF">
+        <div id="picturesListDiv" style="float:left; width: 30%;background-color:#E2E4FF">
             <div class="ncdescriptionheader" style="height:30px" >List of Pictures</div>
             <div id="pictureList" name="pictureList"></div>
             <div class="nctablefooter" style="height:6px"></div>
         </div>
 
-        <div id="pictures" style="float:left; width: 650px;background-color:#E2E4FF">    
+        <div id="pictures" style="float:left; width: 70%;background-color:#E2E4FF">    
             <div class="ncdescriptionheader" style="height:30px" >
                 <input id="idInput" style="float:left; display:none" value="">
                 <p style="float:left;">Page:</p><input id="pageInput" style="float:left;" value="" onChange="javascript: updatePicture(this, 'page', 'id')">
@@ -255,7 +255,7 @@
             <div class="nctablefooter" style="height:6px"></div>
             </div>
 <div style="clear:both; height:10px"><p></p></div>
-        <div style="float:left; width: 1200px;  font: 90% sans-serif">
+        <div style="float:left; width: 100%;  font: 90% sans-serif">
             <table id="datamapList" class="display">
                 <thead>
                     <tr>
@@ -353,7 +353,7 @@
 
             function popup(mylink) {
                 window.open(mylink, 'popup',
-                        'width=600,height=500,scrollbars=yes,menubar=false,location=false');
+                        'width=800,height=500,scrollbars=yes,menubar=false,location=false');
             }
             
             function loadDataInput(id, page, name){
@@ -485,7 +485,7 @@
                 } else {
                     $(this.options.wpaintSelector).css({
                         position: 'relative',
-                        width: '360px',
+                        width: '560px',
                         height: '600px'                        
                     });
                 }
@@ -539,6 +539,7 @@
                     image: sPicture,
                     bg: '#E2E4FF',
                     fillStyle: 'transparent',
+                    menuOrientation: 'horizontal',
                     strokeStyle: '#007700',
                     textColor: '#fff',
                     textBgColor: '#007700',
