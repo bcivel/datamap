@@ -51,6 +51,14 @@
         <servlet-name>GenerateGraph</servlet-name>
         <servlet-class>com.redoute.datamap.servlet.GenerateGraph</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>TestPop</servlet-name>
+        <servlet-class>com.redoute.datamap.log.TestPop</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ImportFiilesFromFolder</servlet-name>
+        <servlet-class>com.redoute.datamap.servlet.ImportFiilesFromFolder</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CreateDatamap</servlet-name>
         <url-pattern>/CreateDatamap</url-pattern>
@@ -94,6 +102,14 @@
     <servlet-mapping>
         <servlet-name>GenerateGraph</servlet-name>
         <url-pattern>/GenerateGraph</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TestPop</servlet-name>
+        <url-pattern>/TestPop</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ImportFiilesFromFolder</servlet-name>
+        <url-pattern>/ImportFiilesFromFolder</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
