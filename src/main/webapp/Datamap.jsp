@@ -239,7 +239,7 @@
 
         <div id="pictures" style="float:left; width: 70%;background-color:#E2E4FF">    
             <div class="ncdescriptionheader" style="height:30px" >
-                <input id="idInput" style="float:left; display:none" value="">
+                <input id="idInput" name="idInput" style="float:left;" hidden="hidden" value="">
                 <p style="float:left;">Page:</p><input id="pageInput" style="float:left;" value="" onChange="javascript: updatePicture(this, 'page', 'id')">
                 <p style="float:left;">Picture:</p><input id="pictureInput" style="float:left;" value="" onChange="javascript: updatePicture(this, 'picture', 'id')">
                 <button id="deletePicture" style="float:right" onClick="javacript: deletePicture('')">Delete Picture</button>
@@ -344,10 +344,11 @@
             }
 
             function deletePicture(id) {
-
-                if (confirm('Beware, the picture will be deleted')) {
+                var pict = document.getElementById('pictureInput').value;
+                if (confirm('Beware, the picture '+pict+' will be deleted')) {
+                    id = document.getElementById('idInput').value;
                     window.location = "DeletePicture?id=" + id;
-                    alert('toto');
+                    
                 }
             }
 
