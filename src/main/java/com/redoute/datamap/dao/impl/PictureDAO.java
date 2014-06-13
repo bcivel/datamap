@@ -187,12 +187,11 @@ public class PictureDAO implements IPictureDAO {
     @Override
     public List<Picture> findPictureListByCriteria(String individualSearch, String joinedSearch) {
         List<Picture> pictureList = new ArrayList<Picture>();
-        StringBuilder gSearch = new StringBuilder();
         StringBuilder searchSQL = new StringBuilder();
         StringBuilder searchSQL2 = new StringBuilder();
 
         StringBuilder query = new StringBuilder();
-        query.append("SELECT * FROM picture p ");
+        query.append("SELECT p.id, p.page, p.picture, '' as base64 FROM picture p ");
         
         if (!joinedSearch.equals("")){
         query.append(" join datamap d on p.page=d.page and p.picture=d.picture ");

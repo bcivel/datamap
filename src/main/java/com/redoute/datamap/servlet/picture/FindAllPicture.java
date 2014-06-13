@@ -137,7 +137,7 @@ public class FindAllPicture extends HttpServlet {
                 row.put(datamap.getId())
                         .put(datamap.getPage())
                         .put(datamap.getPicture())
-                        .put(datamap.getBase64())
+                        //.put(datamap.getBase64())
                         .put(isImpl == true ? "Y" : "N");
 
                 data.put(row);

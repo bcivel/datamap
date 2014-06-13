@@ -28,6 +28,10 @@
         <servlet-class>com.redoute.datamap.servlet.picture.FindAllPicture</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>FindPicture</servlet-name>
+        <servlet-class>com.redoute.datamap.servlet.picture.FindPicture</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>UploadPicture</servlet-name>
         <servlet-class>com.redoute.datamap.servlet.picture.UploadPicture</servlet-class>
     </servlet>
@@ -78,6 +82,10 @@
     <servlet-mapping>
         <servlet-name>FindAllPicture</servlet-name>
         <url-pattern>/FindAllPicture</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FindPicture</servlet-name>
+        <url-pattern>/FindPicture</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UploadPicture</servlet-name>

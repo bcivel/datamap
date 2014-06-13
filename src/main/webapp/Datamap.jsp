@@ -334,8 +334,8 @@
                     for (var i = 0; i < data.aaData.length; i++) {
                         $("#pictureList").append($("<a></a>")
                                 .attr("style", "cursor: pointer")
-                                .attr("class", "allImplemented"+data.aaData[i][4])
-                                .attr("onclick", "$('#wPaint').fadeOut('slow');LoadMyJs('" + data.aaData[i][0] + "','" + data.aaData[i][3] + "');loadDataInput('" + data.aaData[i][0] + "','"+data.aaData[i][1]+"','" + data.aaData[i][2] + "');")
+                                .attr("class", "allImplemented"+data.aaData[i][3])
+                                .attr("onclick", "$('#wPaint').fadeOut('slow');LoadMyJs('" + data.aaData[i][0] + "');loadDataInput('" + data.aaData[i][0] + "','"+data.aaData[i][1]+"','" + data.aaData[i][2] + "');")
                                 .attr("id","picture_"+ data.aaData[i][0])
                                 .text(data.aaData[i][2]));
                         $("#pictureList").append("</br>");
@@ -501,63 +501,64 @@
                 //this._zoomImgBg('bg', images);
             }
 
-
             function LoadMyJs(id, picture) {
-                
-                function saveImg(image) {
-                    var _this = this;
+                $.getJSON('./FindPicture?',{id: id},function(data) {
+                    function saveImg(image) {
+                        var _this = this;
 
-                    $.ajax({
-                        type: 'POST',
-                        url: './UploadPicture?id=' + sId,
-                        data: {image: image},
-                        success: function(resp) {
-                            findAllPictures(test);
+                        $.ajax({
+                            type: 'POST',
+                            url: './UploadPicture?id=' + sId,
+                            data: {image: image},
+                            success: function(resp) {
+                                findAllPictures(test);
 
-                            // do something with the image
-                            $('#wPaint-img').attr('src', image);
+                                // do something with the image
+                                $('#wPaint-img').attr('src', image);
 
-                            // internal function for displaying status messages in the canvas
-                            _this._displayStatus('Image saved successfully');
+                                // internal function for displaying status messages in the canvas
+                                _this._displayStatus('Image saved successfully');
 
-                        }
+                            }
+                        });
+                    }
+
+                    var sId = null;
+                    var sPicture = null;
+                    if (data !== null && data.picture !== null && data.picture[0] !== null && data.picture[0] !== null) {
+                           sId = data.picture[0];
+                           sPicture = data.picture[3];
+                    }
+
+                    // remove data of the current wPaint element
+                    $.removeData(wPaint);
+                    $('#wPaint').empty();
+
+                    // Create new one wPaint
+                    $('#wPaint').wPaint({
+                        path: './js/wPaint/',
+                        image: sPicture,
+                        bg: '#E2E4FF',
+                        fillStyle: 'transparent',
+                        menuOrientation: 'horizontal',
+                        strokeStyle: '#007700',
+                        textColor: '#fff',
+                        textBgColor: '#007700',
+                        textBorderColor: '#FF0000',
+                        fontSize: '22',
+                        fontBold: true,
+                        menuOffsetLeft: 0,
+                        menuOffsetTop: -50,
+                        imageStretch: true,
+                        saveImg: saveImg,
+                        wpaintSelector: '#wPaint'
                     });
-                }
-            var sId = null;
-            var sPicture = null;
-            if (id !== null && picture !== null) {
-                    sId = id;
-                   sPicture = picture;
-                }
+    //                    zoomImgBg: zoomImgBg,
+                    delete $('#wPaint').wPaint.menus.main.items.loadBg;
+                    delete $('#wPaint').wPaint.menus.main.items.loadFg;
 
-                // remove data of the current wPaint element
-                $.removeData(wPaint);
-                $('#wPaint').empty();
-
-                // Create new one wPaint
-                $('#wPaint').wPaint({
-                    path: './js/wPaint/',
-                    image: sPicture,
-                    bg: '#E2E4FF',
-                    fillStyle: 'transparent',
-                    menuOrientation: 'horizontal',
-                    strokeStyle: '#007700',
-                    textColor: '#fff',
-                    textBgColor: '#007700',
-                    textBorderColor: '#FF0000',
-                    fontSize: '22',
-                    fontBold: true,
-                    menuOffsetLeft: 0,
-                    menuOffsetTop: -50,
-                    imageStretch: true,
-                    saveImg: saveImg,
-                    wpaintSelector: '#wPaint'
+                    $('#wPaint').fadeIn("slow");
                 });
-//                    zoomImgBg: zoomImgBg,
-                delete $('#wPaint').wPaint.menus.main.items.loadBg;
-                delete $('#wPaint').wPaint.menus.main.items.loadFg;
-
-                $('#wPaint').fadeIn("slow");
             }
         </script>
     </body>
