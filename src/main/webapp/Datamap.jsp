@@ -50,7 +50,8 @@
                     "iDisplayLength": 100,
                     "aoColumns": [
                         {"sName": "ID", "sWidth": "10%", "bVisible": false},
-                        {"sName": "Stream", "sWidth": "5%"},
+                        {"sName": "Stream", "sWidth": "5%", "bVisible": false},
+                        {"sName": "Application", "sWidth": "10%"},
                         {"sName": "Page", "sWidth": "10%"},
                         {"sName": "DataCerberus", "sWidth": "25%"},
                         {"sName": "Picture", "sWidth": "20%"},
@@ -61,38 +62,38 @@
                     ],
                     "fnRowCallback": function(nRow, aData, iDisplayIndex) {
                         /* Append the grade to the default row class name */
-                        if (aData[6] === "N")
+                        if (aData[7] === "N")
                         {
                             nRow.className = "gradeX odd";
-                            $('td:eq(0)', nRow).html(aData[1]);
-                            $('td:eq(1)', nRow).html(aData[2]);
-                            $('td:eq(2)', nRow).html(aData[3]);
-                            $('td:eq(3)', nRow).html(aData[4]);
-                            $('td:eq(4)', nRow).html(aData[5]);
-                            $('td:eq(5)', nRow).html(aData[6]);
-                            $('td:eq(6)', nRow).html(aData[7]);
+                            $('td:eq(0)', nRow).html(aData[2]);
+                            $('td:eq(1)', nRow).html(aData[3]);
+                            $('td:eq(2)', nRow).html(aData[4]);
+                            $('td:eq(3)', nRow).html(aData[5]);
+                            $('td:eq(4)', nRow).html(aData[6]);
+                            $('td:eq(5)', nRow).html(aData[7]);
+                            $('td:eq(6)', nRow).html(aData[8]);
                         }
-                        if (aData[6] === "Y")
+                        if (aData[7] === "Y")
                         {
                             nRow.className = "gradeA odd";
-                            $('td:eq(0)', nRow).html(aData[1]);
-                            $('td:eq(1)', nRow).html(aData[2]);
-                            $('td:eq(2)', nRow).html(aData[3]);
-                            $('td:eq(3)', nRow).html(aData[4]);
-                            $('td:eq(4)', nRow).html(aData[5]);
-                            $('td:eq(5)', nRow).html(aData[6]);
-                            $('td:eq(6)', nRow).html(aData[7]);
+                             $('td:eq(0)', nRow).html(aData[2]);
+                            $('td:eq(1)', nRow).html(aData[3]);
+                            $('td:eq(2)', nRow).html(aData[4]);
+                            $('td:eq(3)', nRow).html(aData[5]);
+                            $('td:eq(4)', nRow).html(aData[6]);
+                            $('td:eq(5)', nRow).html(aData[7]);
+                            $('td:eq(6)', nRow).html(aData[8]);
                         }
-                        if ((aData[6] !== "Y") && (aData[6] !== "N"))
+                        if ((aData[7] !== "Y") && (aData[7] !== "N"))
                         {
                             nRow.className = "gradeC odd";
-                            $('td:eq(0)', nRow).html(aData[1]);
-                            $('td:eq(1)', nRow).html(aData[2]);
-                            $('td:eq(2)', nRow).html(aData[3]);
-                            $('td:eq(3)', nRow).html(aData[4]);
-                            $('td:eq(4)', nRow).html(aData[5]);
-                            $('td:eq(5)', nRow).html(aData[6]);
-                            $('td:eq(6)', nRow).html(aData[7]);
+                             $('td:eq(0)', nRow).html(aData[2]);
+                            $('td:eq(1)', nRow).html(aData[3]);
+                            $('td:eq(2)', nRow).html(aData[4]);
+                            $('td:eq(3)', nRow).html(aData[5]);
+                            $('td:eq(4)', nRow).html(aData[6]);
+                            $('td:eq(5)', nRow).html(aData[7]);
+                            $('td:eq(6)', nRow).html(aData[8]);
                         }
                     }
                 }
@@ -136,6 +137,8 @@
                         {onblur: 'submit',
                             placeholder: ''},
                         {onblur: 'submit',
+                            placeholder: ''},
+                        {onblur: 'submit',
                             placeholder: ''}
 
                     ]
@@ -159,6 +162,7 @@
                 xhttp.open("GET", "UpdatePicture?value=" + sValue + "&id=" + id + "&columnName=" + columnName, true);
                 xhttp.send();
                 var xmlDoc = xhttp.responseText;
+                findAllPictures(test);
 
             }
         </script>
@@ -181,6 +185,14 @@
                 stream = request.getParameterValues("stream");
                 for (int a = 0; a < stream.length; a++) {
                     uri += "&stream=" + stream[a];
+                }
+            };
+            
+            String[] app = null;
+            if (request.getParameterValues("application") != null && !request.getParameter("application").equals("All")) {
+                app = request.getParameterValues("application");
+                for (int a = 0; a < app.length; a++) {
+                    uri += "&application=" + app[a];
                 }
             };
 
@@ -209,9 +221,14 @@
         <div class="ncdescriptionfirstpart" style="vertical-align: central; clear:both">
             <p style="text-align:left">Data-Cerberus Implementation</p>
             <form action="Datamap.jsp" method="get" name="ExecFilters" id="ExecFilters">
-                <div style="width: 250px;float:left">
+                <div style="width: 250px;float:left; display:none">
                     <!--<p style="float:left">creator</p>-->
                     <select style="width: 250px;float:left" multiple="multiple"  id="stream" name="stream">
+                    </select>
+                </div>
+                <div style="width: 250px;float:left">
+                    <!--<p style="float:left">creator</p>-->
+                    <select style="width: 250px;float:left" multiple="multiple"  id="application" name="application">
                     </select>
                 </div>
                 <div style="width: 250px;float:left">
@@ -240,8 +257,9 @@
         <div id="pictures" style="float:left; width: 70%;background-color:#E2E4FF">    
             <div class="ncdescriptionheader" style="height:30px" >
                 <input id="idInput" name="idInput" style="float:left;" hidden="hidden" value="">
-                <p style="float:left;">Page:</p><input id="pageInput" style="float:left;" value="" onChange="javascript: updatePicture(this, 'page', 'id')">
-                <p style="float:left;">Picture:</p><input id="pictureInput" style="float:left;" value="" onChange="javascript: updatePicture(this, 'picture', 'id')">
+                <p style="float:left;">Application:</p><input id="applicationInput" style="float:left;" value="" onChange="javascript: updatePicture(this, 'application', document.getElementById('idInput').value)">
+                <p style="float:left;">Page:</p><input id="pageInput" style="float:left;" value="" onChange="javascript: updatePicture(this, 'page',  document.getElementById('idInput').value)">
+                <p style="float:left;">Picture:</p><input id="pictureInput" style="float:left;" value="" onChange="javascript: updatePicture(this, 'picture',  document.getElementById('idInput').value)">
                 <button id="deletePicture" style="float:right" onClick="javacript: deletePicture('')">Delete Picture</button>
                 <button id="addPicture" style="float:right" onClick="javacript: popup('AddPicture.jsp')">Add Picture</button>
             </div>
@@ -261,6 +279,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Stream</th>
+                        <th>Application</th>
                         <th>Page</th>
                         <th>DataCerberus</th>
                         <th>Picture</th>
@@ -284,40 +303,45 @@
                     <input id="id" name="id" style="width:150px;" 
                            class="ncdetailstext" rel="0" >
                 </div>
-                <div style="width: 250px; float:left">
+                <div style="width: 250px; float:left; display:none">
                     <label for="stream" style="font-weight:bold">Stream</label>
                     <input id="stream" name="stream" style="width:150px;" 
                            class="ncdetailstext" rel="1" >
                 </div>
+                <div style="width: 250px; float:left">
+                    <label for="application" style="font-weight:bold">Application</label>
+                    <input id="application" name="application" style="width:150px;" 
+                           class="ncdetailstext" rel="2" >
+                </div>
                 <div style="width: 310px; float:left">
                     <label for="page" style="font-weight:bold">Page</label>
                     <input id="page" name="page" style="width:210px;" 
-                           class="ncdetailstext" rel="2" >
+                           class="ncdetailstext" rel="3" >
                 </div>
                 <div style="width: 310px; float:left">
                     <label for="datacerberus" style="font-weight:bold">DataCerberus</label>
                     <input id="datacerberus" name="datacerberus" style="width:210px;" 
-                           class="ncdetailstext" rel="3" >
+                           class="ncdetailstext" rel="4" >
                 </div>
                 <div style="width: 310px; float:left">
                     <label for="picture" style="font-weight:bold">Picture</label>
                     <input id="picture" name="picture" style="width:210px;" 
-                           class="ncdetailstext" rel="4" >
+                           class="ncdetailstext" rel="5" >
                 </div>
                 <div style="width: 310px; float:left">
                     <label for="xpath" style="font-weight:bold">Xpath</label>
                     <input id="xpath" name="xpath" style="width:210px;" 
-                           class="ncdetailstext" rel="5" >
+                           class="ncdetailstext" rel="6" >
                 </div>
                 <div style="width: 250px; float:left">
                     <label for="implemented" style="font-weight:bold">Implemented</label>
                     <input id="implemented" name="implemented" style="width:150px;" 
-                           class="ncdetailstext" rel="6" >
+                           class="ncdetailstext" rel="7" >
                 </div>
                 <div style="width: 300px; float:left">
                     <label for="comment" style="font-weight:bold">Comment</label>
                     <input id="comment" name="comment" style="width:250px;" 
-                           class="ncdetailstext" rel="7" >
+                           class="ncdetailstext" rel="8" >
                 </div>
                 <br />
                 <button id="btnAddNewRowOk">Add</button>
@@ -334,10 +358,10 @@
                     for (var i = 0; i < data.aaData.length; i++) {
                         $("#pictureList").append($("<a></a>")
                                 .attr("style", "cursor: pointer")
-                                .attr("class", "allImplemented"+data.aaData[i][3])
-                                .attr("onclick", "$('#wPaint').fadeOut('slow');LoadMyJs('" + data.aaData[i][0] + "');loadDataInput('" + data.aaData[i][0] + "','"+data.aaData[i][1]+"','" + data.aaData[i][2] + "');")
+                                .attr("class", "allImplemented"+data.aaData[i][4])
+                                .attr("onclick", "$('#wPaint').fadeOut('slow');LoadMyJs('" + data.aaData[i][0] + "');loadDataInput('" + data.aaData[i][0] + "','"+data.aaData[i][2]+"','" + data.aaData[i][3] + "','" + data.aaData[i][1] + "');")
                                 .attr("id","picture_"+ data.aaData[i][0])
-                                .text(data.aaData[i][2]));
+                                .text(data.aaData[i][3]));
                         $("#pictureList").append("</br>");
                     }
                 });
@@ -357,7 +381,8 @@
                         'width=800,height=500,scrollbars=yes,menubar=false,location=false');
             }
             
-            function loadDataInput(id, page, name){
+            function loadDataInput(id, page, name, application){
+                document.getElementById('applicationInput').value= application;
                 document.getElementById('pageInput').value= page;
                 document.getElementById('pictureInput').value = name;
                 document.getElementById('idInput').value = id;
@@ -393,6 +418,20 @@
                         header: "Page",
                         noneSelectedText: "Select Page",
                         selectedText: "# of # page selected"
+                    });
+
+                });
+                
+                $.get('GetDistinctValueFromTableColumn?table=Datamap&colName=Application', function(data) {
+                    for (var i = 0; i < data.length; i++) {
+                        $("#application").append($("<option></option>")
+                                .attr("value", data[i])
+                                .text(data[i]))
+                    }
+                    $("#application").multiselect({
+                        header: "Application",
+                        noneSelectedText: "Select Application",
+                        selectedText: "# of # application selected"
                     });
 
                 });

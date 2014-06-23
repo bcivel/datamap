@@ -82,16 +82,17 @@ public class PictureDAO implements IPictureDAO {
     @Override
     public void createPicture(Picture picture) {
         StringBuilder query = new StringBuilder();
-        query.append("INSERT INTO picture (`id`,`page`,`picture`,`base64`) ");
-        query.append("VALUES (0,?,?,?)");
+        query.append("INSERT INTO picture (`id`,`application`,`page`,`picture`,`base64`) ");
+        query.append("VALUES (0,?,?,?,?)");
 
         Connection connection = this.databaseSpring.connect();
         try {
             PreparedStatement preStat = connection.prepareStatement(query.toString());
             try {
                 preStat.setString(1, picture.getPage());
-                preStat.setString(2, picture.getPicture());
-                preStat.setString(3, picture.getBase64());
+                preStat.setString(2, picture.getApplication());
+                preStat.setString(3, picture.getPicture());
+                preStat.setString(4, picture.getBase64());
 
                 preStat.executeUpdate();
 
@@ -191,10 +192,10 @@ public class PictureDAO implements IPictureDAO {
         StringBuilder searchSQL2 = new StringBuilder();
 
         StringBuilder query = new StringBuilder();
-        query.append("SELECT p.id, p.page, p.picture, '' as base64 FROM picture p ");
+        query.append("SELECT p.id, p.application, p.page, p.picture, '' as base64 FROM picture p ");
         
         if (!joinedSearch.equals("")){
-        query.append(" join datamap d on p.page=d.page and p.picture=d.picture ");
+        query.append(" join datamap d on p.page=d.page and p.picture=d.picture and p.application=d.application");
         }
         
         query.append(" where 1=1 ");
@@ -253,11 +254,12 @@ public class PictureDAO implements IPictureDAO {
 
     private Picture loadPictureFromResultSet(ResultSet resultSet) throws SQLException {
         Integer id = resultSet.getInt("id");
+        String application = resultSet.getString("application");
         String page = resultSet.getString("page");
         String picture = resultSet.getString("picture");
         String base64 = resultSet.getString("base64");
 
-        return factoryPicture.create(id, page, picture, base64);
+        return factoryPicture.create(id, application, page, picture, base64);
     }
 
     @Override
@@ -310,6 +312,9 @@ public class PictureDAO implements IPictureDAO {
         gSearch.append(searchTerm);
         gSearch.append("%'");
         gSearch.append(" or `page` like '%");
+        gSearch.append(searchTerm);
+        gSearch.append("%'");
+        gSearch.append(" or `application` like '%");
         gSearch.append(searchTerm);
         gSearch.append("%'");
         gSearch.append(" or `base64` like '%");

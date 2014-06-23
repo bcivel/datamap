@@ -48,7 +48,7 @@ public class DeletePicture extends HttpServlet {
             IPictureService datamapService = appContext.getBean(IPictureService.class);
             IFactoryPicture factoryPicture = appContext.getBean(IFactoryPicture.class);
 
-            Picture sqlLib = factoryPicture.create(Integer.valueOf(name), null, null, null);
+            Picture sqlLib = factoryPicture.create(Integer.valueOf(name),null,  null, null, null);
             datamapService.deletePicture(sqlLib);
             response.sendRedirect("Datamap.jsp");
         } finally {

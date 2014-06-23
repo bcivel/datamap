@@ -12,9 +12,18 @@ package com.redoute.datamap.entity;
  */
 public class Picture {
     Integer id;
+    private String application;
     String page;
     String picture;
     String base64;
+
+    public String getApplication() {
+        return application;
+    }
+
+    public void setApplication(String application) {
+        this.application = application;
+    }
 
     public Integer getId() {
         return id;

@@ -40,6 +40,7 @@ public class AddPicture extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
         String page = "";
+        String application = "";
         String pictureName = "";
         String screenshot = "";
         FileItem item = null;
@@ -67,6 +68,10 @@ public class AddPicture extends HttpServlet {
                             page = item.getString("UTF-8");
                             System.out.println(page);
                         }
+                        if (name.equals("Application")) {
+                            application = item.getString("UTF-8");
+                            System.out.println(application);
+                        }
                         if (name.equals("PictureName")) {
                             pictureName = item.getString("UTF-8");
                             System.out.println(pictureName);
@@ -84,7 +89,7 @@ public class AddPicture extends HttpServlet {
             IPictureService pictService = appContext.getBean(IPictureService.class);
             IFactoryPicture factoryPicture = appContext.getBean(IFactoryPicture.class);
             
-            Picture pict = factoryPicture.create(0, page, pictureName, screenshot);
+            Picture pict = factoryPicture.create(0, application, page, pictureName, screenshot);
         pictService.createPicture(pict);
         
         response.sendRedirect("Datamap.jsp");

@@ -54,7 +54,7 @@ public class FindAllDatamap extends HttpServlet {
             String sCol = policy.sanitize(request.getParameter("iSortCol_0"));
             String sdir = policy.sanitize(request.getParameter("sSortDir_0"));
             String dir = "asc";
-            String[] cols = { "Id", "Stream", "Page","DataCerberus","Picture","Xpath", "Implemented"};
+            String[] cols = { "Id","Stream", "Application", "Page","DataCerberus","Picture","Xpath", "Implemented"};
 
             JSONObject result = new JSONObject();
             JSONArray array = new JSONArray();
@@ -65,6 +65,7 @@ public class FindAllDatamap extends HttpServlet {
             String id = "";
             String[] stream = null;
             String[] page = null;
+            String[] application = null;
             String datacerberus = "";
             String[] implemented = null;
             String[] picture = null;
@@ -73,6 +74,9 @@ public class FindAllDatamap extends HttpServlet {
 
             if (request.getParameterValues("page") != null) {
             page = request.getParameterValues("page");
+            }
+            if (request.getParameterValues("application") != null) {
+            application = request.getParameterValues("application");
             }
             if (request.getParameterValues("stream") != null) {
             stream = request.getParameterValues("stream");
@@ -104,6 +108,14 @@ public class FindAllDatamap extends HttpServlet {
             }
             spage += " `page` like '%" + page[page.length - 1] + "%') ";
             sArray.add(spage);
+            }
+            if (application != null) {
+            String sapplication = " (";
+            for (int a = 0; a < application.length - 1; a++) {
+                sapplication += " `application` like '%" + application[a] + "%' or";
+            }
+            sapplication += " `application` like '%" + application[application.length - 1] + "%') ";
+            sArray.add(sapplication);
             }
             if (stream != null) {
             String sstream = " (";
@@ -201,6 +213,7 @@ public class FindAllDatamap extends HttpServlet {
                 JSONArray row = new JSONArray();
                 row.put(datamap.getId())
                         .put(datamap.getStream())
+                         .put(datamap.getApplication())
                         .put(datamap.getPage())
                         .put(datamap.getDatacerberus())
                         .put(datamap.getPicture())

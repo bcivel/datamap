@@ -17,12 +17,13 @@ import org.springframework.stereotype.Service;
 public class FactoryPicture implements IFactoryPicture {
 
     @Override
-    public Picture create(Integer id,String page,String picture,String base64) {
+    public Picture create(Integer id,String application,String page,String picture,String base64) {
         Picture pict = new Picture();
         pict.setId(id);
         pict.setPicture(picture);
         pict.setPage(page);
         pict.setBase64(base64);
+        pict.setApplication(application);
         return pict;
     }
 

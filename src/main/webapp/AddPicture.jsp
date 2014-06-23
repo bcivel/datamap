@@ -32,6 +32,10 @@
         <div id="dialog">
         <form id="formAddNewRow" action="AddPicture" title="Add Picture" method="post" enctype="multipart/form-data" acceptcharset="UTF-8">
             <div  style="width: 200px; clear:both">
+                <label for="Application" class="ncheader" style="width: 200px;height:20px">Application</label>
+                <input id="Application" name="Application" placeholder="Put the Application Name" style="width:200px; font-size: medium" 
+                       class="ncdetailstext">
+            </div><div  style="width: 200px; clear:both">
                 <label for="Page" class="ncheader" style="width: 200px;height:20px">Page</label>
                 <input id="Page" name="Page" placeholder="Put the Page Name" style="width:200px; font-size: medium" 
                        class="ncdetailstext">

@@ -12,12 +12,21 @@ public class Datamap {
 
     private Integer id;
     private String stream;
+    private String application;
     private String page;
     private String datacerberus;
     private String implemented;
     private String picture;
     private String xpath;
     private String comment;
+
+    public String getApplication() {
+        return application;
+    }
+
+    public void setApplication(String application) {
+        this.application = application;
+    }
 
     public String getComment() {
         return comment;

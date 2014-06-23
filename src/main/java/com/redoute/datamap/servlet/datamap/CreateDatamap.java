@@ -43,6 +43,7 @@ public class CreateDatamap extends HttpServlet {
         
         try {
         String stream = policy.sanitize(request.getParameter("stream"));
+        String application = policy.sanitize(request.getParameter("application"));
         String page = policy.sanitize(request.getParameter("page"));
         String datacerberus = policy.sanitize(request.getParameter("datacerberus"));
         String implemented = policy.sanitize(request.getParameter("implemented"));
@@ -54,7 +55,7 @@ public class CreateDatamap extends HttpServlet {
         IDatamapService datamapService = appContext.getBean(IDatamapService.class);
         IFactoryDatamap factoryDatamap = appContext.getBean(IFactoryDatamap.class);
         
-        Datamap datamap = factoryDatamap.create(0, stream, page, datacerberus, implemented , xpath, picture, comment);
+        Datamap datamap = factoryDatamap.create(0, stream, application,  page, datacerberus, implemented , xpath, picture, comment);
         datamapService.createDatamap(datamap);
             
         response.sendRedirect("Datamap.jsp");

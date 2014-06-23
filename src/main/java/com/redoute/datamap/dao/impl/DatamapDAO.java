@@ -82,20 +82,21 @@ public class DatamapDAO implements IDatamapDAO {
     @Override
     public void createDatamap(Datamap datamap) {
         StringBuilder query = new StringBuilder();
-        query.append("INSERT INTO datamap (`id`,`stream`,`page`,`datacerberus`,`implemented`, `xpath`, `picture`, `comment`) ");
-        query.append("VALUES (0,?,?,?,?,?,?,?)");
+        query.append("INSERT INTO datamap (`id`,`stream`,`application`,`page`,`datacerberus`,`implemented`, `xpath`, `picture`, `comment`) ");
+        query.append("VALUES (0,?,?,?,?,?,?,?,?)");
 
         Connection connection = this.databaseSpring.connect();
         try {
             PreparedStatement preStat = connection.prepareStatement(query.toString());
             try {
                 preStat.setString(1, datamap.getStream());
-                preStat.setString(2, datamap.getPage());
-                preStat.setString(3, datamap.getDatacerberus());
-                preStat.setString(4, datamap.getImplemented());
-                preStat.setString(5, datamap.getXpath());
-                preStat.setString(6, datamap.getPicture());
-                preStat.setString(7, datamap.getComment());
+                preStat.setString(2, datamap.getApplication());
+                preStat.setString(3, datamap.getPage());
+                preStat.setString(4, datamap.getDatacerberus());
+                preStat.setString(5, datamap.getImplemented());
+                preStat.setString(6, datamap.getXpath());
+                preStat.setString(7, datamap.getPicture());
+                preStat.setString(8, datamap.getComment());
 
                 preStat.executeUpdate();
 
@@ -203,6 +204,9 @@ public class DatamapDAO implements IDatamapDAO {
         gSearch.append(" or `page` like '%");
         gSearch.append(searchTerm);
         gSearch.append("%'");
+        gSearch.append(" or `application` like '%");
+        gSearch.append(searchTerm);
+        gSearch.append("%'");
         gSearch.append(" or `stream` like '%");
         gSearch.append(searchTerm);
         gSearch.append("%'");
@@ -286,6 +290,7 @@ public class DatamapDAO implements IDatamapDAO {
     private Datamap loadDatamapFromResultSet(ResultSet resultSet) throws SQLException {
         Integer id = resultSet.getInt("id");
         String stream = resultSet.getString("stream");
+        String application = resultSet.getString("application");
         String page = resultSet.getString("page");
         String datacerberus = resultSet.getString("datacerberus");
         String implemented = resultSet.getString("implemented");
@@ -293,7 +298,7 @@ public class DatamapDAO implements IDatamapDAO {
         String picture = resultSet.getString("picture");
         String comment = resultSet.getString("comment");
 
-        return factoryDatamap.create(id, stream, page, datacerberus, implemented, xpath, picture, comment);
+        return factoryDatamap.create(id, stream, application, page, datacerberus, implemented, xpath, picture, comment);
     }
 
     @Override
@@ -346,6 +351,9 @@ public class DatamapDAO implements IDatamapDAO {
         gSearch.append(searchTerm);
         gSearch.append("%'");
         gSearch.append(" or `page` like '%");
+        gSearch.append(searchTerm);
+        gSearch.append("%'");
+        gSearch.append(" or `application` like '%");
         gSearch.append(searchTerm);
         gSearch.append("%'");
         gSearch.append(" or `stream` like '%");

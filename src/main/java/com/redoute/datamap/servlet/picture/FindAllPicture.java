@@ -50,6 +50,7 @@ public class FindAllPicture extends HttpServlet {
         
         try {
             String page[] = null;
+            String application[] = null;
             String picture[] = null;
             String implemented[] = null;
             String stream[] = null;
@@ -59,6 +60,9 @@ public class FindAllPicture extends HttpServlet {
             }
             if (request.getParameterValues("picture") != null) {
             picture = request.getParameterValues("picture");
+            }
+            if (request.getParameterValues("application") != null) {
+            application = request.getParameterValues("application");
             }
             if (request.getParameterValues("impl") != null) {
             implemented = request.getParameterValues("impl");
@@ -75,6 +79,14 @@ public class FindAllPicture extends HttpServlet {
             }
             spage += " p.`page` like '%" + page[page.length - 1] + "%') ";
             sArray.add(spage);
+        }
+            if (application != null) {
+            String sapplication = " (";
+            for (int a = 0; a < application.length - 1; a++) {
+                sapplication += " p.`application` like '%" + application[a] + "%' or";
+            }
+            sapplication += " p.`application` like '%" + application[application.length - 1] + "%') ";
+            sArray.add(sapplication);
         }
             if (picture != null) {
             String spicture = " (";
@@ -135,9 +147,10 @@ public class FindAllPicture extends HttpServlet {
                 boolean isImpl = datamapService.allImplementedByCriteria("picture", datamap.getPicture());
                 JSONArray row = new JSONArray();
                 row.put(datamap.getId())
+                        .put(datamap.getApplication())
                         .put(datamap.getPage())
                         .put(datamap.getPicture())
-                        //.put(datamap.getBase64())
+                        
                         .put(isImpl == true ? "Y" : "N");
 
                 data.put(row);
