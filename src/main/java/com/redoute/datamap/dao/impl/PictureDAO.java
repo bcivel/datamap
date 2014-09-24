@@ -89,8 +89,8 @@ public class PictureDAO implements IPictureDAO {
         try {
             PreparedStatement preStat = connection.prepareStatement(query.toString());
             try {
-                preStat.setString(1, picture.getPage());
-                preStat.setString(2, picture.getApplication());
+                preStat.setString(1, picture.getApplication());
+                preStat.setString(2, picture.getPage());
                 preStat.setString(3, picture.getPicture());
                 preStat.setString(4, picture.getBase64());
 
