@@ -14,10 +14,11 @@ public class Datamap {
     private String stream;
     private String application;
     private String page;
-    private String datacerberus;
+    private String locationType;
+    private String locationValue;
     private String implemented;
     private String picture;
-    private String xpath;
+    private String zone;
     private String comment;
 
     public String getApplication() {
@@ -44,12 +45,12 @@ public class Datamap {
         this.picture = picture;
     }
 
-    public String getXpath() {
-        return xpath;
+    public String getZone() {
+        return zone;
     }
 
-    public void setXpath(String xpath) {
-        this.xpath = xpath;
+    public void setZone(String zone) {
+        this.zone = zone;
     }
 
     public Integer getId() {
@@ -76,14 +77,22 @@ public class Datamap {
         this.page = page;
     }
 
-    public String getDatacerberus() {
-        return datacerberus;
+    public String getLocationType() {
+    	return locationType;
     }
-
-    public void setDatacerberus(String datacerberus) {
-        this.datacerberus = datacerberus;
+    
+    public void setLocationType(String locationType) {
+    	this.locationType = locationType;
     }
-
+    
+    public String getLocationValue() {
+    	return locationValue;
+    }
+    
+    public void setLocationValue(String locationValue) {
+    	this.locationValue = locationValue;
+    }
+    
     public String getImplemented() {
         return implemented;
     }
