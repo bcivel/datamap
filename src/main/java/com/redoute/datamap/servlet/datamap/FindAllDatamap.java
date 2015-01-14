@@ -54,7 +54,7 @@ public class FindAllDatamap extends HttpServlet {
             String sCol = policy.sanitize(request.getParameter("iSortCol_0"));
             String sdir = policy.sanitize(request.getParameter("sSortDir_0"));
             String dir = "asc";
-            String[] cols = { "Id","Stream", "Application", "Page","DataCerberus","Picture","Xpath", "Implemented"};
+            String[] cols = { "Id", "Stream", "Application", "Page", "LocationType", "LocationValue", "Picture", "Zone", "Implemented"};
 
             JSONObject result = new JSONObject();
             JSONArray array = new JSONArray();
@@ -66,10 +66,11 @@ public class FindAllDatamap extends HttpServlet {
             String[] stream = null;
             String[] page = null;
             String[] application = null;
-            String datacerberus = "";
+            String locationType = "";
+            String locationValue = "";
             String[] implemented = null;
             String[] picture = null;
-            String xpath = "";
+            String zone = "";
             String comment = "";
 
             if (request.getParameterValues("page") != null) {
@@ -92,8 +93,12 @@ public class FindAllDatamap extends HttpServlet {
             }
             
             id = policy.sanitize(request.getParameter("sSearch_0"));
-            datacerberus = policy.sanitize(request.getParameter("sSearch_3"));
-            xpath = policy.sanitize(request.getParameter("sSearch_5"));
+            
+            // FIXME are they the good sSearch numbers?
+            locationType = policy.sanitize(request.getParameter("sSearch_3"));
+            locationValue = policy.sanitize(request.getParameter("sSearch_4"));
+            
+            zone = policy.sanitize(request.getParameter("sSearch_5"));
             //comment = policy.sanitize(request.getParameter("sSearch_6"));
             
             List<String> sArray = new ArrayList<String>();
@@ -141,14 +146,19 @@ public class FindAllDatamap extends HttpServlet {
             simplemented += " implemented like '%" + implemented[implemented.length - 1] + "%') ";
             sArray.add(simplemented);
         }
-            if (!datacerberus.equals("")) {
-                String sDatacerberus = " `datacerberus` like '%" + datacerberus + "%'";
-                sArray.add(sDatacerberus);
+            if (!locationType.equals("")) {
+                String sLocationType = " `locationType` like '%" + locationType + "%'";
+                sArray.add(sLocationType);
             }
             
-          if (!xpath.equals("")) {
-                String sxpath = " `xpath` like '%" + xpath + "%'";
-                sArray.add(sxpath);
+            if (!locationValue.equals("")) {
+                String sLocationValue = " `locationValue` like '%" + locationValue + "%'";
+                sArray.add(sLocationValue);
+            }
+            
+          if (!zone.equals("")) {
+                String szone = " `zone` like '%" + zone + "%'";
+                sArray.add(szone);
             }
 
           if (!comment.equals("")) {
@@ -215,9 +225,10 @@ public class FindAllDatamap extends HttpServlet {
                         .put(datamap.getStream())
                          .put(datamap.getApplication())
                         .put(datamap.getPage())
-                        .put(datamap.getDatacerberus())
+                        .put(datamap.getLocationType())
+                        .put(datamap.getLocationValue())
                         .put(datamap.getPicture())
-                        .put(datamap.getXpath())
+                        .put(datamap.getZone())
                         .put(datamap.getImplemented())
                         .put(datamap.getComment());
 

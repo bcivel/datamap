@@ -6,14 +6,18 @@
 package com.redoute.datamap.servlet;
 
 import com.redoute.datamap.log.Logger;
+import com.redoute.datamap.service.IDatamapLocationTypeService;
 import com.redoute.datamap.service.IDatamapService;
 import com.redoute.datamap.service.IPictureService;
+
 import java.io.IOException;
 import java.io.PrintWriter;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Level;
 import org.json.JSONArray;
 import org.owasp.html.PolicyFactory;
@@ -41,6 +45,7 @@ public class GetDistinctValueFromTableColumn extends HttpServlet {
         ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
         IDatamapService datamapService = appContext.getBean(IDatamapService.class);
         IPictureService pictureService = appContext.getBean(IPictureService.class);
+        IDatamapLocationTypeService datamapLocationTypeService = appContext.getBean(IDatamapLocationTypeService.class);
 
         if (table != null && colName != null) {
             try {
@@ -53,6 +58,11 @@ public class GetDistinctValueFromTableColumn extends HttpServlet {
                     }
                     if (table.equals("Picture")) {
                         for (String value : pictureService.findDistinctValuesfromColumn(colName)) {
+                            valueList.put(value);
+                        }
+                    }
+                    if (table.equals("DatamapLocationType")) {
+                    	for (String value : datamapLocationTypeService.findDistinctValuesfromColumn(colName)) {
                             valueList.put(value);
                         }
                     }

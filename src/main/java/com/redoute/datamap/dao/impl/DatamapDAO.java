@@ -11,15 +11,18 @@ import com.redoute.datamap.database.DatabaseSpring;
 import com.redoute.datamap.entity.Datamap;
 import com.redoute.datamap.factory.IFactoryDatamap;
 import com.redoute.datamap.log.Logger;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Level;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.support.SQLExceptionSubclassTranslator;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -30,6 +33,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class DatamapDAO implements IDatamapDAO {
 
+	/** Associated {@link org.apache.log4j.Logger} to this class */
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DatamapDAO.class);
+	
     /**
      * Description of the variable here.
      */
@@ -82,8 +88,8 @@ public class DatamapDAO implements IDatamapDAO {
     @Override
     public void createDatamap(Datamap datamap) {
         StringBuilder query = new StringBuilder();
-        query.append("INSERT INTO datamap (`id`,`stream`,`application`,`page`,`datacerberus`,`implemented`, `xpath`, `picture`, `comment`) ");
-        query.append("VALUES (0,?,?,?,?,?,?,?,?)");
+        query.append("INSERT INTO datamap (`id`,`stream`,`application`,`page`,`locationType`,`locationValue`,`implemented`, `zone`, `picture`, `comment`) ");
+        query.append("VALUES (0,?,?,?,?,?,?,?,?,?)");
 
         Connection connection = this.databaseSpring.connect();
         try {
@@ -92,11 +98,12 @@ public class DatamapDAO implements IDatamapDAO {
                 preStat.setString(1, datamap.getStream());
                 preStat.setString(2, datamap.getApplication());
                 preStat.setString(3, datamap.getPage());
-                preStat.setString(4, datamap.getDatacerberus());
-                preStat.setString(5, datamap.getImplemented());
-                preStat.setString(6, datamap.getXpath());
-                preStat.setString(7, datamap.getPicture());
-                preStat.setString(8, datamap.getComment());
+                preStat.setString(4, datamap.getLocationType());
+                preStat.setString(5, datamap.getLocationValue());
+                preStat.setString(6, datamap.getImplemented());
+                preStat.setString(7, datamap.getZone());
+                preStat.setString(8, datamap.getPicture());
+                preStat.setString(9, datamap.getComment());
 
                 preStat.executeUpdate();
 
@@ -213,7 +220,7 @@ public class DatamapDAO implements IDatamapDAO {
         gSearch.append(" or `implemented` like '%");
         gSearch.append(searchTerm);
         gSearch.append("%'");
-        gSearch.append(" or `xpath` like '%");
+        gSearch.append(" or `zone` like '%");
         gSearch.append(searchTerm);
         gSearch.append("%'");
         gSearch.append(" or `picture` like '%");
@@ -222,7 +229,10 @@ public class DatamapDAO implements IDatamapDAO {
         gSearch.append(" or `comment` like '%");
         gSearch.append(searchTerm);
         gSearch.append("%'");
-        gSearch.append(" or `datacerberus` like '%");
+        gSearch.append(" or `locationType` like '%");
+        gSearch.append(searchTerm);
+        gSearch.append("%'");
+        gSearch.append(" or `locationValue` like '%");
         gSearch.append(searchTerm);
         gSearch.append("%')");
 
@@ -238,14 +248,17 @@ public class DatamapDAO implements IDatamapDAO {
         }
 
         query.append(searchSQL);
-        query.append("order by `");
+        query.append(" order by `");
         query.append(column);
         query.append("` ");
         query.append(dir);
-        query.append(" limit ");
-        query.append(start);
-        query.append(" , ");
-        query.append(amount);
+        
+        if (start >= 0 && amount > 0) {
+	        query.append(" limit ");
+	        query.append(start);
+	        query.append(" , ");
+	        query.append(amount);
+        }
 
         Datamap sqlLibrary;
 
@@ -292,13 +305,14 @@ public class DatamapDAO implements IDatamapDAO {
         String stream = resultSet.getString("stream");
         String application = resultSet.getString("application");
         String page = resultSet.getString("page");
-        String datacerberus = resultSet.getString("datacerberus");
+        String locationType = resultSet.getString("locationType");
+        String locationValue = resultSet.getString("locationValue");
         String implemented = resultSet.getString("implemented");
-        String xpath = resultSet.getString("xpath");
+        String zone = resultSet.getString("zone");
         String picture = resultSet.getString("picture");
         String comment = resultSet.getString("comment");
 
-        return factoryDatamap.create(id, stream, application, page, datacerberus, implemented, xpath, picture, comment);
+        return factoryDatamap.create(id, stream, application, page, locationType, locationValue, implemented, zone, picture, comment);
     }
 
     @Override
@@ -362,7 +376,7 @@ public class DatamapDAO implements IDatamapDAO {
         gSearch.append(" or `implemented` like '%");
         gSearch.append(searchTerm);
         gSearch.append("%'");
-        gSearch.append(" or `xpath` like '%");
+        gSearch.append(" or `zone` like '%");
         gSearch.append(searchTerm);
         gSearch.append("%'");
         gSearch.append(" or `picture` like '%");
@@ -371,7 +385,10 @@ public class DatamapDAO implements IDatamapDAO {
         gSearch.append(" or `comment` like '%");
         gSearch.append(searchTerm);
         gSearch.append("%'");
-        gSearch.append(" or `datacerberus` like '%");
+        gSearch.append(" or `locationTYpe` like '%");
+        gSearch.append(searchTerm);
+        gSearch.append("%'");
+        gSearch.append(" or `locationValue` like '%");
         gSearch.append(searchTerm);
         gSearch.append("%')");
 
@@ -565,5 +582,7 @@ public class DatamapDAO implements IDatamapDAO {
         }
         return false;
     }
+    
+
 }
 

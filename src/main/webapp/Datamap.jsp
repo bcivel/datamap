@@ -53,9 +53,10 @@
                         {"sName": "Stream", "sWidth": "5%", "bVisible": false},
                         {"sName": "Application", "sWidth": "10%"},
                         {"sName": "Page", "sWidth": "10%"},
-                        {"sName": "DataCerberus", "sWidth": "25%"},
+                        {"sName": "Location type", "sWidth" : "5%"},
+                        {"sName": "Location value", "sWidth": "25%"},
                         {"sName": "Picture", "sWidth": "20%"},
-                        {"sName": "Xpath", "sWidth": "5%", "sType": "int"},
+                        {"sName": "Zone", "sWidth": "5%", "sType": "int"},
                         {"sName": "Implemented", "sWidth": "5%"},
                         {"sName": "Comment", "sWidth": "35%"}
 
@@ -281,9 +282,10 @@
                         <th>Stream</th>
                         <th>Application</th>
                         <th>Page</th>
-                        <th>DataCerberus</th>
+                        <th>Location type</th>
+                        <th>Location value</th>
                         <th>Picture</th>
-                        <th>Xpath</th>
+                        <th>Zone</th>
                         <th>Impl</th>
                         <th>Comment</th>
                     </tr>
@@ -319,29 +321,35 @@
                            class="ncdetailstext" rel="3" >
                 </div>
                 <div style="width: 310px; float:left">
-                    <label for="datacerberus" style="font-weight:bold">DataCerberus</label>
-                    <input id="datacerberus" name="datacerberus" style="width:210px;" 
+                    <label for="locationType" style="font-weight:bold">Location type</label>
+                    <select id="locationType" name="locationType" style="width:210px;" 
                            class="ncdetailstext" rel="4" >
+                    </select>
+                </div>
+                <div style="width: 310px; float:left">
+                    <label for="locationValue" style="font-weight:bold">Location value</label>
+                    <input id="locationValue" name="locationValue" style="width:210px;" 
+                           class="ncdetailstext" rel="5" >
                 </div>
                 <div style="width: 310px; float:left">
                     <label for="picture" style="font-weight:bold">Picture</label>
                     <input id="picture" name="picture" style="width:210px;" 
-                           class="ncdetailstext" rel="5" >
+                           class="ncdetailstext" rel="6" >
                 </div>
                 <div style="width: 310px; float:left">
-                    <label for="xpath" style="font-weight:bold">Xpath</label>
-                    <input id="xpath" name="xpath" style="width:210px;" 
-                           class="ncdetailstext" rel="6" >
+                    <label for="zone" style="font-weight:bold">Zone</label>
+                    <input id="zone" name="zone" style="width:210px;" 
+                           class="ncdetailstext" rel="7" >
                 </div>
                 <div style="width: 250px; float:left">
                     <label for="implemented" style="font-weight:bold">Implemented</label>
                     <input id="implemented" name="implemented" style="width:150px;" 
-                           class="ncdetailstext" rel="7" >
+                           class="ncdetailstext" rel="8" >
                 </div>
                 <div style="width: 300px; float:left">
                     <label for="comment" style="font-weight:bold">Comment</label>
                     <input id="comment" name="comment" style="width:250px;" 
-                           class="ncdetailstext" rel="8" >
+                           class="ncdetailstext" rel="9" >
                 </div>
                 <br />
                 <button id="btnAddNewRowOk">Add</button>
@@ -463,7 +471,16 @@
                     });
 
                 });
-                        
+                
+                $.get('GetDistinctValueFromTableColumn?table=DatamapLocationType&colName=type', function(data) {
+                	$('#locationType').empty();
+                    for (var i = 0; i < data.length; i++) {
+                        $("#locationType").append($("<option></option>")
+                                .attr("value", data[i])
+                                .text(data[i]))
+                    }
+                });
+                
                 findAllPictures(test);
             });
         </script>
