@@ -18,9 +18,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Level;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.support.SQLExceptionSubclassTranslator;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -31,6 +33,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class DatamapDAO implements IDatamapDAO {
 
+	/** Associated {@link org.apache.log4j.Logger} to this class */
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DatamapDAO.class);
+	
     /**
      * Description of the variable here.
      */
@@ -243,14 +248,17 @@ public class DatamapDAO implements IDatamapDAO {
         }
 
         query.append(searchSQL);
-        query.append("order by `");
+        query.append(" order by `");
         query.append(column);
         query.append("` ");
         query.append(dir);
-        query.append(" limit ");
-        query.append(start);
-        query.append(" , ");
-        query.append(amount);
+        
+        if (start >= 0 && amount > 0) {
+	        query.append(" limit ");
+	        query.append(start);
+	        query.append(" , ");
+	        query.append(amount);
+        }
 
         Datamap sqlLibrary;
 
@@ -574,6 +582,7 @@ public class DatamapDAO implements IDatamapDAO {
         }
         return false;
     }
+    
 
 }
 

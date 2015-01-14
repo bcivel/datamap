@@ -63,6 +63,10 @@
         <servlet-name>ImportFiilesFromFolder</servlet-name>
         <servlet-class>com.redoute.datamap.servlet.ImportFiilesFromFolder</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>FindLocations</servlet-name>
+        <servlet-class>com.redoute.datamap.servlet.datamap.FindLocations</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CreateDatamap</servlet-name>
         <url-pattern>/CreateDatamap</url-pattern>
@@ -118,6 +122,10 @@
     <servlet-mapping>
         <servlet-name>ImportFiilesFromFolder</servlet-name>
         <url-pattern>/ImportFiilesFromFolder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FindLocations</servlet-name>
+        <url-pattern>/FindLocations</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

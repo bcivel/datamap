@@ -10,6 +10,8 @@ package com.redoute.datamap.entity;
  */
 public class Datamap {
 
+	public static final String LOCATION_SEPARATOR = "=";
+	
     private Integer id;
     private String stream;
     private String application;
@@ -91,6 +93,10 @@ public class Datamap {
     
     public void setLocationValue(String locationValue) {
     	this.locationValue = locationValue;
+    }
+    
+    public String getLocation() {
+    	return getLocationType() + LOCATION_SEPARATOR + getLocationValue();
     }
     
     public String getImplemented() {
