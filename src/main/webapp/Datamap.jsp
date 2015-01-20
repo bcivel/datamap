@@ -64,8 +64,8 @@
                         {"sName": "Stream", "sWidth": "5%", "bVisible": false},
                         {"sName": "Application", "sWidth": "10%"},
                         {"sName": "Page", "sWidth": "10%"},
-                        {"sName": "Location type", "sWidth" : "5%"},
-                        {"sName": "Location value", "sWidth": "25%"},
+                        {"sName": "LocationType", "sWidth" : "5%"},
+                        {"sName": "LocationValue", "sWidth": "25%"},
                         {"sName": "Picture", "sWidth": "20%"},
                         {"sName": "Zone", "sWidth": "5%", "sType": "int"},
                         {"sName": "Implemented", "sWidth": "5%"},
@@ -293,8 +293,8 @@
                         <th>Stream</th>
                         <th>Application</th>
                         <th>Page</th>
-                        <th>Location type</th>
-                        <th>Location value</th>
+                        <th>Location Type</th>
+                        <th>Location Value</th>
                         <th>Picture</th>
                         <th>Zone</th>
                         <th>Impl</th>
