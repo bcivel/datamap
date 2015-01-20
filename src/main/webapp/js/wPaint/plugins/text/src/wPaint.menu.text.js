@@ -67,7 +67,7 @@
       this.$textCalc = $('<div></div>').hide();
 
       // make sure clicking on the text-tnput doesn't trigger another textInput
-      this.$textInput = $('<textarea class="wPaint-text-input" spellcheck="false"></textarea>')
+      this.$textInput = $('<textarea id="toto" class="wPaint-text-input" spellcheck="false"></textarea>')
       .on('mousedown', this._stopPropagation) 
       .css({position: 'absolute'})
       .hide();
@@ -163,6 +163,8 @@
 
     // just draw text - don't want to trigger up here since we are just copying text from input box here
     _drawText: function () {
+        var wi = $("#toto").width();
+        var he = $("#toto").height();
       var fontString = '',
           lines = this.$textInput.val().split('\n'),
           linesNew = [],
@@ -218,11 +220,15 @@
         /// rect for border
         /// draw background rect assuming height of font
         this.ctx.fillStyle = this.options.textBorderColor;
-        this.ctx.fillRect(parseInt(left-5), parseInt(top-5), parseInt(width+10), parseInt(height, 10)+7);
+        this.ctx.fillRect(parseInt(left), parseInt(top), parseInt(wi), parseInt(3));
+        this.ctx.fillRect(parseInt(left), parseInt(top), parseInt(3), parseInt(he));
+        this.ctx.fillRect(parseInt(left+wi), parseInt(top), parseInt(3), parseInt(he));
+        this.ctx.fillRect(parseInt(left), parseInt(top+he), parseInt(wi+3), parseInt(3));
+        this.ctx.fillRect(parseInt(left), parseInt(top), parseInt(width), parseInt(height));
 
         /// draw background rect assuming height of font
         this.ctx.fillStyle = this.options.textBgColor;
-        this.ctx.fillRect(parseInt(left-3), parseInt(top-3), parseInt(width+6), parseInt(height, 10)+3);
+        this.ctx.fillRect(parseInt(left+2), parseInt(top+2), parseInt(wi-4), parseInt(he-4));
         /// color for text
         this.ctx.fillStyle = this.options.textColor;
 
@@ -249,6 +255,8 @@
           this.ctx.putImageData(imgData, left, top+underlineOffset);
         }*/
       }
+      
+      saveDatamapEntry($("#toto").val());
 
       this.$textInput.val('');
       this._addUndo();

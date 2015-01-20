@@ -33,12 +33,23 @@
 
 
         <script type="text/javascript">
-
-            $(document).ready(function() {
+            var oTable;
+            $(document).ready(function(){
+                loadTable();
+            });
+            
+    function loadTable() {
+        
+        if(oTable) {
+                    var list = $('#datamapList');
+                    list.find('tbody').empty();
+                    list.dataTable().fnDestroy();
+                }
                 var test = getValue();
                 var oTable = $('#datamapList').dataTable({
                     "aaSorting": [[0, "desc"]],
                     "bServerSide": true,
+                    "bDestroy": true,
                     "sAjaxSource": "FindAllDatamap" + test,
                     "bJQueryUI": true,
                     "bProcessing": true,
@@ -144,7 +155,7 @@
 
                     ]
                 });
-            });
+            };
 
 
         </script>
@@ -598,8 +609,8 @@
                         fillStyle: 'transparent',
                         menuOrientation: 'horizontal',
                         strokeStyle: '#007700',
-                        textColor: '#fff',
-                        textBgColor: '#007700',
+                        textColor: 'black',
+                        textBgColor: 'transparent',
                         textBorderColor: '#FF0000',
                         fontSize: '22',
                         fontBold: true,
@@ -614,7 +625,25 @@
                     delete $('#wPaint').wPaint.menus.main.items.loadFg;
 
                     $('#wPaint').fadeIn("slow");
+                    $('div[title="Text"]').click();
                 });
+            }
+            
+            function saveDatamapEntry(zone){
+                var app = document.getElementById('applicationInput').value;
+                var page = document.getElementById('pageInput').value;
+                var pict = document.getElementById('pictureInput').value;
+                $.get('CreateDatamap?application='+app+'&page='+page+'&zone='+zone+'&picture='+pict, function(data) {
+                	loadTable();
+                        $("[aria-controls='datamapList']").val(pict);
+                
+                //simulate keydown keyup to start search on image text.
+                $("[aria-controls='datamapList']").keydown();
+                $("[aria-controls='datamapList']").keyup();
+                });
+                
+                
+                
             }
         </script>
     </body>

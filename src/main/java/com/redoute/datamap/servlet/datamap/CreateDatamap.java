@@ -45,7 +45,7 @@ public class CreateDatamap extends HttpServlet {
         String stream = policy.sanitize(request.getParameter("stream"));
         String application = policy.sanitize(request.getParameter("application"));
         String page = policy.sanitize(request.getParameter("page"));
-        String locationType = policy.sanitize(request.getParameter("locationType"));
+        String locationType = request.getParameter("locationType")==null?"data-cerberus":policy.sanitize(request.getParameter("locationType"));
         String locationValue = policy.sanitize(request.getParameter("locationValue"));
         String implemented = policy.sanitize(request.getParameter("implemented"));
         String zone = policy.sanitize(request.getParameter("zone"));
@@ -59,7 +59,7 @@ public class CreateDatamap extends HttpServlet {
         Datamap datamap = factoryDatamap.create(0, stream, application,  page, locationType, locationValue, implemented , zone, picture, comment);
         datamapService.createDatamap(datamap);
             
-        response.sendRedirect("Datamap.jsp");
+        //response.sendRedirect("Datamap.jsp");
         } finally {
             out.close();
         }
