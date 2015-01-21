@@ -214,6 +214,9 @@ public class PictureDAO implements IPictureDAO {
         }
 
         if (!individualSearch.equals("")) {
+        	if (!individualSearch.startsWith(" AND ")) {
+        		individualSearch = " AND " + individualSearch;
+        	}
             searchSQL.append(individualSearch);
             } 
 
@@ -222,7 +225,6 @@ public class PictureDAO implements IPictureDAO {
         
         query.append(" group by p.page,p.picture ");
         
-        Logger.log("test", Level.FATAL, query.toString());
         Connection connection = this.databaseSpring.connect();
         try {
             PreparedStatement preStat = connection.prepareStatement(query.toString());
