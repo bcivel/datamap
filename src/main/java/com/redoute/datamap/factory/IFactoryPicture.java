@@ -14,4 +14,7 @@ import com.redoute.datamap.entity.Picture;
 public interface IFactoryPicture {
     
     Picture create(Integer id,String application, String page,String picture,String base64);
+    
+    Picture create(Integer id, String application, String page, String picture, String base64, String localPath);
+    
 }

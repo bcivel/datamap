@@ -1,5 +1,6 @@
 package com.redoute.datamap.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.redoute.datamap.dao.IParameterDAO;
@@ -52,6 +53,7 @@ public class Parameter implements IParameter {
 	}
 
 	/** The associated {@link IParameterDAO} */
+	@Autowired
 	private IParameterDAO parameterDAO;
 
 	/**

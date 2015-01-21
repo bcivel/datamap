@@ -40,6 +40,18 @@ public final class DAOUtil {
 	}
 
 	/**
+	 * Checks if the given database {@link String} value is empty
+	 * 
+	 * @param value
+	 *            the database {@link String} value to check
+	 * @return <code>true</code> if the given value is empty, <code>false</code>
+	 *         otherwise
+	 */
+	public static boolean isEmpty(String value) {
+		return value == null || value.equals("NULL") || value.equals("");
+	}
+
+	/**
 	 * Utility class then private constructor
 	 */
 	private DAOUtil() {

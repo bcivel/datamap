@@ -1,1 +1,1 @@
-Here you can find database structure using by datamap
+Here you can find database structure and updates used by datamap
