@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.redoute.datamap.dao.IDatamapLocationTypeDAO;
 import com.redoute.datamap.database.DatabaseSpring;
+import com.redoute.datamap.util.DAOUtil;
 
 @Repository
 public class DatamapLocationTypeDAO implements IDatamapLocationTypeDAO {
@@ -42,25 +43,13 @@ public class DatamapLocationTypeDAO implements IDatamapLocationTypeDAO {
 			// Retrieve and send result
 			List<String> result = new ArrayList<String>();
 			while (resultSet.next()) {
-				result.add(resultSet.getString(1) == null ? "" : resultSet.getString(1));
+				result.add(resultSet.getString(colName) == null ? "" : resultSet.getString(colName));
 			}
 			return result;
 		} catch (SQLException e) {
 			LOG.error(e);
 		} finally {
-			try {
-				if (resultSet != null) {
-					resultSet.close();
-				}
-				if (preStat != null) {
-					preStat.close();
-				}
-				if (connection != null) {
-					connection.close();
-				}
-			} catch (SQLException e) {
-				LOG.error(e);
-			}
+			DAOUtil.closeResources(resultSet, preStat, connection);
 		}
 
 		return null;

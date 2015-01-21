@@ -6,11 +6,6 @@
 
 package com.redoute.datamap.dao.impl;
 
-import com.redoute.datamap.dao.IPictureDAO;
-import com.redoute.datamap.database.DatabaseSpring;
-import com.redoute.datamap.entity.Picture;
-import com.redoute.datamap.factory.IFactoryPicture;
-import com.redoute.datamap.log.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,8 +14,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Level;
+import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.redoute.datamap.dao.IPictureDAO;
+import com.redoute.datamap.database.DatabaseSpring;
+import com.redoute.datamap.entity.Picture;
+import com.redoute.datamap.factory.IFactoryPicture;
+import com.redoute.datamap.log.Logger;
+import com.redoute.datamap.util.DAOUtil;
+import com.redoute.datamap.util.HTML5CanvasURLUtil.HTML5CanvasURLParsingException;
+import com.redoute.datamap.util.PictureFileHelper;
 
 /**
  * {Insert class description here}
@@ -37,6 +42,8 @@ public class PictureDAO implements IPictureDAO {
     private DatabaseSpring databaseSpring;
     @Autowired
     private IFactoryPicture factoryPicture;
+    @Autowired
+    private PictureFileHelper pictureFileHelper;
 
     @Override
     public Picture findPictureByKey(String id) {
@@ -82,8 +89,8 @@ public class PictureDAO implements IPictureDAO {
     @Override
     public void createPicture(Picture picture) {
         StringBuilder query = new StringBuilder();
-        query.append("INSERT INTO picture (`id`,`application`,`page`,`picture`,`base64`) ");
-        query.append("VALUES (0,?,?,?,?)");
+        query.append("INSERT INTO picture (`id`,`application`,`page`,`picture`) ");
+        query.append("VALUES (0,?,?,?)");
 
         Connection connection = this.databaseSpring.connect();
         try {
@@ -92,7 +99,6 @@ public class PictureDAO implements IPictureDAO {
                 preStat.setString(1, picture.getApplication());
                 preStat.setString(2, picture.getPage());
                 preStat.setString(3, picture.getPicture());
-                preStat.setString(4, picture.getBase64());
 
                 preStat.executeUpdate();
 
@@ -113,6 +119,7 @@ public class PictureDAO implements IPictureDAO {
             }
         }
         
+        pictureFileHelper.save(picture, false);
     }
 
     @Override
@@ -144,6 +151,8 @@ public class PictureDAO implements IPictureDAO {
                 Logger.log(PictureDAO.class.getName(), Level.WARN, e.toString());
             }
         }
+        
+        pictureFileHelper.save(picture, false);
     }
 
     @Override
@@ -192,7 +201,7 @@ public class PictureDAO implements IPictureDAO {
         StringBuilder searchSQL2 = new StringBuilder();
 
         StringBuilder query = new StringBuilder();
-        query.append("SELECT p.id, p.application, p.page, p.picture, '' as base64 FROM picture p ");
+        query.append("SELECT p.id, p.application, p.page, p.picture, '' as base64, p.localpath FROM picture p ");
         
         if (!joinedSearch.equals("")){
         query.append(" join datamap d on p.page=d.page and p.picture=d.picture and p.application=d.application");
@@ -205,6 +214,9 @@ public class PictureDAO implements IPictureDAO {
         }
 
         if (!individualSearch.equals("")) {
+        	if (!individualSearch.startsWith(" AND ")) {
+        		individualSearch = " AND " + individualSearch;
+        	}
             searchSQL.append(individualSearch);
             } 
 
@@ -213,7 +225,6 @@ public class PictureDAO implements IPictureDAO {
         
         query.append(" group by p.page,p.picture ");
         
-        Logger.log("test", Level.FATAL, query.toString());
         Connection connection = this.databaseSpring.connect();
         try {
             PreparedStatement preStat = connection.prepareStatement(query.toString());
@@ -253,17 +264,26 @@ public class PictureDAO implements IPictureDAO {
     }
 
     private Picture loadPictureFromResultSet(ResultSet resultSet) throws SQLException {
-        Integer id = resultSet.getInt("id");
-        String application = resultSet.getString("application");
-        String page = resultSet.getString("page");
-        String picture = resultSet.getString("picture");
-        String base64 = resultSet.getString("base64");
-
-        return factoryPicture.create(id, application, page, picture, base64);
+    	Integer id = resultSet.getInt("id");
+		String application = resultSet.getString("application");
+		String page = resultSet.getString("page");
+		String picture = resultSet.getString("picture");
+		String base64 = resultSet.getString("base64");
+		String localPath = resultSet.getString("localpath");
+		Picture pic = factoryPicture.create(id, application, page, picture, base64, localPath);
+		return DAOUtil.isEmpty(localPath) ? pic : pictureFileHelper.load(pic);
     }
 
     @Override
     public void updatePicture(String id, String columnName, String value) {
+    	if (columnName.equals("base64")) {
+    		updateFilePicture(id, value);
+    	} else {
+    		updateDatabasePicture(id, columnName, value);
+    	}
+    }
+    
+    private void updateDatabasePicture(String id, String columnName, String value) {
         boolean throwExcep = false;
         StringBuilder query = new StringBuilder();
         query.append("update picture set `");
@@ -296,7 +316,20 @@ public class PictureDAO implements IPictureDAO {
                 Logger.log(PictureDAO.class.getName(), Level.WARN, e.toString());
             }
         }
-        
+    }
+    
+    private void updateFilePicture(String id, String value) {
+    	Picture pic = findPictureByKey(id);
+		pic.setBase64(value);
+		try {
+			if (DAOUtil.isEmpty(pic.getLocalPath())) {
+				pic.setLocalPath(pictureFileHelper.createLocalPath(pic));
+				updatePicture(id, "localpath", pic.getLocalPath());
+			}
+			pictureFileHelper.save(pic, true);
+		} catch (HTML5CanvasURLParsingException e) {
+			Log.error("Unable to update picture " + pic, e);
+		}
     }
 
     @Override
@@ -315,9 +348,6 @@ public class PictureDAO implements IPictureDAO {
         gSearch.append(searchTerm);
         gSearch.append("%'");
         gSearch.append(" or `application` like '%");
-        gSearch.append(searchTerm);
-        gSearch.append("%'");
-        gSearch.append(" or `base64` like '%");
         gSearch.append(searchTerm);
         gSearch.append("%'");
         gSearch.append(" or `picture` like '%");
@@ -373,7 +403,7 @@ public class PictureDAO implements IPictureDAO {
     }
 
     @Override
-    public List<Picture> findPicturePerPages(String whereClause) {
+    public List<Picture> findPicturePerClause(String whereClause) {
         List<Picture> list = null;
         StringBuilder query = new StringBuilder();
         query.append("SELECT * FROM picture where 1=1 ");

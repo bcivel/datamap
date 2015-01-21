@@ -62,7 +62,7 @@ public interface IPictureDAO {
      * @param whereClause
      * @return 
      */
-    List<Picture> findPicturePerPages(String whereClause);
+    List<Picture> findPicturePerClause(String whereClause);
     
     /**
      * 
