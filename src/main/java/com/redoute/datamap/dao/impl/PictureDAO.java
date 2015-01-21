@@ -274,6 +274,14 @@ public class PictureDAO implements IPictureDAO {
 
     @Override
     public void updatePicture(String id, String columnName, String value) {
+    	if (columnName.equals("base64")) {
+    		updateFilePicture(id, value);
+    	} else {
+    		updateDatabasePicture(id, columnName, value);
+    	}
+    }
+    
+    private void updateDatabasePicture(String id, String columnName, String value) {
         boolean throwExcep = false;
         StringBuilder query = new StringBuilder();
         query.append("update picture set `");
@@ -306,19 +314,19 @@ public class PictureDAO implements IPictureDAO {
                 Logger.log(PictureDAO.class.getName(), Level.WARN, e.toString());
             }
         }
-        
-		if (columnName.equals("base64")) {
-			Picture pic = findPictureByKey(id);
-			pic.setBase64(value);
-			try {
-				if (DAOUtil.isEmpty(pic.getLocalPath())) {
-					pic.setLocalPath(pictureFileHelper.createLocalPath(pic));
-					updatePicture(id, "localpath", pic.getLocalPath());
-				}
-				pictureFileHelper.save(pic, true);
-			} catch (HTML5CanvasURLParsingException e) {
-				Log.error("Unable to update picture " + pic, e);
+    }
+    
+    private void updateFilePicture(String id, String value) {
+    	Picture pic = findPictureByKey(id);
+		pic.setBase64(value);
+		try {
+			if (DAOUtil.isEmpty(pic.getLocalPath())) {
+				pic.setLocalPath(pictureFileHelper.createLocalPath(pic));
+				updatePicture(id, "localpath", pic.getLocalPath());
 			}
+			pictureFileHelper.save(pic, true);
+		} catch (HTML5CanvasURLParsingException e) {
+			Log.error("Unable to update picture " + pic, e);
 		}
     }
 
@@ -393,7 +401,7 @@ public class PictureDAO implements IPictureDAO {
     }
 
     @Override
-    public List<Picture> findPicturePerPages(String whereClause) {
+    public List<Picture> findPicturePerClause(String whereClause) {
         List<Picture> list = null;
         StringBuilder query = new StringBuilder();
         query.append("SELECT * FROM picture where 1=1 ");

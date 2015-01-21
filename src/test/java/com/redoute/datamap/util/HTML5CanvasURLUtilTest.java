@@ -29,6 +29,16 @@ public class HTML5CanvasURLUtilTest {
 		HTML5CanvasURLUtil.parseImageType(WRONG_CANVAS_URL);
 	}
 
+	@Test(expected = HTML5CanvasURLParsingException.class)
+	public void testParseImageTypeWithEmptyFormat() throws HTML5CanvasURLParsingException {
+		HTML5CanvasURLUtil.parseImageType("");
+	}
+
+	@Test(expected = HTML5CanvasURLParsingException.class)
+	public void testParseImageTypeWithNullFormat() throws HTML5CanvasURLParsingException {
+		HTML5CanvasURLUtil.parseImageType(null);
+	}
+
 	@Test
 	public void testParseBase64Data() throws HTML5CanvasURLParsingException {
 		Assert.assertEquals(BASE64_DATA, HTML5CanvasURLUtil.parseBase64Data(GOOD_CANVAS_URL));
@@ -37,6 +47,16 @@ public class HTML5CanvasURLUtilTest {
 	@Test(expected = HTML5CanvasURLParsingException.class)
 	public void testParseBase64DataWithWrongFormat() throws HTML5CanvasURLParsingException {
 		HTML5CanvasURLUtil.parseBase64Data(WRONG_CANVAS_URL);
+	}
+
+	@Test(expected = HTML5CanvasURLParsingException.class)
+	public void testParseBase64DataWithEmptyFormat() throws HTML5CanvasURLParsingException {
+		HTML5CanvasURLUtil.parseBase64Data("");
+	}
+
+	@Test(expected = HTML5CanvasURLParsingException.class)
+	public void testParseBase64DataWithNullFormat() throws HTML5CanvasURLParsingException {
+		HTML5CanvasURLUtil.parseBase64Data(null);
 	}
 
 	@Test

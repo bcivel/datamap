@@ -12,6 +12,9 @@ public final class DAOUtil {
 	/** The associated {@link Logger} to this class */
 	private static final Logger LOG = Logger.getLogger(DAOUtil.class);
 
+	/** The <code>NULL</code> SQL value */
+	public static final String NULL_VALUE = "NULL";
+
 	/**
 	 * Free the given resources by calling its <code>close()</code> method.
 	 * 
@@ -48,7 +51,7 @@ public final class DAOUtil {
 	 *         otherwise
 	 */
 	public static boolean isEmpty(String value) {
-		return value == null || value.equals("NULL") || value.equals("");
+		return value == null || value.equals(NULL_VALUE) || value.equals("");
 	}
 
 	/**

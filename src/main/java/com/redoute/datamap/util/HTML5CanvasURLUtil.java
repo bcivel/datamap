@@ -44,6 +44,9 @@ public final class HTML5CanvasURLUtil {
 	 *             if the given canvas URL is malformed
 	 */
 	public static String parseImageType(String canvasURL) throws HTML5CanvasURLParsingException {
+		if (StringUtil.isEmpty(canvasURL)) {
+			throw new HTML5CanvasURLParsingException("Invalid canvas URL " + canvasURL);
+		}
 		Matcher imageTypeMatcher = IMAGE_TYPE_PATTERN.matcher(canvasURL);
 		if (!imageTypeMatcher.find()) {
 			throw new HTML5CanvasURLParsingException("Invalid canvas URL " + canvasURL);
@@ -61,6 +64,9 @@ public final class HTML5CanvasURLUtil {
 	 *             if the given canvas URL is malformed
 	 */
 	public static String parseBase64Data(String canvasURL) throws HTML5CanvasURLParsingException {
+		if (StringUtil.isEmpty(canvasURL)) {
+			throw new HTML5CanvasURLParsingException("Invalid canvas URL " + canvasURL);
+		}
 		Matcher base64DataMatcher = BASE64_DATA_PATTERN.matcher(canvasURL);
 		if (!base64DataMatcher.find()) {
 			throw new HTML5CanvasURLParsingException("Invalid canvas URL " + canvasURL);

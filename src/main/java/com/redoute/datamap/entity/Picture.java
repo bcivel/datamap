@@ -135,7 +135,7 @@ public class Picture {
 
 	@Override
 	public String toString() {
-		return "Picture [application=" + application + ", page=" + page + ", picture=" + picture + ", localPath=" + localPath + "]";
+		return "Picture [application=" + application + ", page=" + page + ", picture=" + picture + "]";
 	}
 
 }

@@ -61,7 +61,7 @@ public class PictureService implements IPictureService {
         clause.append(page);
         clause.append("' ");
         }
-        return pictureDao.findPicturePerPages(clause.toString());
+        return pictureDao.findPicturePerClause(clause.toString());
         } 
         return pictureDao.findAllPicture();
     }
