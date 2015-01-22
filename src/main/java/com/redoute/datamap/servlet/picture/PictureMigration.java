@@ -60,7 +60,7 @@ public class PictureMigration extends HttpServlet {
 
 	private void processRequest() {
 		sendMessage("Staring migration...");
-		List<Picture> pictures = pictureDAO.findPicturePerClause(" AND `base64` <> '' ");
+		List<Picture> pictures = pictureDAO.findPicturePerClause(" AND `base64` IS NOT NULL AND `base64` <> '' ");
 		if (pictures == null) {
 			sendMessage("Error on picture retrieving. Exiting.");
 			return;
