@@ -34,6 +34,9 @@ import com.redoute.datamap.util.PictureFileHelper;
  */
 @Repository
 public class PictureDAO implements IPictureDAO {
+	
+	/** Associated {@link org.apache.log4j.Logger} to this class */
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PictureDAO.class);
 
     /**
      * Description of the variable here.
@@ -88,38 +91,25 @@ public class PictureDAO implements IPictureDAO {
 
     @Override
     public void createPicture(Picture picture) {
-        StringBuilder query = new StringBuilder();
-        query.append("INSERT INTO picture (`id`,`application`,`page`,`picture`) ");
-        query.append("VALUES (0,?,?,?)");
-
         Connection connection = this.databaseSpring.connect();
-        try {
-            PreparedStatement preStat = connection.prepareStatement(query.toString());
-            try {
-                preStat.setString(1, picture.getApplication());
-                preStat.setString(2, picture.getPage());
-                preStat.setString(3, picture.getPicture());
-
-                preStat.executeUpdate();
-
-            } catch (SQLException exception) {
-                Logger.log(PictureDAO.class.getName(), Level.ERROR, exception.toString());
-            } finally {
-                preStat.close();
-            }
-        } catch (SQLException exception) {
-            Logger.log(PictureDAO.class.getName(), Level.ERROR, exception.toString());
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                Logger.log(PictureDAO.class.getName(), Level.WARN, e.toString());
-            }
-        }
+        PreparedStatement statement = null;
         
-        pictureFileHelper.save(picture, false);
+        try {
+        	statement = connection.prepareStatement("INSERT INTO picture (`id`, `application`, `page`, `picture`, `localpath`) VALUES (?, ?, ?, ?, ?)");
+        	statement.setInt(1, 0);
+        	statement.setString(2, picture.getApplication());
+        	statement.setString(3, picture.getPage());
+        	statement.setString(4, picture.getPicture());
+        	statement.setString(5, pictureFileHelper.createLocalPath(picture));
+        	statement.executeUpdate();
+        	pictureFileHelper.save(picture, false);
+        } catch (SQLException e) {
+        	LOG.error("Unable to create picture " + picture + " due to a database error", e);
+        } catch (HTML5CanvasURLParsingException e) {
+        	LOG.error("Unable to create picture " + picture + " due to a base64 format error", e);
+		} finally {
+        	DAOUtil.closeResources(statement, connection);
+        }
     }
 
     @Override
